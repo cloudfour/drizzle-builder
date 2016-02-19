@@ -524,18 +524,7 @@ var parseViews = function () {
  */
 var registerHelpers = function () {
 
-  // get helper files
-  var resolveHelper = path.join.bind(null, __dirname, 'helpers');
-  var localHelpers = fs.readdirSync(resolveHelper());
   var userHelpers = options.helpers;
-
-  // register local helpers
-  localHelpers.map(function (helper) {
-    var key = helper.match(/(^\w+?-)(.+)(\.\w+)/)[2];
-    var path = resolveHelper(helper);
-    Handlebars.registerHelper(key, require(path));
-  });
-
 
   // register user helpers
   for (var helper in userHelpers) {
