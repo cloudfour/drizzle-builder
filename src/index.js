@@ -1,7 +1,11 @@
-var Handlebars = require('handlebars');
-
-const assemble = (options) => {
-  return Handlebars;
+const defaults = {
+  materials: ['src/materials/**/*']
 };
 
-export default assemble;
+const buildDrizzle = (options) => {
+  const opts = Object.assign(options, defaults);
+  return opts;
+};
+
+export default buildDrizzle;
+export { defaults };
