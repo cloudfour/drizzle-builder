@@ -2,7 +2,7 @@
   "name": "fabricator-assemble",
   "version": "1.0.0",
   "description": "The builder for Drizzle",
-  "main": "index.js",
+  "main": "dist/index.js",
   "engines": {
     "node": ">=4.0.0"
   },
@@ -13,7 +13,6 @@
   "keywords": [
     "fabricator"
   ],
-  "main": "dist/index.js",
   "author": "Cloud Four",
   "license": "MIT",
   "repository": "cloudfour/drizzle-builder",
@@ -22,7 +21,9 @@
   },
   "devDependencies": {
     "babel-cli": "^6.5.1",
+    "babel-eslint": "^5.0.0",
     "babel-preset-es2015": "^6.5.0",
+    "eslint": "^2.2.0",
     "mocha": "^2.4.5"
   }
 }

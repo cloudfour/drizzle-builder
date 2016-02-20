@@ -1,7 +1,7 @@
-'use strict';
-
 var Handlebars = require('handlebars');
 
-module.exports = () => {
+const assemble = (options) => {
   return Handlebars;
 };
+
+export default assemble;
