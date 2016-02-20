@@ -2,6 +2,6 @@
 
 var Handlebars = require('handlebars');
 
-module.exports = () => {
+module.exports = function () {
   return Handlebars;
 };

@@ -7,11 +7,13 @@
     "node": ">=4.0.0"
   },
   "scripts": {
+    "build": "babel index.js --out-dir dist",
     "test": "mocha"
   },
   "keywords": [
     "fabricator"
   ],
+  "main": "dist/index.js",
   "author": "Cloud Four",
   "license": "MIT",
   "repository": "cloudfour/drizzle-builder",
@@ -19,6 +21,8 @@
     "handlebars": "^4.0.5"
   },
   "devDependencies": {
+    "babel-cli": "^6.5.1",
+    "babel-preset-es2015": "^6.5.0",
     "mocha": "^2.4.5"
   }
 }
