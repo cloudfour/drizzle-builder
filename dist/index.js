@@ -5,14 +5,12 @@ Object.defineProperty(exports, "__esModule", {
 });
 var Promise = require('bluebird');
 
-var defaults = {
-  materials: ['src/materials/**/*']
-};
+var parseOptions = require('./options');
 
-var buildDrizzle = function buildDrizzle(options) {
-  var opts = Object.assign(options, defaults);
+var drizzle = function drizzle(options) {
+  var opts = parseOptions(options);
   return Promise.resolve(opts);
 };
 
-exports.default = buildDrizzle;
+exports.default = drizzle;
 module.exports = exports['default'];

@@ -6,7 +6,8 @@ describe ('drizzle-builder', () => {
   describe ('configuration', () => {
     it ('should derive correct defaults', done => {
       builder({}).then(options => {
-        assert(options.materials.length === 1);
+        console.log(options);
+        assert(typeof options.templates === 'object');
         done();
       });
     });

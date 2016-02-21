@@ -1,12 +1,10 @@
 var Promise = require('bluebird');
 
-const defaults = {
-  materials: ['src/materials/**/*']
-};
+var parseOptions = require('./options');
 
-const buildDrizzle = (options) => {
-  const opts = Object.assign(options, defaults);
+const drizzle = options => {
+  const opts = parseOptions(options);
   return Promise.resolve(opts);
 };
 
-export default buildDrizzle;
+export default drizzle;
