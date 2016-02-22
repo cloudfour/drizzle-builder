@@ -3,37 +3,62 @@ var Handlebars = require('handlebars');
 const defaults = {
   templates: {
     handlebars: Handlebars,
-    helpers: {},
-    layouts: ['src/layouts/*'],
-    pages: ['src/pages/**/*'],
-    partials: ['src/views/partials/includes/*']
+    helpers   : {},
+    layouts   : ['src/layouts/*'],
+    pages     : ['src/pages/**/*'],
+    partials  : ['src/views/partials/includes/*']
   }
 };
 
-const translateOptions = options => {
-  const templateOptionMap = {
-    handlebars    : 'handlebars',
-    helpers       : 'helpers',
-    layouts       : 'layouts',
-    layoutIncludes: 'partials',
-    views         : 'pages'
+/**
+ * Merge defaults into options.
+ * @return {object} merged options
+ */
+const mergeDefaults = options => {
+  /* eslint-disable prefer-const */
+  let {
+    templates: {
+      handlebars = Handlebars,
+      helpers    = defaults.templates.helpers,
+      layouts    = defaults.templates.layouts,
+      pages      = defaults.templates.pages,
+      partials   = defaults.templates.partials
+    } = {}
+  } = options || {};
+  options = {
+    templates: { handlebars, helpers, layouts, pages, partials }
   };
-  options.templates = options.templates || {};
-  Object.keys(templateOptionMap).map(templateOptionKey => {
-    if (options[templateOptionKey]) {
-      options.templates[templateOptionKey] = options[templateOptionKey];
-      delete options[templateOptionKey];
-    }
-  });
+  /* eslint-enable prefer-const */
   return options;
 };
 
-const parseOptions = options => {
-  options         = translateOptions(options);
-  const opts      = new Object();
-  const templates = Object.assign(defaults.templates, options.templates);
-  opts.templates  = templates;
-  return opts;
+/**
+ * Map old options object shape onto new shape
+ * so that we can provide backwards-compatibility with fabricator
+ * The returned options {object} is of the correct shape to have
+ * defaults merged into it.
+ *
+ * @return {object} User options
+ */
+const translateOptions = options => {
+  /* eslint-disable prefer-const */
+  options = options || {};
+  let {
+    templates: {
+      handlebars = options.handlebars,
+      helpers    = options.helpers,
+      layouts    = options.layouts,
+      pages      = options.views,
+      partials   = options.layoutIncludes
+    } = {}
+  } = options;
+  options = {
+    templates: { handlebars, helpers, layouts, pages, partials }
+  };
+  return options;
+  /* eslint-enable prefer-const */
 };
+
+const parseOptions = options => mergeDefaults(translateOptions(options));
 
 export default parseOptions;
