@@ -11,7 +11,7 @@ var defaults = {
     helpers: {},
     layouts: ['src/layouts/*'],
     pages: ['src/pages/**/*'],
-    partials: ['src/views/partials/includes/*']
+    partials: ['src/partials/**/*']
   }
 };
 
@@ -50,6 +50,8 @@ var mergeDefaults = function mergeDefaults(options) {
  * The returned options {object} is of the correct shape to have
  * defaults merged into it.
  *
+ * @TODO Eventually, support for fabricator/deprecated things should be
+ *       moved into their own module
  * @return {object} User options
  */
 var translateOptions = function translateOptions(options) {
