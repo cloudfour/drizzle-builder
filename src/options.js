@@ -18,7 +18,7 @@ const mergeDefaults = options => {
   /* eslint-disable prefer-const */
   let {
     templates: {
-      handlebars = Handlebars,
+      handlebars = defaults.templates.handlebars,
       helpers    = defaults.templates.helpers,
       layouts    = defaults.templates.layouts,
       pages      = defaults.templates.pages,

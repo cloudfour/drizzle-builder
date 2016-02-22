@@ -27,7 +27,7 @@ var mergeDefaults = function mergeDefaults(options) {
   var _ref$templates = _ref.templates;
   _ref$templates = _ref$templates === undefined ? {} : _ref$templates;
   var _ref$templates$handle = _ref$templates.handlebars;
-  var handlebars = _ref$templates$handle === undefined ? Handlebars : _ref$templates$handle;
+  var handlebars = _ref$templates$handle === undefined ? defaults.templates.handlebars : _ref$templates$handle;
   var _ref$templates$helper = _ref$templates.helpers;
   var helpers = _ref$templates$helper === undefined ? defaults.templates.helpers : _ref$templates$helper;
   var _ref$templates$layout = _ref$templates.layouts;
