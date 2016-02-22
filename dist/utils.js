@@ -3,6 +3,21 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+var Promise = require('bluebird');
+var globby = require('globby');
+var readFile = Promise.promisify(require('fs').readFile);
+
+var readFiles = function readFiles(glob) {
+  return globby(glob).then(function (paths) {
+    var fileReadPromises = paths.map(function (path) {
+      return readFile(path, 'utf-8').then(function (contents) {
+        return { path: path, contents: contents };
+      });
+    });
+    return Promise.all(fileReadPromises);
+  });
+};
+
 /**
  * Convert str to title case (every word will be capitalized)
  * @param {String} str
@@ -15,3 +30,4 @@ var toTitleCase = function toTitleCase(str) {
 };
 
 exports.toTitleCase = toTitleCase;
+exports.readFiles = readFiles;

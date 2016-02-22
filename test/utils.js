@@ -2,6 +2,7 @@
 var chai = require('chai');
 var expect = chai.expect;
 var utils = require('../dist/utils');
+var path  = require('path');
 
 describe ('utils', () => {
   describe('title casing', () => {
@@ -21,6 +22,16 @@ describe ('utils', () => {
       for (var i = 0; i < stringsOut.length; i++) {
         expect(stringsOut[i]).to.equal(stringsExpected[i]);
       }
+    });
+  });
+  describe('reading files', () => {
+    it ('should read files from a glob', done => {
+      var glob = path.join(__dirname, 'fixtures/helpers/*.js');
+      utils.readFiles(glob).then(allFileData => {
+        expect(allFileData).to.have.length.of(12);
+        expect(allFileData[0]).to.have.keys('path', 'contents');
+        done();
+      });
     });
   });
 });
