@@ -5,6 +5,12 @@ var parseOptions = require('../dist/options');
 
 describe ('drizzle-builder', () => {
   describe ('options', () => {
+    describe('generating options', () => {
+      it ('should not require options to be passed', () => {
+        var opts = parseOptions();
+        expect(opts).to.be.an('object');
+      });
+    });
     describe ('translating options from fabricator', () => {
       it ('should translate template options', () => {
         var opts = parseOptions({
@@ -23,6 +29,7 @@ describe ('drizzle-builder', () => {
     });
 
     describe('default options', () => {
+
       it ('should provide default templating options', () => {
         var opts = parseOptions();
         expect(opts).to.contain.keys('templates');

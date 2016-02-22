@@ -14,7 +14,7 @@ const defaults = {
  * Merge defaults into options.
  * @return {object} merged options
  */
-const mergeDefaults = options => {
+const mergeDefaults = (options = {}) => {
   /* eslint-disable prefer-const */
   let {
     templates: {
@@ -24,7 +24,7 @@ const mergeDefaults = options => {
       pages      = defaults.templates.pages,
       partials   = defaults.templates.partials
     } = {}
-  } = options || {};
+  } = options;
   options = {
     templates: { handlebars, helpers, layouts, pages, partials }
   };
@@ -42,7 +42,7 @@ const mergeDefaults = options => {
  *       moved into their own module
  * @return {object} User options
  */
-const translateOptions = options => {
+const translateOptions = (options = {}) => {
   /* eslint-disable prefer-const */
   options = options || {};
   let {
