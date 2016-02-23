@@ -61,5 +61,4 @@ function prepareTemplates (opts) {
   });
 }
 
-export default prepareTemplates;
 export { prepareTemplates, prepareHelpers, preparePartials };

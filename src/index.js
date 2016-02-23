@@ -6,9 +6,9 @@ var prepareTemplates = require('./template').prepareTemplates;
  *
  * @return {Promise}; resolves to options {object} (for now)
  */
-const drizzle = options => {
+function drizzle (options) {
   const opts = parseOptions(options);
   return prepareTemplates(opts).then(handlebars => opts);
-};
+}
 
 export default drizzle;
