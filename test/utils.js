@@ -28,7 +28,7 @@ describe ('utils', () => {
     it ('should read files from a glob', done => {
       var glob = path.join(__dirname, 'fixtures/helpers/*.js');
       utils.readFiles(glob).then(allFileData => {
-        expect(allFileData).to.have.length.of(12);
+        expect(allFileData).to.have.length.of(3);
         expect(allFileData[0]).to.have.keys('path', 'contents');
         done();
       });
