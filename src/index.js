@@ -1,6 +1,5 @@
 var parseOptions = require('./options');
 var prepareTemplates = require('./template').prepareTemplates;
-
 /**
  * Build the drizzle output
  *

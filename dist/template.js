@@ -67,7 +67,6 @@ function prepareTemplates(opts) {
   });
 }
 
-exports.default = prepareTemplates;
 exports.prepareTemplates = prepareTemplates;
 exports.prepareHelpers = prepareHelpers;
 exports.preparePartials = preparePartials;

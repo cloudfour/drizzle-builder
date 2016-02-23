@@ -33,5 +33,20 @@ describe ('utils', () => {
         done();
       });
     });
+    it ('should be able to key files by getName', done => {
+      var glob = path.join(__dirname, 'fixtures/helpers/*.js');
+      utils.readFilesKeyed(glob).then(allFileData => {
+        expect(allFileData).to.be.an('object');
+        expect(allFileData).to.contain.keys('toFraction', 'toJSON', 'toSlug');
+        done();
+      });
+    });
+  });
+  describe('parent directory (parentDirname)', () => {
+    it ('should derive correct parent dirname of files', () => {
+      var file = path.join(__dirname, 'fixtures/helpers/toFraction.js');
+      var parent = utils.parentDirname(file);
+      expect(parent).to.equal('helpers');
+    });
   });
 });
