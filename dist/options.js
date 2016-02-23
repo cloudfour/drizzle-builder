@@ -19,7 +19,7 @@ var defaults = {
  * Merge defaults into options.
  * @return {object} merged options
  */
-var mergeDefaults = function mergeDefaults() {
+function mergeDefaults() {
   var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
   /* eslint-disable prefer-const */
@@ -42,7 +42,7 @@ var mergeDefaults = function mergeDefaults() {
   };
   /* eslint-enable prefer-const */
   return options;
-};
+}
 
 /**
  * Map old options object shape onto new shape
@@ -54,7 +54,7 @@ var mergeDefaults = function mergeDefaults() {
  *       moved into their own module
  * @return {object} User options
  */
-var translateOptions = function translateOptions() {
+function translateOptions() {
   var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
   /* eslint-disable prefer-const */
@@ -78,7 +78,7 @@ var translateOptions = function translateOptions() {
   };
   return options;
   /* eslint-enable prefer-const */
-};
+}
 
 var parseOptions = function parseOptions(options) {
   return mergeDefaults(translateOptions(options));

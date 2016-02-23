@@ -14,7 +14,7 @@ var utils = require('./utils');
  * @param return {Promise}, resolving to
  *           {Object} of all helpers registered on Handlebars
  */
-const prepareHelpers = (Handlebars, helpers = {}) => {
+function prepareHelpers (Handlebars, helpers = {}) {
   if (typeof helpers === 'string' || Array.isArray(helpers)) {
     return globby(helpers).then(helperPaths => {
       helperPaths.forEach(helperPath => {
@@ -28,14 +28,14 @@ const prepareHelpers = (Handlebars, helpers = {}) => {
     Handlebars.registerHelper(helperKey, helpers[helperKey]);
   }
   return Promise.resolve(Handlebars.helpers);
-};
+}
 
 /**
  * Register a glob of partials.
  * @param {Object} Handlebars instance
  * @param {String || Array} glob
  */
-const preparePartials = (Handlebars, partials = '') => {
+function preparePartials (Handlebars, partials = '') {
   return utils.readFiles(partials).then(partialFiles => {
     partialFiles.forEach(partialFile => {
       const partialKey = utils.keyname(partialFile.path);
@@ -43,7 +43,7 @@ const preparePartials = (Handlebars, partials = '') => {
     });
     return Handlebars.partials;
   });
-};
+}
 
 /**
  * Register partials and helpers per opts
@@ -51,7 +51,7 @@ const preparePartials = (Handlebars, partials = '') => {
  * @param {Object} opts Drizzle options
  * @return {Promise} resolves to {Object} Handlebars instance
  */
-const prepareTemplates = opts => {
+function prepareTemplates (opts) {
   var templateOpts = opts.templates;
   return Promise.all([
     prepareHelpers(templateOpts.handlebars, templateOpts.helpers),
@@ -59,7 +59,7 @@ const prepareTemplates = opts => {
   ]).then(handlebarsInfo => {
     return templateOpts.handlebars;
   });
-};
+}
 
 export default prepareTemplates;
 export { prepareTemplates, prepareHelpers, preparePartials };

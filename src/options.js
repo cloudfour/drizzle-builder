@@ -14,7 +14,7 @@ const defaults = {
  * Merge defaults into options.
  * @return {object} merged options
  */
-const mergeDefaults = (options = {}) => {
+function mergeDefaults (options = {}) {
   /* eslint-disable prefer-const */
   let {
     templates: {
@@ -30,7 +30,7 @@ const mergeDefaults = (options = {}) => {
   };
   /* eslint-enable prefer-const */
   return options;
-};
+}
 
 /**
  * Map old options object shape onto new shape
@@ -42,7 +42,7 @@ const mergeDefaults = (options = {}) => {
  *       moved into their own module
  * @return {object} User options
  */
-const translateOptions = (options = {}) => {
+function translateOptions (options = {}) {
   /* eslint-disable prefer-const */
   options = options || {};
   let {
@@ -59,7 +59,7 @@ const translateOptions = (options = {}) => {
   };
   return options;
   /* eslint-enable prefer-const */
-};
+}
 
 const parseOptions = options => mergeDefaults(translateOptions(options));
 
