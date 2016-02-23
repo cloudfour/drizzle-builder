@@ -5,14 +5,24 @@ Object.defineProperty(exports, "__esModule", {
 });
 var globby = require('globby');
 var path = require('path');
+var utils = require('./utils');
 
+/**
+ * Register helpers on the passed Handlebars instance.
+ * Accept an object with helperKey => helperFunctions,
+ * or a glob (as Array or string) of files (modules) to
+ * register. In the latter case, the filename w/o extension
+ * will be used as the helper key.
+ *
+ * @param {Object} Handlebars handlebars instance
+ * @param {Object} || [{Array} || {String} glob]
+ * @param return {Promise}, resolving to
+ *           {Object} of all helpers registered on Handlebars
+ */
 var prepareHelpers = function prepareHelpers(Handlebars) {
   var helpers = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
-  if (typeof helpers === 'string') {
-    helpers = Array.of(helpers);
-  }
-  if (Array.isArray(helpers)) {
+  if (typeof helpers === 'string' || Array.isArray(helpers)) {
     return globby(helpers).then(function (helperPaths) {
       helperPaths.forEach(function (helperPath) {
         var helperKey = path.basename(helperPath, path.extname(helperPath));
@@ -27,14 +37,31 @@ var prepareHelpers = function prepareHelpers(Handlebars) {
   return Promise.resolve(Handlebars.helpers);
 };
 
-var prepareLayouts = function prepareLayouts() {};
-var preparePartials = function preparePartials() {};
+/**
+ * Register a glob of partials.
+ * @param {Object} Handlebars instance
+ * @param {String || Array} glob
+ */
+var preparePartials = function preparePartials(Handlebars) {
+  var partials = arguments.length <= 1 || arguments[1] === undefined ? '' : arguments[1];
+
+  return utils.readFiles(partials).then(function (partialFiles) {
+    partialFiles.forEach(function (partialFile) {
+      var partialKey = utils.keyname(partialFile.path);
+      Handlebars.registerPartial(partialKey, partialFile.contents);
+    });
+    return Handlebars.partials;
+  });
+};
 
 var prepareTemplates = function prepareTemplates(opts) {
-  prepareHelpers(opts.templates && opts.templates.helpers);
-  prepareLayouts(opts);
-  preparePartials(opts);
+  var templateOpts = opts.templates;
+  return Promise.all([prepareHelpers(templateOpts.handlebars, templateOpts.helpers), preparePartials(templateOpts.handlebars, templateOpts.partials)]).then(function (handlebarsInfo) {
+    return templateOpts.handlebars;
+  });
 };
 
 exports.default = prepareTemplates;
+exports.prepareTemplates = prepareTemplates;
 exports.prepareHelpers = prepareHelpers;
+exports.preparePartials = preparePartials;

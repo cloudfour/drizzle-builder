@@ -1,5 +1,6 @@
 var globby = require('globby');
 var path  = require('path');
+var utils = require('./utils');
 
 /**
  * Register helpers on the passed Handlebars instance.
@@ -14,10 +15,7 @@ var path  = require('path');
  *           {Object} of all helpers registered on Handlebars
  */
 const prepareHelpers = (Handlebars, helpers = {}) => {
-  if (typeof helpers === 'string') {
-    helpers = Array.of(helpers);
-  }
-  if (Array.isArray(helpers)) {
+  if (typeof helpers === 'string' || Array.isArray(helpers)) {
     return globby(helpers).then(helperPaths => {
       helperPaths.forEach(helperPath => {
         const helperKey = path.basename(helperPath, path.extname(helperPath));
@@ -32,14 +30,36 @@ const prepareHelpers = (Handlebars, helpers = {}) => {
   return Promise.resolve(Handlebars.helpers);
 };
 
-const prepareLayouts = () => {};
-const preparePartials = () => {};
+/**
+ * Register a glob of partials.
+ * @param {Object} Handlebars instance
+ * @param {String || Array} glob
+ */
+const preparePartials = (Handlebars, partials = '') => {
+  return utils.readFiles(partials).then(partialFiles => {
+    partialFiles.forEach(partialFile => {
+      const partialKey = utils.keyname(partialFile.path);
+      Handlebars.registerPartial(partialKey, partialFile.contents);
+    });
+    return Handlebars.partials;
+  });
+};
 
+/**
+ * Register partials and helpers per opts
+ *
+ * @param {Object} opts Drizzle options
+ * @return {Promise} resolves to {Object} Handlebars instance
+ */
 const prepareTemplates = opts => {
-  prepareHelpers(opts.templates && opts.templates.helpers);
-  prepareLayouts(opts);
-  preparePartials(opts);
+  var templateOpts = opts.templates;
+  return Promise.all([
+    prepareHelpers(templateOpts.handlebars, templateOpts.helpers),
+    preparePartials(templateOpts.handlebars, templateOpts.partials)
+  ]).then(handlebarsInfo => {
+    return templateOpts.handlebars;
+  });
 };
 
 export default prepareTemplates;
-export { prepareHelpers };
+export { prepareTemplates, prepareHelpers, preparePartials };

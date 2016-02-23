@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 var Promise = require('bluebird');
 var globby = require('globby');
 var readFile = Promise.promisify(require('fs').readFile);
+var path = require('path');
 
 var readFiles = function readFiles(glob) {
   return globby(glob).then(function (paths) {
@@ -16,6 +17,20 @@ var readFiles = function readFiles(glob) {
     });
     return Promise.all(fileReadPromises);
   });
+};
+
+var basename = function basename(filepath) {
+  return path.basename(filepath, path.extname(filepath));
+};
+var removeNumbers = function removeNumbers(str) {
+  return str.replace(/^[0-9|\.\-]+/, '');
+};
+
+var keyname = function keyname(filepath) {
+  var preserveNumbers = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+
+  var name = basename(filepath).replace(/\s/g, '-');
+  return preserveNumbers ? name : removeNumbers(name);
 };
 
 /**
@@ -31,3 +46,4 @@ var toTitleCase = function toTitleCase(str) {
 
 exports.toTitleCase = toTitleCase;
 exports.readFiles = readFiles;
+exports.keyname = keyname;
