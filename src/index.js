@@ -1,6 +1,5 @@
-var Promise = require('bluebird');
-
 var parseOptions = require('./options');
+var prepareTemplates = require('./template').prepareTemplates;
 
 /**
  * Build the drizzle output
@@ -9,7 +8,7 @@ var parseOptions = require('./options');
  */
 const drizzle = options => {
   const opts = parseOptions(options);
-  return Promise.resolve(opts);
+  return prepareTemplates(opts).then(handlebars => opts);
 };
 
 export default drizzle;

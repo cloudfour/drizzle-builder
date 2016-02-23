@@ -54,6 +54,12 @@ var preparePartials = function preparePartials(Handlebars) {
   });
 };
 
+/**
+ * Register partials and helpers per opts
+ *
+ * @param {Object} opts Drizzle options
+ * @return {Promise} resolves to {Object} Handlebars instance
+ */
 var prepareTemplates = function prepareTemplates(opts) {
   var templateOpts = opts.templates;
   return Promise.all([prepareHelpers(templateOpts.handlebars, templateOpts.helpers), preparePartials(templateOpts.handlebars, templateOpts.partials)]).then(function (handlebarsInfo) {

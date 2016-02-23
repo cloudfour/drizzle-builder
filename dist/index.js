@@ -3,9 +3,8 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var Promise = require('bluebird');
-
 var parseOptions = require('./options');
+var prepareTemplates = require('./template').prepareTemplates;
 
 /**
  * Build the drizzle output
@@ -14,7 +13,9 @@ var parseOptions = require('./options');
  */
 var drizzle = function drizzle(options) {
   var opts = parseOptions(options);
-  return Promise.resolve(opts);
+  return prepareTemplates(opts).then(function (handlebars) {
+    return opts;
+  });
 };
 
 exports.default = drizzle;
