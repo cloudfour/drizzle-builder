@@ -1,6 +1,6 @@
-var globby = require('globby');
-var path  = require('path');
-var utils = require('./utils');
+import globby from 'globby';
+import path from 'path';
+import * as utils from './utils';
 
 /**
  * Register helpers on the passed Handlebars instance.

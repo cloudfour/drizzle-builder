@@ -1,6 +1,6 @@
 /* global describe, it */
-var chai = require('chai');
-var expect = chai.expect;
+var chai       = require('chai');
+var expect     = chai.expect;
 var Handlebars = require('handlebars');
 var template = require('../dist/template');
 

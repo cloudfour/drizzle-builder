@@ -1,4 +1,4 @@
-var Handlebars = require('handlebars');
+import Handlebars from 'handlebars';
 
 const defaults = {
   templates: {

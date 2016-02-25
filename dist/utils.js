@@ -3,11 +3,25 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var globby = require('globby');
-var Promise = require('bluebird');
-var readFile = Promise.promisify(require('fs').readFile);
-var path = require('path');
+exports.toTitleCase = exports.readFilesKeyed = exports.readFiles = exports.parentDirname = exports.keyname = exports.dirname = undefined;
 
+var _globby = require('globby');
+
+var globby = _interopRequireDefault(_globby).default;
+
+var _bluebird = require('bluebird');
+
+var Promise = _interopRequireDefault(_bluebird).default;
+
+var _path = require('path');
+
+var path = _interopRequireDefault(_path).default;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var readFile = Promise.promisify(require('fs').readFile);
+
+/* Helper functions */
 var basename = function basename(filepath) {
   return path.basename(filepath, path.extname(filepath));
 };

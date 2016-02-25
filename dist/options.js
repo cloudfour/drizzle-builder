@@ -3,7 +3,12 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var Handlebars = require('handlebars');
+
+var _handlebars = require('handlebars');
+
+var Handlebars = _interopRequireDefault(_handlebars).default;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var defaults = {
   templates: {

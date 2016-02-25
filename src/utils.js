@@ -1,8 +1,10 @@
-var globby   = require('globby');
-var Promise  = require('bluebird');
-var readFile = Promise.promisify(require('fs').readFile);
-var path     = require('path');
+import globby from 'globby';
+import Promise from 'bluebird';
+import path from 'path';
 
+var readFile = Promise.promisify(require('fs').readFile);
+
+/* Helper functions */
 const basename = filepath => path.basename(filepath, path.extname(filepath));
 const dirname  = filepath => path.normalize(path.dirname(filepath));
 const parentDirname = filepath => dirname(filepath).split(path.sep).pop();
