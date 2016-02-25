@@ -1,8 +1,8 @@
 import globby from 'globby';
 import Promise from 'bluebird';
 import path from 'path';
-
-var readFile = Promise.promisify(require('fs').readFile);
+import {readFile as readFileCB} from 'fs';
+var readFile = Promise.promisify(readFileCB);
 
 /* Helper functions */
 const basename = filepath => path.basename(filepath, path.extname(filepath));

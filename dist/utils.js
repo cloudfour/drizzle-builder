@@ -17,9 +17,13 @@ var _path = require('path');
 
 var path = _interopRequireDefault(_path).default;
 
+var _fs = require('fs');
+
+var readFileCB = _fs.readFile;
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var readFile = Promise.promisify(require('fs').readFile);
+var readFile = Promise.promisify(readFileCB);
 
 /* Helper functions */
 var basename = function basename(filepath) {
