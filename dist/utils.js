@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.toTitleCase = exports.readFilesKeyed = exports.readFiles = exports.parentDirname = exports.keyname = exports.dirname = undefined;
+exports.titleCase = exports.readFilesKeyed = exports.readFiles = exports.parentDirname = exports.keyname = exports.dirname = undefined;
 
 var _globby = require('globby');
 
@@ -120,7 +120,7 @@ function keyname(str) {
  * @param {String} str
  * @return {String}
  */
-function toTitleCase(str) {
+function titleCase(str) {
   return str.toLowerCase().replace(/(\-|_)/g, ' ').replace(/\w\S*/g, function (word) {
     return word.charAt(0).toUpperCase() + word.substr(1);
   });
@@ -131,4 +131,4 @@ exports.keyname = keyname;
 exports.parentDirname = parentDirname;
 exports.readFiles = readFiles;
 exports.readFilesKeyed = readFilesKeyed;
-exports.toTitleCase = toTitleCase;
+exports.titleCase = titleCase;

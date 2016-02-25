@@ -64,7 +64,7 @@ function keyname (str, preserveNumbers = false) {
  * @param {String} str
  * @return {String}
  */
-function toTitleCase (str) {
+function titleCase (str) {
   return str
     .toLowerCase()
     .replace(/(\-|_)/g, ' ')
@@ -76,5 +76,5 @@ export { dirname,
          parentDirname,
          readFiles,
          readFilesKeyed,
-         toTitleCase
+         titleCase
        };

@@ -18,7 +18,7 @@ describe ('utils', () => {
         '52 And A Half   With Extra Spaces',
         'You Do Not Know W8t You R Talking Ab0oooot'
       ];
-      var stringsOut = stringsIn.map(outStr => utils.toTitleCase(outStr));
+      var stringsOut = stringsIn.map(outStr => utils.titleCase(outStr));
       for (var i = 0; i < stringsOut.length; i++) {
         expect(stringsOut[i]).to.equal(stringsExpected[i]);
       }
