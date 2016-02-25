@@ -1,4 +1,3 @@
-import globby from 'globby';
 import path from 'path';
 import * as utils from './utils';
 
@@ -15,19 +14,25 @@ import * as utils from './utils';
  *           {Object} of all helpers registered on Handlebars
  */
 function prepareHelpers (Handlebars, helpers = {}) {
-  if (typeof helpers === 'string' || Array.isArray(helpers)) {
-    return globby(helpers).then(helperPaths => {
-      helperPaths.forEach(helperPath => {
-        const helperKey = path.basename(helperPath, path.extname(helperPath));
-        Handlebars.registerHelper(helperKey, require(helperPath));
+  return new Promise((resolve, reject) => {
+    if (typeof helpers === 'string' || Array.isArray(helpers)) {
+      utils.getFiles(helpers).then(helperPaths => {
+        const helperFns = new Object();
+        helperPaths.forEach(helperPath => {
+          const helperKey = path.basename(helperPath, path.extname(helperPath));
+          helperFns[helperKey] = require(helperPath);
+        });
+        resolve(helperFns);
       });
-      return Handlebars.helpers;
-    });
-  }
-  for (var helperKey in helpers) {
-    Handlebars.registerHelper(helperKey, helpers[helperKey]);
-  }
-  return Promise.resolve(Handlebars.helpers);
+    } else {
+      resolve(helpers);
+    }
+  }).then(helpers => {
+    for (var helper in helpers) {
+      Handlebars.registerHelper(helper, helpers[helper]);
+    }
+    return Handlebars.helpers;
+  });
 }
 
 /**

@@ -5,10 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.preparePartials = exports.prepareHelpers = exports.prepareTemplates = undefined;
 
-var _globby = require('globby');
-
-var globby = _interopRequireDefault(_globby).default;
-
 var _path = require('path');
 
 var path = _interopRequireDefault(_path).default;
@@ -36,19 +32,25 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function prepareHelpers(Handlebars) {
   var helpers = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
-  if (typeof helpers === 'string' || Array.isArray(helpers)) {
-    return globby(helpers).then(function (helperPaths) {
-      helperPaths.forEach(function (helperPath) {
-        var helperKey = path.basename(helperPath, path.extname(helperPath));
-        Handlebars.registerHelper(helperKey, require(helperPath));
+  return new Promise(function (resolve, reject) {
+    if (typeof helpers === 'string' || Array.isArray(helpers)) {
+      utils.getFiles(helpers).then(function (helperPaths) {
+        var helperFns = new Object();
+        helperPaths.forEach(function (helperPath) {
+          var helperKey = path.basename(helperPath, path.extname(helperPath));
+          helperFns[helperKey] = require(helperPath);
+        });
+        resolve(helperFns);
       });
-      return Handlebars.helpers;
-    });
-  }
-  for (var helperKey in helpers) {
-    Handlebars.registerHelper(helperKey, helpers[helperKey]);
-  }
-  return Promise.resolve(Handlebars.helpers);
+    } else {
+      resolve(helpers);
+    }
+  }).then(function (helpers) {
+    for (var helper in helpers) {
+      Handlebars.registerHelper(helper, helpers[helper]);
+    }
+    return Handlebars.helpers;
+  });
 }
 
 /**
