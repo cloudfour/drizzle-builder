@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.titleCase = exports.readFilesKeyed = exports.readFiles = exports.parentDirname = exports.keyname = exports.dirname = undefined;
+exports.titleCase = exports.readFilesKeyed = exports.readFiles = exports.parentDirname = exports.keyname = exports.getFiles = exports.dirname = undefined;
 
 var _globby = require('globby');
 
@@ -38,6 +38,9 @@ var parentDirname = function parentDirname(filepath) {
 var removeNumbers = function removeNumbers(str) {
   return str.replace(/^[0-9|\.\-]+/, '');
 };
+var getFiles = function getFiles(glob) {
+  return globby(glob, { nodir: true });
+};
 
 /**
  * Take a glob; read the files. Return a Promise that ultimately resolves
@@ -46,7 +49,7 @@ var removeNumbers = function removeNumbers(str) {
  *   contents: utf-8 file contents}...]
  */
 function readFiles(glob) {
-  return globby(glob, { nodir: true }).then(function (paths) {
+  return getFiles(glob).then(function (paths) {
     var fileReadPromises = paths.map(function (path) {
       return readFile(path, 'utf-8').then(function (contents) {
         return { path: path, contents: contents };
@@ -127,6 +130,7 @@ function titleCase(str) {
 }
 
 exports.dirname = dirname;
+exports.getFiles = getFiles;
 exports.keyname = keyname;
 exports.parentDirname = parentDirname;
 exports.readFiles = readFiles;

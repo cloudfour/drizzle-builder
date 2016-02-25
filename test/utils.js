@@ -24,7 +24,20 @@ describe ('utils', () => {
       }
     });
   });
-  describe('reading files', () => {
+  describe('getFiles', () => {
+    it ('should retrieve a file list from a glob', done => {
+      var glob = path.join(__dirname, 'fixtures/helpers/**/*');
+      utils.getFiles(glob).then(fileList => {
+        expect(Array.isArray(fileList)).to.be.true;
+        fileList.map(filePath => {
+          // Ham-fisted test that everything is a file, not a directory
+          expect(filePath).to.contain('.');
+        });
+        done();
+      });
+    });
+  });
+  describe('readFiles', () => {
     it ('should read files from a glob', done => {
       var glob = path.join(__dirname, 'fixtures/helpers/*.js');
       utils.readFiles(glob).then(allFileData => {

@@ -9,6 +9,7 @@ const basename = filepath => path.basename(filepath, path.extname(filepath));
 const dirname  = filepath => path.normalize(path.dirname(filepath));
 const parentDirname = filepath => dirname(filepath).split(path.sep).pop();
 const removeNumbers = str  => str.replace(/^[0-9|\.\-]+/, '');
+const getFiles = glob => globby(glob, {nodir: true });
 
 /**
  * Take a glob; read the files. Return a Promise that ultimately resolves
@@ -17,7 +18,7 @@ const removeNumbers = str  => str.replace(/^[0-9|\.\-]+/, '');
  *   contents: utf-8 file contents}...]
  */
 function readFiles (glob) {
-  return globby(glob, { nodir: true }).then(paths => {
+  return getFiles(glob).then(paths => {
     var fileReadPromises = paths.map(path => {
       return readFile(path, 'utf-8')
         .then(contents => ({ path, contents }));
@@ -72,6 +73,7 @@ function titleCase (str) {
 }
 
 export { dirname,
+         getFiles,
          keyname,
          parentDirname,
          readFiles,
