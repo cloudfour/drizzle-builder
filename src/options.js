@@ -16,6 +16,7 @@ const defaults = {
  */
 function mergeDefaults (options = {}) {
   /* eslint-disable prefer-const */
+  let { result = defaults } = options;
   let {
     templates: {
       handlebars = defaults.templates.handlebars,
@@ -25,11 +26,11 @@ function mergeDefaults (options = {}) {
       partials   = defaults.templates.partials
     } = {}
   } = options;
-  options = {
+  result = {
     templates: { handlebars, helpers, layouts, pages, partials }
   };
   /* eslint-enable prefer-const */
-  return options;
+  return result;
 }
 
 /**
@@ -44,7 +45,7 @@ function mergeDefaults (options = {}) {
  */
 function translateOptions (options = {}) {
   /* eslint-disable prefer-const */
-  options = options || {};
+  let { result = defaults } = options;
   let {
     templates: {
       handlebars = options.handlebars,
@@ -54,10 +55,10 @@ function translateOptions (options = {}) {
       partials   = options.layoutIncludes
     } = {}
   } = options;
-  options = {
+  result = {
     templates: { handlebars, helpers, layouts, pages, partials }
   };
-  return options;
+  return result;
   /* eslint-enable prefer-const */
 }
 

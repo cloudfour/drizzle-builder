@@ -28,8 +28,9 @@ function mergeDefaults() {
   var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
   /* eslint-disable prefer-const */
-  var _options = options;
-  var _options$templates = _options.templates;
+  var _options$result = options.result;
+  var result = _options$result === undefined ? defaults : _options$result;
+  var _options$templates = options.templates;
   _options$templates = _options$templates === undefined ? {} : _options$templates;
   var _options$templates$ha = _options$templates.handlebars;
   var handlebars = _options$templates$ha === undefined ? defaults.templates.handlebars : _options$templates$ha;
@@ -42,11 +43,11 @@ function mergeDefaults() {
   var _options$templates$pa2 = _options$templates.partials;
   var partials = _options$templates$pa2 === undefined ? defaults.templates.partials : _options$templates$pa2;
 
-  options = {
+  result = {
     templates: { handlebars: handlebars, helpers: helpers, layouts: layouts, pages: pages, partials: partials }
   };
   /* eslint-enable prefer-const */
-  return options;
+  return result;
 }
 
 /**
@@ -63,25 +64,25 @@ function translateOptions() {
   var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
   /* eslint-disable prefer-const */
-  options = options || {};
-  var _options2 = options;
-  var _options2$templates = _options2.templates;
-  _options2$templates = _options2$templates === undefined ? {} : _options2$templates;
-  var _options2$templates$h = _options2$templates.handlebars;
-  var handlebars = _options2$templates$h === undefined ? options.handlebars : _options2$templates$h;
-  var _options2$templates$h2 = _options2$templates.helpers;
-  var helpers = _options2$templates$h2 === undefined ? options.helpers : _options2$templates$h2;
-  var _options2$templates$l = _options2$templates.layouts;
-  var layouts = _options2$templates$l === undefined ? options.layouts : _options2$templates$l;
-  var _options2$templates$p = _options2$templates.pages;
-  var pages = _options2$templates$p === undefined ? options.views : _options2$templates$p;
-  var _options2$templates$p2 = _options2$templates.partials;
-  var partials = _options2$templates$p2 === undefined ? options.layoutIncludes : _options2$templates$p2;
+  var _options$result2 = options.result;
+  var result = _options$result2 === undefined ? defaults : _options$result2;
+  var _options$templates2 = options.templates;
+  _options$templates2 = _options$templates2 === undefined ? {} : _options$templates2;
+  var _options$templates2$h = _options$templates2.handlebars;
+  var handlebars = _options$templates2$h === undefined ? options.handlebars : _options$templates2$h;
+  var _options$templates2$h2 = _options$templates2.helpers;
+  var helpers = _options$templates2$h2 === undefined ? options.helpers : _options$templates2$h2;
+  var _options$templates2$l = _options$templates2.layouts;
+  var layouts = _options$templates2$l === undefined ? options.layouts : _options$templates2$l;
+  var _options$templates2$p = _options$templates2.pages;
+  var pages = _options$templates2$p === undefined ? options.views : _options$templates2$p;
+  var _options$templates2$p2 = _options$templates2.partials;
+  var partials = _options$templates2$p2 === undefined ? options.layoutIncludes : _options$templates2$p2;
 
-  options = {
+  result = {
     templates: { handlebars: handlebars, helpers: helpers, layouts: layouts, pages: pages, partials: partials }
   };
-  return options;
+  return result;
   /* eslint-enable prefer-const */
 }
 
