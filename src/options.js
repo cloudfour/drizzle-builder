@@ -1,4 +1,4 @@
-var Handlebars = require('handlebars');
+import Handlebars from 'handlebars';
 
 const defaults = {
   templates: {
@@ -14,8 +14,9 @@ const defaults = {
  * Merge defaults into options.
  * @return {object} merged options
  */
-const mergeDefaults = (options = {}) => {
+function mergeDefaults (options = {}) {
   /* eslint-disable prefer-const */
+  let { result = defaults } = options;
   let {
     templates: {
       handlebars = defaults.templates.handlebars,
@@ -25,12 +26,12 @@ const mergeDefaults = (options = {}) => {
       partials   = defaults.templates.partials
     } = {}
   } = options;
-  options = {
+  result = {
     templates: { handlebars, helpers, layouts, pages, partials }
   };
   /* eslint-enable prefer-const */
-  return options;
-};
+  return result;
+}
 
 /**
  * Map old options object shape onto new shape
@@ -42,9 +43,9 @@ const mergeDefaults = (options = {}) => {
  *       moved into their own module
  * @return {object} User options
  */
-const translateOptions = (options = {}) => {
+function translateOptions (options = {}) {
   /* eslint-disable prefer-const */
-  options = options || {};
+  let { result = defaults } = options;
   let {
     templates: {
       handlebars = options.handlebars,
@@ -54,12 +55,12 @@ const translateOptions = (options = {}) => {
       partials   = options.layoutIncludes
     } = {}
   } = options;
-  options = {
+  result = {
     templates: { handlebars, helpers, layouts, pages, partials }
   };
-  return options;
+  return result;
   /* eslint-enable prefer-const */
-};
+}
 
 const parseOptions = options => mergeDefaults(translateOptions(options));
 
