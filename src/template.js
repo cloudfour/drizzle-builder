@@ -1,5 +1,16 @@
 import * as utils from './utils';
 
+/**
+ * Register helpers on Handlebars. Helpers (helperOpts) can be provided as
+ * either:
+ * - a glob. Files matching glob will each be require'd and registered on
+ *   Handlebars (one helper per module)
+ * - an object. Properties are helper names/keys, values should be helper
+ *   functions.
+ *
+ * @param {glob | object} helperOpts
+ * @return Promise resolving to the helpers that have been registered
+ */
 function getHelpers (helperOpts = {}) {
   const helpers = {};
   return new Promise((resolve, reject) => {
@@ -15,6 +26,7 @@ function getHelpers (helperOpts = {}) {
     }
   });
 }
+
 /**
  * Register helpers on the passed Handlebars instance.
  * Accept an object with helperKey => helperFunctions,
@@ -23,9 +35,8 @@ function getHelpers (helperOpts = {}) {
  * will be used as the helper key.
  *
  * @param {Object} Handlebars handlebars instance
- * @param {Object} || [{Array} || {String} glob]
- * @param return {Promise}, resolving to
- *           {Object} of all helpers registered on Handlebars
+ * @param {glob | Object} helperOpts @see getHelpers
+ * @return {Promise} that resolves to all helpers registered on Handlebars
  */
 function prepareHelpers (Handlebars, helperOpts = {}) {
   return getHelpers(helperOpts)
