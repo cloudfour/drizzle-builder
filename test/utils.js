@@ -65,6 +65,15 @@ describe ('utils', () => {
         done();
       });
     });
+    it ('should run passed function over content', done => {
+      var glob = path.join(__dirname, 'fixtures/helpers/*.js');
+      utils.readFiles(glob, { contentFn: (content, path) => 'foo' })
+        .then(allFileData => {
+          expect(allFileData).to.have.length.of(3);
+          expect(allFileData[0].contents).to.equal('foo');
+          done();
+        });
+    });
     it ('should be able to key files by getName', done => {
       var glob = path.join(__dirname, 'fixtures/helpers/*.js');
       utils.readFilesKeyed(glob).then(allFileData => {

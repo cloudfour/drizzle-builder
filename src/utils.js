@@ -43,16 +43,24 @@ function isGlob (candidate) {
 }
 
 /**
- * Take a glob; read the files. Return a Promise that ultimately resolves
- * to an Array of objects:
- * [{ path: original filepath,
- *   contents: utf-8 file contents}...]
+ * Take a glob; read the files, optionally running a `contentFn` over
+ * the contents of the file.
+ *
+ * @param {glob}
+ * @param {object} opts
+ * @return {Promise} resolving to {Array} of file objects
  */
-function readFiles (glob) {
+function readFiles (glob, opts = {}) {
+  opts = Object.assign({}, {
+    contentFn: (content, path) => content
+  }, opts);
   return getFiles(glob).then(paths => {
     var fileReadPromises = paths.map(path => {
       return readFile(path, 'utf-8')
-        .then(contents => ({ path, contents }));
+        .then(contents => {
+          contents = opts.contentFn(contents, path);
+          return {path, contents};
+        });
     });
     return Promise.all(fileReadPromises);
   });
