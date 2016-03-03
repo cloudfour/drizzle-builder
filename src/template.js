@@ -1,6 +1,20 @@
-import path from 'path';
 import * as utils from './utils';
 
+function getHelpers (helperOpts = {}) {
+  const helpers = {};
+  return new Promise((resolve, reject) => {
+    if (utils.isGlob(helperOpts)) {
+      utils.getFiles(helperOpts).then(helperPaths => {
+        helperPaths.forEach(hPath => {
+          helpers[utils.keyname(hPath)] = require(hPath);
+        });
+        resolve(helpers);
+      });
+    } else {
+      resolve(helperOpts);
+    }
+  });
+}
 /**
  * Register helpers on the passed Handlebars instance.
  * Accept an object with helperKey => helperFunctions,
@@ -13,26 +27,14 @@ import * as utils from './utils';
  * @param return {Promise}, resolving to
  *           {Object} of all helpers registered on Handlebars
  */
-function prepareHelpers (Handlebars, helpers = {}) {
-  return new Promise((resolve, reject) => {
-    if (typeof helpers === 'string' || Array.isArray(helpers)) {
-      utils.getFiles(helpers).then(helperPaths => {
-        const helperFns = new Object();
-        helperPaths.forEach(helperPath => {
-          const helperKey = path.basename(helperPath, path.extname(helperPath));
-          helperFns[helperKey] = require(helperPath);
-        });
-        resolve(helperFns);
-      });
-    } else {
-      resolve(helpers);
-    }
-  }).then(helpers => {
-    for (var helper in helpers) {
-      Handlebars.registerHelper(helper, helpers[helper]);
-    }
-    return Handlebars.helpers;
-  });
+function prepareHelpers (Handlebars, helperOpts = {}) {
+  return getHelpers(helperOpts)
+    .then(helpers => {
+      for (var helper in helpers) {
+        Handlebars.registerHelper(helper, helpers[helper]);
+      }
+      return Handlebars.helpers;
+    });
 }
 
 /**
