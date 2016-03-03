@@ -18,8 +18,12 @@ function parentDirname (filepath) {
 function removeNumbers (str) {
   return str.replace(/^[0-9|\.\-]+/, '');
 }
+/**
+ * @param {glob} glob
+ * @return {Promise} resolving to {Array} of files matching glob
+ */
 function getFiles (glob) {
-  return globby(glob, {nodir: true });
+  return globby(glob, { nodir: true });
 }
 
 /**
