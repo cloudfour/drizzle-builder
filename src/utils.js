@@ -5,11 +5,22 @@ import {readFile as readFileCB} from 'fs';
 var readFile = Promise.promisify(readFileCB);
 
 /* Helper functions */
-const basename = filepath => path.basename(filepath, path.extname(filepath));
-const dirname  = filepath => path.normalize(path.dirname(filepath));
-const parentDirname = filepath => dirname(filepath).split(path.sep).pop();
-const removeNumbers = str  => str.replace(/^[0-9|\.\-]+/, '');
-const getFiles = glob => globby(glob, {nodir: true });
+
+function basename (filepath) {
+  return path.basename(filepath, path.extname(filepath));
+}
+function dirname (filepath) {
+  return path.normalize(path.dirname(filepath));
+}
+function parentDirname (filepath) {
+  return dirname(filepath).split(path.sep).pop();
+}
+function removeNumbers (str) {
+  return str.replace(/^[0-9|\.\-]+/, '');
+}
+function getFiles (glob) {
+  return globby(glob, {nodir: true });
+}
 
 /**
  * Utility function to test if a value COULD be a glob. A single string or
