@@ -22,7 +22,9 @@ function merge (target, source) {
     if (Object.isExtensible(source[key])) {
       merge(target[key], source[key]);
     } else {
-      Object.assign(target, { [key]: source[key] });
+      if (typeof source[key] !== 'undefined') {
+        Object.assign(target, { [key]: source[key] });
+      }
     }
   });
   return target;
