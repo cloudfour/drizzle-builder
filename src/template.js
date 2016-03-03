@@ -1,5 +1,31 @@
-import path from 'path';
 import * as utils from './utils';
+
+/**
+ * Register helpers on Handlebars. Helpers (helperOpts) can be provided as
+ * either:
+ * - a glob. Files matching glob will each be require'd and registered on
+ *   Handlebars (one helper per module)
+ * - an object. Properties are helper names/keys, values should be helper
+ *   functions.
+ *
+ * @param {glob | object} helperOpts
+ * @return Promise resolving to the helpers that have been registered
+ */
+function getHelpers (helperOpts = {}) {
+  const helpers = {};
+  return new Promise((resolve, reject) => {
+    if (utils.isGlob(helperOpts)) {
+      utils.getFiles(helperOpts).then(helperPaths => {
+        helperPaths.forEach(hPath => {
+          helpers[utils.keyname(hPath)] = require(hPath);
+        });
+        resolve(helpers);
+      });
+    } else {
+      resolve(helperOpts);
+    }
+  });
+}
 
 /**
  * Register helpers on the passed Handlebars instance.
@@ -9,30 +35,17 @@ import * as utils from './utils';
  * will be used as the helper key.
  *
  * @param {Object} Handlebars handlebars instance
- * @param {Object} || [{Array} || {String} glob]
- * @param return {Promise}, resolving to
- *           {Object} of all helpers registered on Handlebars
+ * @param {glob | Object} helperOpts @see getHelpers
+ * @return {Promise} that resolves to all helpers registered on Handlebars
  */
-function prepareHelpers (Handlebars, helpers = {}) {
-  return new Promise((resolve, reject) => {
-    if (typeof helpers === 'string' || Array.isArray(helpers)) {
-      utils.getFiles(helpers).then(helperPaths => {
-        const helperFns = new Object();
-        helperPaths.forEach(helperPath => {
-          const helperKey = path.basename(helperPath, path.extname(helperPath));
-          helperFns[helperKey] = require(helperPath);
-        });
-        resolve(helperFns);
-      });
-    } else {
-      resolve(helpers);
-    }
-  }).then(helpers => {
-    for (var helper in helpers) {
-      Handlebars.registerHelper(helper, helpers[helper]);
-    }
-    return Handlebars.helpers;
-  });
+function prepareHelpers (Handlebars, helperOpts = {}) {
+  return getHelpers(helperOpts)
+    .then(helpers => {
+      for (var helper in helpers) {
+        Handlebars.registerHelper(helper, helpers[helper]);
+      }
+      return Handlebars.helpers;
+    });
 }
 
 /**

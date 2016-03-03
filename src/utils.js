@@ -12,6 +12,22 @@ const removeNumbers = str  => str.replace(/^[0-9|\.\-]+/, '');
 const getFiles = glob => globby(glob, {nodir: true });
 
 /**
+ * Utility function to test if a value COULD be a glob. A single string or
+ * an Array of strings counts. Just because this returns true, however,
+ * doesn't mean it is a glob that makes sense, just that it looks like one.
+ *
+ * @param {String || Array} candidate
+ * @return Boolean
+ */
+function isGlob (candidate) {
+  if (typeof candidate === 'string' && candidate.length > 0) { return true; }
+  if (Array.isArray(candidate) && candidate.length > 0) {
+    return candidate.every(candidateEl => typeof candidateEl === 'string');
+  }
+  return false;
+}
+
+/**
  * Take a glob; read the files. Return a Promise that ultimately resolves
  * to an Array of objects:
  * [{ path: original filepath,
@@ -51,7 +67,7 @@ function readFilesKeyed (glob, preserveNumbers = false) {
  * - use only the basename, no extension
  * - unless preserveNumbers, remove numbers from the string as well
  *
- * @param {String} str    Typically a filepath
+ * @param {String} str    filepath
  * @param {Boolean} preserveNumbers
  * @return {String}
  */
@@ -74,6 +90,7 @@ function titleCase (str) {
 
 export { dirname,
          getFiles,
+         isGlob,
          keyname,
          parentDirname,
          readFiles,

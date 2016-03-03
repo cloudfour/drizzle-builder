@@ -37,6 +37,25 @@ describe ('utils', () => {
       });
     });
   });
+  describe('isGlob', () => {
+    it ('should correctly identify valid glob patterns', () => {
+      var goodGlobs = [
+        path.join(__dirname, 'fixtures/helpers/**/*'),
+        ['foo', 'bar', 'baz'],
+        [path.join(__dirname, 'fixtures/helpers/**/*'), 'foo'],
+        'just a string'
+      ];
+      var badGlobs = [
+        5,
+        { foo: 'bar', baz: 'boof'},
+        ['foo', 'bar', 5],
+        '',
+        []
+      ];
+      expect(goodGlobs.every(glob => utils.isGlob(glob))).to.be.true;
+      expect(badGlobs.every(glob => utils.isGlob(glob))).to.be.false;
+    });
+  });
   describe('readFiles', () => {
     it ('should read files from a glob', done => {
       var glob = path.join(__dirname, 'fixtures/helpers/*.js');
