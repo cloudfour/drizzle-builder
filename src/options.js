@@ -11,26 +11,29 @@ const defaults = {
 };
 
 /**
+ * Perform a deep merge of two objects.
+ * @param {Object} target
+ * @param {Object} source
+ * @return {Object}
+ * @example merge(defaults, options);
+ */
+function merge (target, source) {
+  Object.keys(source).forEach(key => {
+    if (Object.isExtensible(source[key])) {
+      merge(target[key], source[key]);
+    } else {
+      Object.assign(target, { [key]: source[key] });
+    }
+  });
+  return target;
+}
+
+/**
  * Merge defaults into options.
  * @return {object} merged options
  */
 function mergeDefaults (options = {}) {
-  /* eslint-disable prefer-const */
-  let { result = defaults } = options;
-  let {
-    templates: {
-      handlebars = defaults.templates.handlebars,
-      helpers    = defaults.templates.helpers,
-      layouts    = defaults.templates.layouts,
-      pages      = defaults.templates.pages,
-      partials   = defaults.templates.partials
-    } = {}
-  } = options;
-  result = {
-    templates: { handlebars, helpers, layouts, pages, partials }
-  };
-  /* eslint-enable prefer-const */
-  return result;
+  return merge(defaults, options);
 }
 
 /**
