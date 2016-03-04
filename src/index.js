@@ -5,15 +5,27 @@ var utils = require('./utils');
 /**
  * Build a data/context object for use by the builder
  * @TODO This may move into its own module if it seems appropriate
+ * @TODO Make this testable
  *
  * @param {Object} options
  * @return {Promise} resolving to {Object} of keyed file data
  */
 function prepareData (options) {
+  var parseFiles = utils.readFilesKeyed;
   // Data data
-  return utils.readFilesKeyed(options.data, {
-    contentFn: options.dataFn
+  const dataData = parseFiles(options.data, {
+    contentFn: options.data.parseFn
   });
+  // Layouts data
+  const layoutData = parseFiles(options.layouts);
+
+  // Build data object
+  return Promise.all([dataData, layoutData])
+    .then(allData => {
+      return { data: allData[0],
+               layouts: allData[1]
+             };
+    });
 }
 /**
  * Build the drizzle output
