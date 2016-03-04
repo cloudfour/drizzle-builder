@@ -7,7 +7,7 @@ describe ('data', () => {
   describe ('data parsing', () => {
     it ('should parse YAML data from files', done => {
       prepareData(`${__dirname}/fixtures/data/*.yaml`).then(dataObj => {
-        expect(dataObj).to.contain.keys('sample-data');
+        expect(dataObj).to.contain.keys('sample-data', 'another-data');
         expect(dataObj['sample-data'].foo).to.be.an('Array');
         done();
       });

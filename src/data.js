@@ -7,13 +7,9 @@ import { readFilesKeyed } from './utils';
  * @param {glob} dataOpts
  * @return {Promise} resolving to object of parsed data
  */
-function prepareData (dataOpts) {
-  const parsedData = new Object();
-  return readFilesKeyed(dataOpts).then(fileData => {
-    Object.keys(fileData).forEach(fileKey => {
-      parsedData[fileKey] = yaml.safeLoad(fileData[fileKey]);
-    });
-    return parsedData;
+function prepareData (dataGlob) {
+  return readFilesKeyed(dataGlob, {
+    contentFn: yaml.safeLoad
   });
 }
 
