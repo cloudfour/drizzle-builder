@@ -75,14 +75,24 @@ function readFiles (glob, {
  * Read the files from a glob, but then instead of resolving the
  * Promise with an Array of objects (@see readFiles), resolve with a
  * single object; each file's contents is keyed by its filename run
- * through keyname().
+ * through optional keyFn(filePath, options) (default: keyname).
+ * Will pass other options on to readFiles and keyFn
  *
+ * @param {glob}
+ * @param {Object} options (all optional):
+ *  - keyFn
+ *  - contentFn
+ *  - stripNumbers
+ * @return {Promise} resolving to {Object} of keyed file contents
  */
 function readFilesKeyed (glob, options = {}) {
-  return readFiles(glob).then(allFileData => {
+  const {
+    keyFn = keyname
+  } = options;
+  return readFiles(glob, options).then(allFileData => {
     const keyedFileData = new Object();
     for (var aFile of allFileData) {
-      keyedFileData[keyname(aFile.path, options)] = aFile.contents;
+      keyedFileData[keyFn(aFile.path, options)] = aFile.contents;
     }
     return keyedFileData;
   });
@@ -93,7 +103,7 @@ function readFilesKeyed (glob, options = {}) {
  * partials, etc, based on a filepath:
  * - replace whitespace characters with `-`
  * - use only the basename, no extension
- * - unless preserveNumbers, remove numbers from the string as well
+ * - unless stripNumbers option false, remove numbers from the string as well
  *
  * @param {String} str    filepath
  * @param {Object} options

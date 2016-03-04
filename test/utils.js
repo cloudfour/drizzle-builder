@@ -106,6 +106,27 @@ describe ('utils', () => {
         done();
       });
     });
+    it ('should accept a function to derive keys', done => {
+      var glob = path.join(__dirname, 'fixtures/data/*.yaml');
+      utils.readFilesKeyed(glob, { keyFn: (path, options) => 'foo' + path })
+        .then(allFileData => {
+          expect(Object.keys(allFileData)[0]).to.contain('foo');
+          done();
+        });
+    });
+    it ('should pass contentFn through to readFiles', done => {
+      var glob = path.join(__dirname, 'fixtures/data/*.yaml');
+      utils.readFilesKeyed(glob, {
+        keyFn: (path, options) => 'foo' + path,
+        contentFn: (content, path) => 'foo'
+      }).then(allFileData => {
+        for (var fileKey in allFileData) {
+          expect(fileKey).to.contain('foo');
+          expect(allFileData[fileKey]).to.equal('foo');
+        }
+        done();
+      });
+    });
   });
   describe('parent directory (parentDirname)', () => {
     it ('should derive correct parent dirname of files', () => {
