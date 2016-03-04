@@ -2,20 +2,24 @@
 var chai = require('chai');
 var expect = chai.expect;
 var builder = require('../dist/');
+var path = require('path');
 
-const options = {
-  templates: {
-    partials: `${__dirname}/fixtures/partials/*`,
-    helpers: `${__dirname}/fixtures/helpers/*.js`
-  }
-};
 
 describe ('drizzle builder integration', () => {
-  it ('should return opts used for building', () => {
-    builder(options).then(opts => {
-      expect(opts).to.be.an.object;
-      expect(opts.templates).to.be.an.object;
-      expect(opts.templates.handlebars).to.be.an.object;
+  const options = {
+    data: {
+      src: path.join(__dirname, 'fixtures/data/*.yaml')
+    },
+    templates: {
+      helpers: path.join(__dirname, 'fixtures/helpers/**/*.js'),
+      partials: path.join(__dirname, 'fixtures/partials/*.hbs')
+    }
+  };
+  it ('should return data and context',  done => {
+    builder(options).then(drizzleData => {
+      expect(drizzleData[0]).to.contain.keys('another-data', 'sample-data');
+      expect(drizzleData[0]['another-data']).to.be.an('object');
+      done();
     });
   });
 });

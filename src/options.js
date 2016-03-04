@@ -35,7 +35,6 @@ function mergeDefaults (options = {}) {
  * @return {object} User options
  */
 function translateOptions (options = {}) {
-  /* eslint-disable prefer-const */
   const {
     data,
     handlebars,
@@ -46,9 +45,6 @@ function translateOptions (options = {}) {
   } = options;
 
   const result = {
-    data: {
-      src: data
-    },
     templates: {
       handlebars,
       helpers,
@@ -57,8 +53,19 @@ function translateOptions (options = {}) {
       partials
     }
   };
+  // @TODO: Is there are more concise way of handling this?
+  //  If you use the pattern above, an object value for `data`
+  //  will get improperly nested/trounced
+  if (data) {
+    if (typeof data === 'string') {
+      result.data = {
+        src: data
+      };
+    } else {
+      result.data = data;
+    }
+  }
   return result;
-  /* eslint-enable prefer-const */
 }
 
 const parseOptions = options => mergeDefaults(translateOptions(options));
