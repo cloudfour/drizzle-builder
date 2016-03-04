@@ -11,8 +11,8 @@ var utils = require('./utils');
  */
 function prepareData (options) {
   // Data data
-  return utils.readFilesKeyed(options.data.src, {
-    contentFn: options.data.parseFn
+  return utils.readFilesKeyed(options.data, {
+    contentFn: options.dataFn
   });
 }
 /**

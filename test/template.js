@@ -8,11 +8,11 @@ describe ('template functions', () => {
   describe ('preparing templates', () => {
     describe ('preparing both helpers and partials', () => {
       it('should register appropriate helpers and partials', done => {
-        template.prepareTemplates({ templates: {
+        template.prepareTemplates({
           handlebars: Handlebars,
           helpers: `${__dirname}/fixtures/helpers/*.js`,
           partials: `${__dirname}/fixtures/partials/*`
-        }}).then(handlebars => {
+        }).then(handlebars => {
           expect(handlebars.partials).to.contain.keys('menu', 'header');
           expect(handlebars.helpers).to.contain.keys('toSlug', 'toJSON');
           done();
