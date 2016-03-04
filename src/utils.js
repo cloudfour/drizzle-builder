@@ -88,10 +88,31 @@ function titleCase (str) {
     .replace(/\w\S*/g, word => word.charAt(0).toUpperCase() + word.substr(1));
 }
 
+/**
+ * Perform a deep merge of two objects.
+ * @param {Object} target
+ * @param {Object} source
+ * @return {Object}
+ * @example merge(defaults, options);
+ */
+function merge (target, source) {
+  Object.keys(source).forEach(key => {
+    if (Object.isExtensible(source[key])) {
+      merge(target[key], source[key]);
+    } else {
+      if (typeof source[key] !== 'undefined') {
+        target[key] = source[key];
+      }
+    }
+  });
+  return target;
+}
+
 export { dirname,
          getFiles,
          isGlob,
          keyname,
+         merge,
          parentDirname,
          readFiles,
          readFilesKeyed,
