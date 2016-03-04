@@ -73,11 +73,11 @@ function readFiles (glob, opts = {}) {
  * through keyname().
  *
  */
-function readFilesKeyed (glob, preserveNumbers = false) {
+function readFilesKeyed (glob, options = {}) {
   return readFiles(glob).then(allFileData => {
     const keyedFileData = new Object();
     for (var aFile of allFileData) {
-      keyedFileData[keyname(aFile.path, preserveNumbers)] = aFile.contents;
+      keyedFileData[keyname(aFile.path, options)] = aFile.contents;
     }
     return keyedFileData;
   });
