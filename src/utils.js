@@ -15,7 +15,7 @@ function dirname (filepath) {
 function parentDirname (filepath) {
   return dirname(filepath).split(path.sep).pop();
 }
-function removeNumbers (str) {
+function removeLeadingNumbers (str) {
   return str.replace(/^[0-9|\.\-]+/, '');
 }
 /**
@@ -91,12 +91,12 @@ function readFilesKeyed (glob, preserveNumbers = false) {
  * - unless preserveNumbers, remove numbers from the string as well
  *
  * @param {String} str    filepath
- * @param {Boolean} preserveNumbers
+ * @param {Object} options
  * @return {String}
  */
-function keyname (str, preserveNumbers = false) {
+function keyname (str, { stripNumbers = true } = {}) {
   const name = basename(str).replace(/\s/g, '-');
-  return (preserveNumbers) ? name : removeNumbers(name);
+  return (stripNumbers) ? removeLeadingNumbers(name) : name;
 }
 
 /**

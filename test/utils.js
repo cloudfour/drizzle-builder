@@ -56,6 +56,21 @@ describe ('utils', () => {
       expect(badGlobs.every(glob => utils.isGlob(glob))).to.be.false;
     });
   });
+  describe('keyname', () => {
+    it ('should strip leading numbers by default', () => {
+      var result = utils.keyname('foo/01-bar.baz');
+      expect(result).not.to.contain('01-');
+    });
+    it ('should strip parent directories and extensions', () => {
+      var result = utils.keyname('foo/01-bar.baz');
+      expect(result).not.to.contain('foo');
+      expect(result).not.to.contain('baz');
+    });
+    it ('should accept option to retain leading numbers', () => {
+      var result = utils.keyname('foo/01-bar.baz', { stripNumbers: false });
+      expect(result).to.contain('01-');
+    });
+  });
   describe('readFiles', () => {
     it ('should read files from a glob', done => {
       var glob = path.join(__dirname, 'fixtures/helpers/*.js');
@@ -91,7 +106,7 @@ describe ('utils', () => {
     });
   });
   describe('merge()', () => {
-    it ('works', () => {
+    it ('merges objects correctly', () => {
       var actual = utils.merge(
         {a: 1, c: {d: 3}},
         {a: 2, b: 1, c: {e: 4}}
