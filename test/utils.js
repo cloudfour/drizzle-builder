@@ -135,14 +135,4 @@ describe ('utils', () => {
       expect(parent).to.equal('helpers');
     });
   });
-  describe('merge()', () => {
-    it ('merges objects correctly', () => {
-      var actual = utils.merge(
-        {a: 1, c: {d: 3}},
-        {a: 2, b: 1, c: {e: 4}}
-      );
-      var expected = {a: 2, b: 1, c: {d: 3, e: 4}};
-      expect(actual, expected).to.be.equal;
-    });
-  });
 });

@@ -7,13 +7,9 @@ var path = require('path');
 
 describe ('drizzle builder integration', () => {
   const options = {
-    data: {
-      src: path.join(__dirname, 'fixtures/data/*.yaml')
-    },
-    templates: {
-      helpers: path.join(__dirname, 'fixtures/helpers/**/*.js'),
-      partials: path.join(__dirname, 'fixtures/partials/*.hbs')
-    }
+    data: path.join(__dirname, 'fixtures/data/*.yaml'),
+    helpers: path.join(__dirname, 'fixtures/helpers/**/*.js'),
+    partials: path.join(__dirname, 'fixtures/partials/*.hbs')
   };
   it ('should return data and context',  done => {
     builder(options).then(drizzleData => {

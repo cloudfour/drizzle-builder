@@ -70,12 +70,11 @@ function preparePartials (Handlebars, partials = '') {
  * @return {Promise} resolves to {Object} Handlebars instance
  */
 function prepareTemplates (opts) {
-  var templateOpts = opts.templates;
   return Promise.all([
-    prepareHelpers(templateOpts.handlebars, templateOpts.helpers),
-    preparePartials(templateOpts.handlebars, templateOpts.partials)
+    prepareHelpers(opts.handlebars, opts.helpers),
+    preparePartials(opts.handlebars, opts.partials)
   ]).then(handlebarsInfo => {
-    return templateOpts.handlebars;
+    return opts.handlebars;
   });
 }
 

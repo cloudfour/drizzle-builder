@@ -1,19 +1,14 @@
 import Handlebars from 'handlebars';
 import yaml from 'js-yaml';
-import { merge } from './utils';
 
 const defaults = {
-  data: {
-    src: ['src/data/**/*.yaml'],
-    parseFn: (contents, path) => yaml.safeLoad(contents)
-  },
-  templates: {
-    handlebars: Handlebars,
-    helpers   : {},
-    layouts   : ['src/layouts/*'],
-    pages     : ['src/pages/**/*'],
-    partials  : ['src/partials/**/*']
-  }
+  data: ['src/data/**/*.yaml'],
+  dataFn: (contents, path) => yaml.safeLoad(contents),
+  handlebars: Handlebars,
+  helpers   : {},
+  layouts   : ['src/layouts/*'],
+  pages     : ['src/pages/**/*'],
+  partials  : ['src/partials/**/*']
 };
 
 /**
@@ -21,7 +16,11 @@ const defaults = {
  * @return {object} merged options
  */
 function mergeDefaults (options = {}) {
-  return merge(defaults, options);
+  // Please don't hate me
+  Object.keys(options).map(key => {
+    if (typeof options[key] === 'undefined') { delete options[key]; }
+  });
+  return Object.assign({}, defaults, options);
 }
 
 /**
@@ -37,6 +36,7 @@ function mergeDefaults (options = {}) {
 function translateOptions (options = {}) {
   const {
     data,
+    dataFn,
     handlebars,
     helpers,
     layouts,
@@ -45,26 +45,14 @@ function translateOptions (options = {}) {
   } = options;
 
   const result = {
-    templates: {
-      handlebars,
-      helpers,
-      layouts,
-      pages,
-      partials
-    }
+    data,
+    dataFn,
+    handlebars,
+    helpers,
+    layouts,
+    pages,
+    partials
   };
-  // @TODO: Is there are more concise way of handling this?
-  //  If you use the pattern above, an object value for `data`
-  //  will get improperly nested/trounced
-  if (data) {
-    if (typeof data === 'string') {
-      result.data = {
-        src: data
-      };
-    } else {
-      result.data = data;
-    }
-  }
   return result;
 }
 
