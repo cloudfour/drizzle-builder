@@ -54,4 +54,12 @@ function translateOptions (options = {}) {
 
 const parseOptions = options => mergeDefaults(translateOptions(options));
 
+/**
+ * Sigh...
+ * > Single exports and multiple exports are mutually exclusive. You have to use
+ * > either one the two styles. Some modules combine both styles as follows:
+ * http://www.2ality.com/2015/12/babel-commonjs.html
+ */
+parseOptions.translator = translateOptions;
+
 export default parseOptions;

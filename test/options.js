@@ -2,6 +2,7 @@
 var chai = require('chai');
 var expect = chai.expect;
 var parseOptions = require('../dist/options');
+var translateOptions = parseOptions.translator;
 
 describe ('drizzle-builder', () => {
   describe ('options', () => {
@@ -12,6 +13,14 @@ describe ('drizzle-builder', () => {
       });
     });
     describe ('translating options from fabricator', () => {
+      // This PASSES. Where on Earth are the `undefined`s coming from?
+      it ('should work', () => {
+        var actual = translateOptions({ views: 'myViews' });
+        var expected = {
+          templates: { pages: 'myViews' }
+        };
+        expect(actual, expected).to.be.equal;
+      });
       it ('should translate template options', () => {
         var opts = parseOptions({
           layoutIncludes: 'a path',
