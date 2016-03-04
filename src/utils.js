@@ -75,7 +75,7 @@ function readFiles (glob, {
  * Read the files from a glob, but then instead of resolving the
  * Promise with an Array of objects (@see readFiles), resolve with a
  * single object; each file's contents is keyed by its filename run
- * through optional keyFn(filePath, options) (default: keyname).
+ * through optional `keyFn(filePath, options)`` (default: keyname).
  * Will pass other options on to readFiles and keyFn
  *
  * @param {glob}
@@ -87,7 +87,7 @@ function readFiles (glob, {
  */
 function readFilesKeyed (glob, options = {}) {
   const {
-    keyFn = keyname
+    keyFn = (path, options) => keyname(path, options)
   } = options;
   return readFiles(glob, options).then(allFileData => {
     const keyedFileData = new Object();
