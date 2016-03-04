@@ -5,7 +5,7 @@ import { merge } from './utils';
 const defaults = {
   data: {
     src: ['src/data/**/*.yaml'],
-    parseFn: yaml.safeLoad
+    parseFn: (contents, path) => yaml.safeLoad(contents)
   },
   templates: {
     handlebars: Handlebars,
