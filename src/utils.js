@@ -6,15 +6,34 @@ var readFile = Promise.promisify(readFileCB);
 
 /* Helper functions */
 
+/**
+ * Return extension-less basename of filepath
+ * @param {String} filepath
+ * @example basename('foo/bar/baz.txt'); // -> 'baz'
+ */
 function basename (filepath) {
   return path.basename(filepath, path.extname(filepath));
 }
+
+/**
+ * Return normalized (no '..', '.') full dirname of filepath
+ * @param {String} filepath
+ * @example dirname('../ding/foo.txt'); // -> '/Users/shiela/ding/'
+ */
 function dirname (filepath) {
   return path.normalize(path.dirname(filepath));
 }
+
+/**
+ * Return the name of this files immediate parent directory
+ * @param {String} filepath
+ * @example basename('foo/bar/baz.txt'); // -> 'bar'
+ */
 function parentDirname (filepath) {
   return dirname(filepath).split(path.sep).pop();
 }
+
+
 function removeLeadingNumbers (str) {
   return str.replace(/^[0-9|\.\-]+/, '');
 }
