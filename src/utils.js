@@ -46,23 +46,28 @@ function isGlob (candidate) {
  * Take a glob; read the files, optionally running a `contentFn` over
  * the contents of the file.
  *
- * @param {glob}
- * @param {object} opts
- * @return {Promise} resolving to {Array} of file objects
+ * @param {glob} glob of files to read
+ * @param {Object} Options:
+ *  - {Function} contentFn(content, path): optional function to run over content
+ * in files; defaults to a no-op
+ *  - {String} encoding
+ *
+ * @return {Promise} resolving to Array of Objects:
+ *  - {String} path
+ *  - {String || Mixed} contents: contents of file after contentFn
  */
-function readFiles (glob, opts = {}) {
-  opts = Object.assign({}, {
-    contentFn: (content, path) => content
-  }, opts);
+function readFiles (glob, {
+  contentFn = (content, path) => content,
+  encoding = 'utf-8'
+} = {}) {
   return getFiles(glob).then(paths => {
-    var fileReadPromises = paths.map(path => {
-      return readFile(path, 'utf-8')
+    return Promise.all(paths.map(path => {
+      return readFile(path, encoding)
         .then(contents => {
-          contents = opts.contentFn(contents, path);
-          return {path, contents};
+          contents = contentFn(contents, path);
+          return { path, contents };
         });
-    });
-    return Promise.all(fileReadPromises);
+    }));
   });
 }
 

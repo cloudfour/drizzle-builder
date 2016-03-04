@@ -89,11 +89,20 @@ describe ('utils', () => {
           done();
         });
     });
-    it ('should be able to key files by getName', done => {
+  });
+  describe('readFilesKeyed', () => {
+    it ('should be able to key files by keyname', done => {
       var glob = path.join(__dirname, 'fixtures/helpers/*.js');
       utils.readFilesKeyed(glob).then(allFileData => {
         expect(allFileData).to.be.an('object');
         expect(allFileData).to.contain.keys('toFraction', 'toJSON', 'toSlug');
+        done();
+      });
+    });
+    it ('should accept an option to preserve leading numbers', done => {
+      var glob = path.join(__dirname, 'fixtures/data/*.yaml');
+      utils.readFilesKeyed(glob, { stripNumbers: false }).then(allFileData => {
+        expect(allFileData).to.be.an('object');
         done();
       });
     });
