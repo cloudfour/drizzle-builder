@@ -1,6 +1,6 @@
 import Handlebars from 'handlebars';
 import yaml from 'js-yaml';
-import { merge } from './utils';
+//import { merge } from './utils';
 
 const defaults = {
   data: ['src/data/**/*.yaml'],
@@ -17,7 +17,11 @@ const defaults = {
  * @return {object} merged options
  */
 function mergeDefaults (options = {}) {
-  return merge(defaults, options);
+  // Please don't hate me
+  Object.keys(options).map(key => {
+    if (typeof options[key] === 'undefined') { delete options[key]; }
+  });
+  return Object.assign({}, defaults, options);
 }
 
 /**
