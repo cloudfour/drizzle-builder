@@ -1,7 +1,12 @@
 import Handlebars from 'handlebars';
+import yaml from 'js-yaml';
 import { merge } from './utils';
 
 const defaults = {
+  data: {
+    src: ['src/data/**/*.yaml'],
+    parseFn: yaml.safeLoad
+  },
   templates: {
     handlebars: Handlebars,
     helpers   : {},
@@ -32,6 +37,7 @@ function mergeDefaults (options = {}) {
 function translateOptions (options = {}) {
   /* eslint-disable prefer-const */
   const {
+    data,
     handlebars,
     helpers,
     layouts,
@@ -40,6 +46,9 @@ function translateOptions (options = {}) {
   } = options;
 
   const result = {
+    data: {
+      src: data
+    },
     templates: {
       handlebars,
       helpers,
