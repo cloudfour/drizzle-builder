@@ -1,4 +1,5 @@
 import Handlebars from 'handlebars';
+import { merge } from './utils';
 
 const defaults = {
   templates: {
@@ -15,22 +16,7 @@ const defaults = {
  * @return {object} merged options
  */
 function mergeDefaults (options = {}) {
-  /* eslint-disable prefer-const */
-  let { result = defaults } = options;
-  let {
-    templates: {
-      handlebars = defaults.templates.handlebars,
-      helpers    = defaults.templates.helpers,
-      layouts    = defaults.templates.layouts,
-      pages      = defaults.templates.pages,
-      partials   = defaults.templates.partials
-    } = {}
-  } = options;
-  result = {
-    templates: { handlebars, helpers, layouts, pages, partials }
-  };
-  /* eslint-enable prefer-const */
-  return result;
+  return merge(defaults, options);
 }
 
 /**
@@ -45,23 +31,35 @@ function mergeDefaults (options = {}) {
  */
 function translateOptions (options = {}) {
   /* eslint-disable prefer-const */
-  let { result = defaults } = options;
-  let {
-    templates: {
-      handlebars = options.handlebars,
-      helpers    = options.helpers,
-      layouts    = options.layouts,
-      pages      = options.views,
-      partials   = options.layoutIncludes
-    } = {}
+  const {
+    handlebars,
+    helpers,
+    layouts,
+    views: pages,
+    layoutIncludes: partials
   } = options;
-  result = {
-    templates: { handlebars, helpers, layouts, pages, partials }
+
+  const result = {
+    templates: {
+      handlebars,
+      helpers,
+      layouts,
+      pages,
+      partials
+    }
   };
   return result;
   /* eslint-enable prefer-const */
 }
 
 const parseOptions = options => mergeDefaults(translateOptions(options));
+
+/**
+ * Sigh...
+ * > Single exports and multiple exports are mutually exclusive. You have to use
+ * > either one the two styles. Some modules combine both styles as follows:
+ * http://www.2ality.com/2015/12/babel-commonjs.html
+ */
+parseOptions.translator = translateOptions;
 
 export default parseOptions;
