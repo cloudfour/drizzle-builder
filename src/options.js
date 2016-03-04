@@ -1,6 +1,5 @@
 import Handlebars from 'handlebars';
 import yaml from 'js-yaml';
-//import { merge } from './utils';
 
 const defaults = {
   data: ['src/data/**/*.yaml'],
