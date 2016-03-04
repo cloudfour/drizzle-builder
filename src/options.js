@@ -1,7 +1,12 @@
 import Handlebars from 'handlebars';
+import yaml from 'js-yaml';
 import { merge } from './utils';
 
 const defaults = {
+  data: {
+    src: ['src/data/**/*.yaml'],
+    parseFn: (contents, path) => yaml.safeLoad(contents)
+  },
   templates: {
     handlebars: Handlebars,
     helpers   : {},
@@ -30,8 +35,8 @@ function mergeDefaults (options = {}) {
  * @return {object} User options
  */
 function translateOptions (options = {}) {
-  /* eslint-disable prefer-const */
   const {
+    data,
     handlebars,
     helpers,
     layouts,
@@ -48,8 +53,19 @@ function translateOptions (options = {}) {
       partials
     }
   };
+  // @TODO: Is there are more concise way of handling this?
+  //  If you use the pattern above, an object value for `data`
+  //  will get improperly nested/trounced
+  if (data) {
+    if (typeof data === 'string') {
+      result.data = {
+        src: data
+      };
+    } else {
+      result.data = data;
+    }
+  }
   return result;
-  /* eslint-enable prefer-const */
 }
 
 const parseOptions = options => mergeDefaults(translateOptions(options));

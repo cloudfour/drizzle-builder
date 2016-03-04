@@ -5,11 +5,45 @@ import {readFile as readFileCB} from 'fs';
 var readFile = Promise.promisify(readFileCB);
 
 /* Helper functions */
-const basename = filepath => path.basename(filepath, path.extname(filepath));
-const dirname  = filepath => path.normalize(path.dirname(filepath));
-const parentDirname = filepath => dirname(filepath).split(path.sep).pop();
-const removeNumbers = str  => str.replace(/^[0-9|\.\-]+/, '');
-const getFiles = glob => globby(glob, {nodir: true });
+
+/**
+ * Return extension-less basename of filepath
+ * @param {String} filepath
+ * @example basename('foo/bar/baz.txt'); // -> 'baz'
+ */
+function basename (filepath) {
+  return path.basename(filepath, path.extname(filepath));
+}
+
+/**
+ * Return normalized (no '..', '.') full dirname of filepath
+ * @param {String} filepath
+ * @example dirname('../ding/foo.txt'); // -> '/Users/shiela/ding/'
+ */
+function dirname (filepath) {
+  return path.normalize(path.dirname(filepath));
+}
+
+/**
+ * Return the name of this files immediate parent directory
+ * @param {String} filepath
+ * @example basename('foo/bar/baz.txt'); // -> 'bar'
+ */
+function parentDirname (filepath) {
+  return dirname(filepath).split(path.sep).pop();
+}
+
+
+function removeLeadingNumbers (str) {
+  return str.replace(/^[0-9|\.\-]+/, '');
+}
+/**
+ * @param {glob} glob
+ * @return {Promise} resolving to {Array} of files matching glob
+ */
+function getFiles (glob) {
+  return globby(glob, { nodir: true });
+}
 
 /**
  * Utility function to test if a value COULD be a glob. A single string or
@@ -28,18 +62,31 @@ function isGlob (candidate) {
 }
 
 /**
- * Take a glob; read the files. Return a Promise that ultimately resolves
- * to an Array of objects:
- * [{ path: original filepath,
- *   contents: utf-8 file contents}...]
+ * Take a glob; read the files, optionally running a `contentFn` over
+ * the contents of the file.
+ *
+ * @param {glob} glob of files to read
+ * @param {Object} Options:
+ *  - {Function} contentFn(content, path): optional function to run over content
+ * in files; defaults to a no-op
+ *  - {String} encoding
+ *
+ * @return {Promise} resolving to Array of Objects:
+ *  - {String} path
+ *  - {String || Mixed} contents: contents of file after contentFn
  */
-function readFiles (glob) {
+function readFiles (glob, {
+  contentFn = (content, path) => content,
+  encoding = 'utf-8'
+} = {}) {
   return getFiles(glob).then(paths => {
-    var fileReadPromises = paths.map(path => {
-      return readFile(path, 'utf-8')
-        .then(contents => ({ path, contents }));
-    });
-    return Promise.all(fileReadPromises);
+    return Promise.all(paths.map(path => {
+      return readFile(path, encoding)
+        .then(contents => {
+          contents = contentFn(contents, path);
+          return { path, contents };
+        });
+    }));
   });
 }
 
@@ -47,14 +94,24 @@ function readFiles (glob) {
  * Read the files from a glob, but then instead of resolving the
  * Promise with an Array of objects (@see readFiles), resolve with a
  * single object; each file's contents is keyed by its filename run
- * through keyname().
+ * through optional `keyFn(filePath, options)`` (default: keyname).
+ * Will pass other options on to readFiles and keyFn
  *
+ * @param {glob}
+ * @param {Object} options (all optional):
+ *  - keyFn
+ *  - contentFn
+ *  - stripNumbers
+ * @return {Promise} resolving to {Object} of keyed file contents
  */
-function readFilesKeyed (glob, preserveNumbers = false) {
-  return readFiles(glob).then(allFileData => {
+function readFilesKeyed (glob, options = {}) {
+  const {
+    keyFn = (path, options) => keyname(path, options)
+  } = options;
+  return readFiles(glob, options).then(allFileData => {
     const keyedFileData = new Object();
     for (var aFile of allFileData) {
-      keyedFileData[keyname(aFile.path, preserveNumbers)] = aFile.contents;
+      keyedFileData[keyFn(aFile.path, options)] = aFile.contents;
     }
     return keyedFileData;
   });
@@ -65,15 +122,15 @@ function readFilesKeyed (glob, preserveNumbers = false) {
  * partials, etc, based on a filepath:
  * - replace whitespace characters with `-`
  * - use only the basename, no extension
- * - unless preserveNumbers, remove numbers from the string as well
+ * - unless stripNumbers option false, remove numbers from the string as well
  *
  * @param {String} str    filepath
- * @param {Boolean} preserveNumbers
+ * @param {Object} options
  * @return {String}
  */
-function keyname (str, preserveNumbers = false) {
+function keyname (str, { stripNumbers = true } = {}) {
   const name = basename(str).replace(/\s/g, '-');
-  return (preserveNumbers) ? name : removeNumbers(name);
+  return (stripNumbers) ? removeLeadingNumbers(name) : name;
 }
 
 /**
