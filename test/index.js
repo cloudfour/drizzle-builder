@@ -4,7 +4,7 @@ var expect = chai.expect;
 var builder = require('../dist/');
 
 const options = {
-  template: {
+  templates: {
     partials: `${__dirname}/fixtures/partials/*`,
     helpers: `${__dirname}/fixtures/helpers/*.js`
   }
