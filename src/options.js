@@ -22,9 +22,7 @@ function merge (target, source) {
     if (Object.isExtensible(source[key])) {
       merge(target[key], source[key]);
     } else {
-      if (typeof source[key] !== 'undefined') {
-        Object.assign(target, { [key]: source[key] });
-      }
+      Object.assign(target, { [key]: source[key] });
     }
   });
   return target;
@@ -50,18 +48,22 @@ function mergeDefaults (options = {}) {
  */
 function translateOptions (options = {}) {
   /* eslint-disable prefer-const */
-  let { result = defaults } = options;
-  let {
-    templates: {
-      handlebars = options.handlebars,
-      helpers    = options.helpers,
-      layouts    = options.layouts,
-      pages      = options.views,
-      partials   = options.layoutIncludes
-    } = {}
+  const {
+    handlebars,
+    helpers,
+    layouts,
+    views: pages,
+    layoutIncludes: partials
   } = options;
-  result = {
-    templates: { handlebars, helpers, layouts, pages, partials }
+
+  const result = {
+    templates: {
+      handlebars,
+      helpers,
+      layouts,
+      pages,
+      partials
+    }
   };
   return result;
   /* eslint-enable prefer-const */
