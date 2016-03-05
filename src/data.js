@@ -41,7 +41,7 @@ function preparePages ({pages} = {}) {
       // Generate an object from content
       return {
         data: frontMatter(contents).attributes,
-        parent: utils.parentDirname(path)
+        parent: utils.localDirname(path)
       };
     },
     stripNumbers: false // Leave leading numerals intact
@@ -77,15 +77,7 @@ function preparePages ({pages} = {}) {
  */
 function prepareData (options) {
 
-  // Build data object
-  return Promise.all([
-    prepareDataData(options),
-    prepareLayouts(options)
-  ]).then(allData => {
-    return { data: allData[0],
-             layouts: allData[1]
-           };
-  });
+
 }
 
 export { prepareData,
