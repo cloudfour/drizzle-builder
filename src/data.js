@@ -3,6 +3,10 @@ import * as utils from './utils';
 
 /**
  * Read files in options.layouts and key them
+ * Layouts are HTML documents that get wrapped around pages
+ *
+ * @param {Object} options with
+ *  - {glob} layouts   glob of layout files to parse
  * @return {Promise} resolving to keyed file contents
  */
 function prepareLayouts ({layouts} = {}) {
@@ -10,7 +14,12 @@ function prepareLayouts ({layouts} = {}) {
 }
 
 /**
- * Read and parse data Files
+ * Read and parse files in options.data and parse them
+ * with options.parseFn
+ *
+ * @param {Object} options with
+ *   - {glob} data        glob of data files to parse
+ *   - {Function} parseFn parsing function for data
  * @return {Promise} resolving to keyed parsed file contents
  */
 function prepareDataData ({data, parseFn} = {}) {
