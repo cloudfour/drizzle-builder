@@ -5,6 +5,18 @@ var data = require('../dist/data');
 var path  = require('path');
 
 describe ('data', () => {
+  describe('parsing layouts', () => {
+    it ('should correctly parse layout files', done => {
+      data.prepareLayouts({ layouts: path
+        .join(__dirname, 'fixtures/layouts/**/*.html') })
+        .then(layoutData => {
+          expect(layoutData).to.be.an('Object')
+            .and.to.contain.keys('default');
+          expect(layoutData.default).to.be.a('string');
+          done();
+        });
+    });
+  });
   describe('parsing pages', () => {
     it ('should correctly build data object from pages', done => {
       data.preparePages({ pages: path
