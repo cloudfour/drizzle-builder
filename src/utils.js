@@ -25,9 +25,9 @@ function dirname (filepath) {
 }
 
 /**
- * Return the name of this files immediate parent directory
+ * Return the name of this file's directory's immediate parent directory
  * @param {String} filepath
- * @example basename('foo/bar/baz.txt'); // -> 'bar'
+ * @example basename('foo/bar/baz.txt'); // -> 'foo'
  */
 function parentDirname (filepath) {
   return dirname(filepath).split(path.sep).pop();

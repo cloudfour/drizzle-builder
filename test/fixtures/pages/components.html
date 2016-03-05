@@ -1,0 +1,10 @@
+---
+title: Components
+fabricator: true
+---
+
+<h1>{{title}}</h1>
+
+{{#each materials.components.items}}
+  {{~> f-item this}}
+{{/each}}

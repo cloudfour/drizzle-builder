@@ -1,0 +1,33 @@
+---
+title: Sandbox
+fabricator: true
+---
+
+<h1>{{title}}</h1>
+
+<p>
+  These are mockups, prototypes and demos that may not represent
+  production-ready code.
+</p>
+
+{{#each views.sandbox.items}}
+  <article class="f-u-marginEnds">
+    <h4 class="f-Item-heading">
+      <a href="sandbox/{{@key}}.html">
+        {{toTitle name}}
+      </a>
+    </h4>
+    {{#if data.labels}}
+      <ul class="f-Item-labels f-u-listInline">
+        {{#each data.labels}}
+          <li>
+            <span class="f-Label f-Label--{{this}}">{{this}}</span>
+          </li>
+        {{/each}}
+      </ul>
+    {{/if}}
+    {{#if data.description}}
+      <p>{{{data.description}}}</p>
+    {{/if}}
+  </article>
+{{/each}}

@@ -2,6 +2,38 @@ import frontMatter from 'front-matter';
 import * as utils from './utils';
 
 /**
+ * Read files in options.layouts and key them
+ * @return {Promise} resolving to keyed file contents
+ */
+function prepareLayouts ({layouts} = {}) {
+  return utils.readFilesKeyed(layouts);
+}
+
+/**
+ * Read and parse data Files
+ * @return {Promise} resolving to keyed parsed file contents
+ */
+function prepareDataData ({data, parseFn} = {}) {
+  return utils.readFilesKeyed(data, { contentFn: parseFn });
+}
+
+function preparePages ({pages} = {}) {
+  return utils.readFilesKeyed(pages, {
+    contentFn: (contents, path) => {
+      return {
+        data: frontMatter(contents).attributes,
+        parent: utils.parentDirname(path)
+      };
+    },
+    stripNumbers: false
+  });
+}
+
+// function preparePatterns () {
+//
+// }
+
+/**
  * Build a data/context object for use by the builder
  * @TODO This may move into its own module if it seems appropriate
  * @TODO Make this testable
@@ -10,32 +42,20 @@ import * as utils from './utils';
  * @return {Promise} resolving to {Object} of keyed file data
  */
 function prepareData (options) {
-  var parseFiles = utils.readFilesKeyed;
-  // Data data
-  const dataData = parseFiles(options.data, {
-    contentFn: options.dataFn
-  });
-  // Layouts data
-  const layoutData = parseFiles(options.layouts);
-  //
-  // const pageData = parseFiles(options.pages, {
-  //   contentFn: (contents, path) => {
-  //     const data = frontMatter(contents);
-  //     const parent = parentDirname(path);
-  //
-  //   }
-  // });
-  // Page data
-  // parseFiles (options.pages) with a content fn of
-  // front matter
 
   // Build data object
-  return Promise.all([dataData, layoutData])
-    .then(allData => {
-      return { data: allData[0],
-               layouts: allData[1]
-             };
-    });
+  return Promise.all([
+    prepareDataData(options),
+    prepareLayouts(options)
+  ]).then(allData => {
+    return { data: allData[0],
+             layouts: allData[1]
+           };
+  });
 }
 
-export default prepareData;
+export { prepareData,
+         prepareDataData,
+         prepareLayouts,
+         preparePages
+       };
