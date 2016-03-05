@@ -1,6 +1,6 @@
-var parseOptions = require('./options');
-var prepareTemplates = require('./template').prepareTemplates;
-var utils = require('./utils');
+import parseOptions from './options';
+import { prepareTemplates } from './template';
+import * as utils from './utils';
 
 /**
  * Build a data/context object for use by the builder
@@ -18,6 +18,10 @@ function prepareData (options) {
   });
   // Layouts data
   const layoutData = parseFiles(options.layouts);
+
+  // Page data
+  // parseFiles (options.pages) with a content fn of
+  // front matter
 
   // Build data object
   return Promise.all([dataData, layoutData])
