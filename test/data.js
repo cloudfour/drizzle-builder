@@ -3,6 +3,7 @@ var chai = require('chai');
 var expect = chai.expect;
 var data = require('../dist/data');
 var path  = require('path');
+var yaml  = require('js-yaml');
 
 describe ('data', () => {
   describe('parsing layouts', () => {
@@ -15,6 +16,32 @@ describe ('data', () => {
           expect(layoutData.default).to.be.a('string');
           done();
         });
+    });
+  });
+  describe('parsing data', () => {
+    it ('should correctly parse YAML data from files', done => {
+      data.prepareDataData({
+        data: path.join(__dirname, 'fixtures/data/**/*.yaml'),
+        parseFn: (contents, path) => yaml.safeLoad(contents)
+      }).then(dataData => {
+        expect(dataData).to.be.an('Object')
+          .and.to.contain.keys('another-data', 'sample-data');
+        expect(dataData['another-data']).to.be.an('Object')
+          .and.to.contain.keys('ding', 'forestry');
+        done();
+      });
+    });
+    it ('should correctly parse JSON data from files', done => {
+      data.prepareDataData({
+        data: path.join(__dirname, 'fixtures/data/**/*.json'),
+        parseFn: (contents, path) => JSON.parse(contents)
+      }).then(dataData => {
+        expect(dataData).to.be.an('Object')
+          .and.to.contain.keys('data-as-json');
+        expect(dataData['data-as-json']).to.be.an('Object')
+          .and.to.contain.keys('foo', 'fortunately');
+        done();
+      });
     });
   });
   describe('parsing pages', () => {
