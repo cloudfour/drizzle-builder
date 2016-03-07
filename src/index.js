@@ -1,20 +1,7 @@
-var parseOptions = require('./options');
-var prepareTemplates = require('./template').prepareTemplates;
-var utils = require('./utils');
+import parseOptions from './options';
+import { prepareData } from './parse';
+import { prepareTemplates } from './template';
 
-/**
- * Build a data/context object for use by the builder
- * @TODO This may move into its own module if it seems appropriate
- *
- * @param {Object} options
- * @return {Promise} resolving to {Object} of keyed file data
- */
-function prepareData (options) {
-  // Data data
-  return utils.readFilesKeyed(options.data, {
-    contentFn: options.dataFn
-  });
-}
 /**
  * Build the drizzle output
  *

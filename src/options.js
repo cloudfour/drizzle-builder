@@ -34,6 +34,7 @@ function mergeDefaults (options = {}) {
  * @return {object} User options
  */
 function translateOptions (options = {}) {
+
   const {
     data,
     dataFn,
@@ -53,6 +54,7 @@ function translateOptions (options = {}) {
     pages,
     partials
   };
+
   return result;
 }
 

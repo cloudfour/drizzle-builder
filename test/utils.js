@@ -128,11 +128,20 @@ describe ('utils', () => {
       });
     });
   });
-  describe('parent directory (parentDirname)', () => {
-    it ('should derive correct parent dirname of files', () => {
-      var file = path.join(__dirname, 'fixtures/helpers/toFraction.js');
-      var parent = utils.parentDirname(file);
-      expect(parent).to.equal('helpers');
+  describe('dirname functions', () => {
+    describe('parentDirname', () => {
+      it ('should derive correct parent dirname', () => {
+        var file = path.join(__dirname, 'fixtures/helpers/toFraction.js');
+        var parent = utils.parentDirname(file);
+        expect(parent).to.equal('fixtures');
+      });
+    });
+    describe('localDirname', () => {
+      it ('should derive correct immediate dirname', () => {
+        var file = path.join(__dirname, 'fixtures/helpers/toFraction.js');
+        var parent = utils.localDirname(file);
+        expect(parent).to.equal('helpers');
+      });
     });
   });
 });
