@@ -8,7 +8,8 @@ const defaults = {
   helpers   : {},
   layouts   : ['src/layouts/*'],
   pages     : ['src/pages/**/*'],
-  partials  : ['src/partials/**/*']
+  partials  : ['src/partials/**/*'],
+  patterns  : ['src/patterns/**/*']
 };
 
 /**
@@ -41,6 +42,7 @@ function translateOptions (options = {}) {
     handlebars,
     helpers,
     layouts,
+    materials: patterns,
     views: pages,
     layoutIncludes: partials
   } = options;
@@ -52,6 +54,7 @@ function translateOptions (options = {}) {
     helpers,
     layouts,
     pages,
+    patterns,
     partials
   };
 

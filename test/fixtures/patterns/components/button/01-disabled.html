@@ -1,0 +1,29 @@
+---
+notes: |
+  Use the `disabled` attribute to prevent button usage and apply a
+  semi-transparent appearance.
+---
+
+{{#embed "button.base" disabled="true"}}
+  {{#content "content"}}
+    Primary
+  {{/content}}
+{{/embed}}
+
+{{#embed "button.base" class="pattern-button--secondary" disabled="true"}}
+  {{#content "content"}}
+    Secondary
+  {{/content}}
+{{/embed}}
+
+{{#embed "button.base" class="pattern-button--tertiary" disabled="true"}}
+  {{#content "content"}}
+    Tertiary
+  {{/content}}
+{{/embed}}
+
+{{#embed "button.base" class="pattern-button--other" disabled="true"}}
+  {{#content "content"}}
+    Other
+  {{/content}}
+{{/embed}}

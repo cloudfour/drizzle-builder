@@ -4,7 +4,7 @@ var expect = chai.expect;
 var parseOptions = require('../dist/options');
 var translateOptions = parseOptions.translator;
 
-describe ('drizzle-builder', () => {
+describe ('options', () => {
   var keys = [
     'data',
     'dataFn',
@@ -12,9 +12,10 @@ describe ('drizzle-builder', () => {
     'helpers',
     'layouts',
     'pages',
-    'partials'
+    'partials',
+    'patterns'
   ];
-  describe ('options', () => {
+  describe ('options parsing', () => {
     describe('generating options', () => {
       it ('should not require options to be passed', () => {
         var opts = parseOptions();
@@ -25,10 +26,13 @@ describe ('drizzle-builder', () => {
       // This PASSES. Where on Earth are the `undefined`s coming from?
       it ('should work', () => {
         var translated = translateOptions({
+          materials: 'src/materials/**',
           views: 'myViews'
         });
         expect(translated).to.contain.keys(keys);
         expect(translated).not.to.contain.keys('views');
+        expect(translated).not.to.contain.keys('materials');
+        expect(translated).to.contain.keys('pages', 'patterns');
       });
       it ('should translate template options', () => {
         var opts = parseOptions({

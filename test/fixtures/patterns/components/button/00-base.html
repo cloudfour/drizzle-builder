@@ -1,0 +1,17 @@
+---
+notes: |
+  The base class applies 16px.
+
+  #### Usage
+  The base class can be used on a `<button>` or an `<a>`. Anchors that don't have a meaningful `href` should most often be a `<button>` instead.
+
+links:
+  Anchors, Buttons and Accessibility: http://formidable.com/blog/2014/05/08/anchors-buttons-and-accessibility/
+  When to Use the Button Element: https://css-tricks.com/use-button-element/
+---
+
+<button class="pattern-button {{class}}" type="button"{{#if disabled}} disabled{{/if}}>
+  {{#block "content"}}
+    Default Button
+  {{/block}}
+</button>

@@ -1,0 +1,32 @@
+---
+notes: |
+  Modifier classes can be used to apply different colors to button.
+
+  + `pattern-button--secondary`: Modifier to apply secondary color
+  + `pattern-button--tertiary`: Modifier to apply tertiary color
+  + `pattern-button--other`: Modifier to apply "Other" color
+---
+
+{{#embed "button.base"}}
+  {{#content "content"}}
+    Primary
+  {{/content}}
+{{/embed}}
+
+{{#embed "button.base" class="pattern-button--secondary"}}
+  {{#content "content"}}
+    Secondary
+  {{/content}}
+{{/embed}}
+
+{{#embed "button.base" class="pattern-button--tertiary"}}
+  {{#content "content"}}
+    Tertiary
+  {{/content}}
+{{/embed}}
+
+{{#embed "button.base" class="pattern-button--other"}}
+  {{#content "content"}}
+    Other
+  {{/content}}
+{{/embed}}
