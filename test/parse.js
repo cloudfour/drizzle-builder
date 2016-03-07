@@ -1,7 +1,7 @@
 /* global describe, it */
 var chai = require('chai');
 var expect = chai.expect;
-var data = require('../dist/data');
+var data = require('../dist/parse');
 var path  = require('path');
 var yaml  = require('js-yaml');
 
