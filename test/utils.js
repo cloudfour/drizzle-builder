@@ -25,15 +25,14 @@ describe ('utils', () => {
     });
   });
   describe('getFiles', () => {
-    it ('should retrieve a file list from a glob', done => {
+    it ('should retrieve a file list from a glob', () => {
       var glob = path.join(__dirname, 'fixtures/helpers/**/*');
-      utils.getFiles(glob).then(fileList => {
+      return utils.getFiles(glob).then(fileList => {
         expect(Array.isArray(fileList)).to.be.true;
         fileList.map(filePath => {
           // Ham-fisted test that everything is a file, not a directory
           expect(filePath).to.contain('.');
         });
-        done();
       });
     });
     it ('should should respect glob options', () => {
@@ -92,13 +91,12 @@ describe ('utils', () => {
         expect(allFileData[0]).to.have.keys('path', 'contents');
       });
     });
-    it ('should run passed function over content', done => {
+    it ('should run passed function over content', () => {
       var glob = path.join(__dirname, 'fixtures/helpers/*.js');
-      utils.readFiles(glob, { contentFn: (content, path) => 'foo' })
+      return utils.readFiles(glob, { contentFn: (content, path) => 'foo' })
         .then(allFileData => {
           expect(allFileData).to.have.length.of(3);
           expect(allFileData[0].contents).to.equal('foo');
-          done();
         });
     });
     it ('should respect passed glob options', () => {
@@ -114,32 +112,31 @@ describe ('utils', () => {
     });
   });
   describe('readFilesKeyed', () => {
-    it ('should be able to key files by keyname', done => {
+    it ('should be able to key files by keyname', () => {
       var glob = path.join(__dirname, 'fixtures/helpers/*.js');
-      utils.readFilesKeyed(glob).then(allFileData => {
+      return utils.readFilesKeyed(glob).then(allFileData => {
         expect(allFileData).to.be.an('object');
         expect(allFileData).to.contain.keys('toFraction', 'toJSON', 'toSlug');
-        done();
       });
     });
-    it ('should accept an option to preserve leading numbers', done => {
+    it ('should accept an option to preserve leading numbers', () => {
       var glob = path.join(__dirname, 'fixtures/data/*.yaml');
-      utils.readFilesKeyed(glob, { stripNumbers: false }).then(allFileData => {
-        expect(allFileData).to.be.an('object');
-        done();
-      });
-    });
-    it ('should accept a function to derive keys', done => {
-      var glob = path.join(__dirname, 'fixtures/data/*.yaml');
-      utils.readFilesKeyed(glob, { keyFn: (path, options) => 'foo' + path })
+      return utils.readFilesKeyed(glob, { stripNumbers: false })
         .then(allFileData => {
-          expect(Object.keys(allFileData)[0]).to.contain('foo');
-          done();
+          expect(allFileData).to.be.an('object');
         });
     });
-    it ('should pass contentFn through to readFiles', done => {
+    it ('should accept a function to derive keys', () => {
       var glob = path.join(__dirname, 'fixtures/data/*.yaml');
-      utils.readFilesKeyed(glob, {
+      return utils.readFilesKeyed(glob,
+        { keyFn: (path, options) => 'foo' + path })
+          .then(allFileData => {
+            expect(Object.keys(allFileData)[0]).to.contain('foo');
+          });
+    });
+    it ('should pass contentFn through to readFiles', () => {
+      var glob = path.join(__dirname, 'fixtures/data/*.yaml');
+      return utils.readFilesKeyed(glob, {
         keyFn: (path, options) => 'foo' + path,
         contentFn: (content, path) => 'foo'
       }).then(allFileData => {
@@ -147,7 +144,6 @@ describe ('utils', () => {
           expect(fileKey).to.contain('foo');
           expect(allFileData[fileKey]).to.equal('foo');
         }
-        done();
       });
     });
   });
