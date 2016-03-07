@@ -1,5 +1,5 @@
 import parseOptions from './options';
-import { prepareData } from './data';
+import { prepareData } from './parse';
 import { prepareTemplates } from './template';
 
 /**
