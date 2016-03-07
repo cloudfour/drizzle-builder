@@ -1,11 +1,11 @@
 /* global describe, it */
 var chai = require('chai');
 var expect = chai.expect;
+var config = require('./config');
 var utils = require('../dist/utils');
-var path  = require('path');
 
 describe ('utils', () => {
-  describe('title casing', () => {
+  describe('titleCase', () => {
     it ('should correctly title-case a string', () => {
       // @TODO move these into fixtures?
       var stringsIn = ['a-doctor and a horse',
@@ -26,7 +26,7 @@ describe ('utils', () => {
   });
   describe('getFiles', () => {
     it ('should retrieve a file list from a glob', () => {
-      var glob = path.join(__dirname, 'fixtures/helpers/**/*');
+      var glob = config.fixturePath('helpers/**/*');
       return utils.getFiles(glob).then(fileList => {
         expect(Array.isArray(fileList)).to.be.true;
         fileList.map(filePath => {
@@ -36,7 +36,7 @@ describe ('utils', () => {
       });
     });
     it ('should should respect glob options', () => {
-      var glob = path.join(__dirname, 'fixtures/helpers/**/*');
+      var glob = config.fixturePath('helpers/**/*');
       return utils.getFiles(glob, { nodir: false }).then(fileList => {
         // This fileList should contain at least one directory
         expect(Array.isArray(fileList)).to.be.true;
@@ -52,9 +52,9 @@ describe ('utils', () => {
   describe('isGlob', () => {
     it ('should correctly identify valid glob patterns', () => {
       var goodGlobs = [
-        path.join(__dirname, 'fixtures/helpers/**/*'),
+        config.fixturePath('helpers/**/*'),
         ['foo', 'bar', 'baz'],
-        [path.join(__dirname, 'fixtures/helpers/**/*'), 'foo'],
+        [config.fixturePath('helpers/**/*'), 'foo'],
         'just a string'
       ];
       var badGlobs = [
@@ -85,14 +85,14 @@ describe ('utils', () => {
   });
   describe('readFiles', () => {
     it ('should read files from a glob', () => {
-      var glob = path.join(__dirname, 'fixtures/helpers/*.js');
+      var glob = config.fixturePath('helpers/*.js');
       return utils.readFiles(glob).then(allFileData => {
         expect(allFileData).to.have.length.of(3);
         expect(allFileData[0]).to.have.keys('path', 'contents');
       });
     });
     it ('should run passed function over content', () => {
-      var glob = path.join(__dirname, 'fixtures/helpers/*.js');
+      var glob = config.fixturePath('helpers/*.js');
       return utils.readFiles(glob, { contentFn: (content, path) => 'foo' })
         .then(allFileData => {
           expect(allFileData).to.have.length.of(3);
@@ -100,7 +100,7 @@ describe ('utils', () => {
         });
     });
     it ('should respect passed glob options', () => {
-      var glob = path.join(__dirname, 'fixtures/files/*');
+      var glob = config.fixturePath('files/*');
       // Include dotfiles
       return utils.readFiles(glob, {
         contentFn: (content, path) => 'foo',
@@ -113,21 +113,21 @@ describe ('utils', () => {
   });
   describe('readFilesKeyed', () => {
     it ('should be able to key files by keyname', () => {
-      var glob = path.join(__dirname, 'fixtures/helpers/*.js');
+      var glob = config.fixturePath('helpers/*.js');
       return utils.readFilesKeyed(glob).then(allFileData => {
         expect(allFileData).to.be.an('object');
         expect(allFileData).to.contain.keys('toFraction', 'toJSON', 'toSlug');
       });
     });
     it ('should accept an option to preserve leading numbers', () => {
-      var glob = path.join(__dirname, 'fixtures/data/*.yaml');
+      var glob = config.fixturePath('data/*.yaml');
       return utils.readFilesKeyed(glob, { stripNumbers: false })
         .then(allFileData => {
           expect(allFileData).to.be.an('object');
         });
     });
     it ('should accept a function to derive keys', () => {
-      var glob = path.join(__dirname, 'fixtures/data/*.yaml');
+      var glob = config.fixturePath('data/*.yaml');
       return utils.readFilesKeyed(glob,
         { keyFn: (path, options) => 'foo' + path })
           .then(allFileData => {
@@ -135,7 +135,7 @@ describe ('utils', () => {
           });
     });
     it ('should pass contentFn through to readFiles', () => {
-      var glob = path.join(__dirname, 'fixtures/data/*.yaml');
+      var glob = config.fixturePath('data/*.yaml');
       return utils.readFilesKeyed(glob, {
         keyFn: (path, options) => 'foo' + path,
         contentFn: (content, path) => 'foo'
@@ -150,14 +150,14 @@ describe ('utils', () => {
   describe('dirname functions', () => {
     describe('parentDirname', () => {
       it ('should derive correct parent dirname', () => {
-        var file = path.join(__dirname, 'fixtures/helpers/toFraction.js');
+        var file = config.fixturePath('helpers/toFraction.js');
         var parent = utils.parentDirname(file);
         expect(parent).to.equal('fixtures');
       });
     });
     describe('localDirname', () => {
       it ('should derive correct immediate dirname', () => {
-        var file = path.join(__dirname, 'fixtures/helpers/toFraction.js');
+        var file = config.fixturePath('helpers/toFraction.js');
         var parent = utils.localDirname(file);
         expect(parent).to.equal('helpers');
       });
