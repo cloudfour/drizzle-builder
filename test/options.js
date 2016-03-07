@@ -21,24 +21,34 @@ describe ('options', () => {
         var opts = parseOptions();
         expect(opts).to.be.an('object');
       });
+      it ('should provide default templating options', () => {
+        var opts = parseOptions();
+        expect(opts).to.contain.keys(keys);
+        expect(opts.handlebars).to.be.an('object');
+        expect(opts.dataFn).to.be.a('function');
+      });
     });
-    describe ('translating options from fabricator', () => {
-      // This PASSES. Where on Earth are the `undefined`s coming from?
-      it ('should work', () => {
+    describe ('translateOptions', () => {
+      it ('should translate old properties', () => {
         var translated = translateOptions({
+          data: 'foo/bar/baz.yml',
           materials: 'src/materials/**',
-          views: 'myViews'
+          views: 'myViews',
+          layoutIncludes: 'a path',
         });
         expect(translated).to.contain.keys(keys);
-        expect(translated).not.to.contain.keys('views');
-        expect(translated).not.to.contain.keys('materials');
-        expect(translated).to.contain.keys('pages', 'patterns');
+        expect(translated).not.to.contain.keys('views',
+          'materials', 'layoutIncludes');
+        expect(translated).to.contain.keys('pages', 'patterns', 'layouts');
+
       });
-      it ('should translate template options', () => {
+
+      it ('should translate and parse options correctly', () => {
         var opts = parseOptions({
           data: 'foo/bar/baz.yml',
+          materials: 'src/materials/**',
+          views: 'myViews',
           layoutIncludes: 'a path',
-          views: 'a path to views'
         });
         expect(opts).to.be.an('object');
         expect(opts.data).to.be.a('string');
@@ -48,18 +58,9 @@ describe ('options', () => {
         expect(opts.pages).to.be.a('string');
         expect(opts.partials).to.be.a('string');
         expect(opts.helpers).to.be.an('object').and.to.be.empty;
-        expect(opts).to.contain.keys('layouts', 'partials');
+        expect(opts).to.contain.keys('layouts', 'partials', 'patterns');
       });
     });
 
-    describe('default options', () => {
-
-      it ('should provide default templating options', () => {
-        var opts = parseOptions();
-        expect(opts).to.contain.keys(keys);
-        expect(opts.handlebars).to.be.an('object');
-        expect(opts.dataFn).to.be.a('function');
-      });
-    });
   });
 });
