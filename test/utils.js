@@ -85,12 +85,11 @@ describe ('utils', () => {
     });
   });
   describe('readFiles', () => {
-    it ('should read files from a glob', done => {
+    it ('should read files from a glob', () => {
       var glob = path.join(__dirname, 'fixtures/helpers/*.js');
-      utils.readFiles(glob).then(allFileData => {
+      return utils.readFiles(glob).then(allFileData => {
         expect(allFileData).to.have.length.of(3);
         expect(allFileData[0]).to.have.keys('path', 'contents');
-        done();
       });
     });
     it ('should run passed function over content', done => {
@@ -100,6 +99,17 @@ describe ('utils', () => {
           expect(allFileData).to.have.length.of(3);
           expect(allFileData[0].contents).to.equal('foo');
           done();
+        });
+    });
+    it ('should respect passed glob options', () => {
+      var glob = path.join(__dirname, 'fixtures/files/*');
+      // Include dotfiles
+      return utils.readFiles(glob, {
+        contentFn: (content, path) => 'foo',
+        globOpts: { dot: true }
+      })
+        .then(allFileData => {
+          expect(allFileData).to.have.length(2);
         });
     });
   });

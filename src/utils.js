@@ -50,8 +50,11 @@ function removeLeadingNumbers (str) {
  * @param {glob} glob
  * @return {Promise} resolving to {Array} of files matching glob
  */
-function getFiles (glob, { nodir = true } = {}) {
-  return globby(glob, { nodir });
+function getFiles (glob, options = {}) {
+  const opts = Object.assign({
+    nodir: true
+  }, options);
+  return globby(glob, opts);
 }
 
 /**
@@ -79,16 +82,17 @@ function isGlob (candidate) {
  *  - {Function} contentFn(content, path): optional function to run over content
  * in files; defaults to a no-op
  *  - {String} encoding
- *
+ *  - {Object} globOpts gets passed to getFiles
  * @return {Promise} resolving to Array of Objects:
  *  - {String} path
  *  - {String || Mixed} contents: contents of file after contentFn
  */
 function readFiles (glob, {
   contentFn = (content, path) => content,
-  encoding = 'utf-8'
+  encoding = 'utf-8',
+  globOpts = {}
 } = {}) {
-  return getFiles(glob).then(paths => {
+  return getFiles(glob, globOpts).then(paths => {
     return Promise.all(paths.map(path => {
       return readFile(path, encoding)
         .then(contents => {
