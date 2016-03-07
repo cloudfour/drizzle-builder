@@ -36,6 +36,19 @@ describe ('utils', () => {
         done();
       });
     });
+    it ('should should respect glob options', () => {
+      var glob = path.join(__dirname, 'fixtures/helpers/**/*');
+      return utils.getFiles(glob, { nodir: false }).then(fileList => {
+        // This fileList should contain at least one directory
+        expect(Array.isArray(fileList)).to.be.true;
+        expect(fileList.filter(listEntry => {
+          // Make sure there is at least one entry in the Array
+          // with no "."s
+          return listEntry.indexOf('.') === -1;
+        })).to.have.length.of.at.least(1);
+
+      });
+    });
   });
   describe('isGlob', () => {
     it ('should correctly identify valid glob patterns', () => {

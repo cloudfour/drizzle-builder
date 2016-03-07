@@ -50,8 +50,8 @@ function removeLeadingNumbers (str) {
  * @param {glob} glob
  * @return {Promise} resolving to {Array} of files matching glob
  */
-function getFiles (glob) {
-  return globby(glob, { nodir: true });
+function getFiles (glob, { nodir = true } = {}) {
+  return globby(glob, { nodir });
 }
 
 /**
