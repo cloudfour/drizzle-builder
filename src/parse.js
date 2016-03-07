@@ -9,7 +9,7 @@ import * as utils from './utils';
  *  - {glob} layouts   glob of layout files to parse
  * @return {Promise} resolving to keyed file contents
  */
-function prepareLayouts ({layouts} = {}) {
+function parseLayouts ({layouts} = {}) {
   return utils.readFilesKeyed(layouts);
 }
 
@@ -22,7 +22,7 @@ function prepareLayouts ({layouts} = {}) {
  *   - {Function} parseFn parsing function for data
  * @return {Promise} resolving to keyed parsed file contents
  */
-function prepareDataData ({data, parseFn} = {}) {
+function parseData ({data, parseFn} = {}) {
   return utils.readFilesKeyed(data, { contentFn: parseFn });
 }
 
@@ -34,7 +34,7 @@ function prepareDataData ({data, parseFn} = {}) {
  *   - {glob} pages: glob representing where pages live
  * @return {Promise} resolving to {Object} contextual page data
  */
-function preparePages ({pages} = {}) {
+function parsePages ({pages} = {}) {
   // First, read pages files' content...
   return utils.readFilesKeyed(pages, {
     contentFn: (contents, path) => {
@@ -75,13 +75,9 @@ function preparePages ({pages} = {}) {
  * @param {Object} options
  * @return {Promise} resolving to {Object} of keyed file data
  */
-function prepareData (options) {
 
 
-}
-
-export { prepareData,
-         prepareDataData,
-         prepareLayouts,
-         preparePages
+export { parseData,
+         parseLayouts,
+         parsePages
        };

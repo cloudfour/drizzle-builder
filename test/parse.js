@@ -8,7 +8,7 @@ var yaml  = require('js-yaml');
 describe ('data', () => {
   describe('parsing layouts', () => {
     it ('should correctly parse layout files', () => {
-      return data.prepareLayouts({ layouts: path
+      return data.parseLayouts({ layouts: path
         .join(__dirname, 'fixtures/layouts/**/*.html') })
         .then(layoutData => {
           expect(layoutData).to.be.an('Object')
@@ -19,7 +19,7 @@ describe ('data', () => {
   });
   describe('parsing data', () => {
     it ('should correctly parse YAML data from files', () => {
-      return data.prepareDataData({
+      return data.parseData({
         data: path.join(__dirname, 'fixtures/data/**/*.yaml'),
         parseFn: (contents, path) => yaml.safeLoad(contents)
       }).then(dataData => {
@@ -30,7 +30,7 @@ describe ('data', () => {
       });
     });
     it ('should correctly parse JSON data from files', () => {
-      return data.prepareDataData({
+      return data.parseData({
         data: path.join(__dirname, 'fixtures/data/**/*.json'),
         parseFn: (contents, path) => JSON.parse(contents)
       }).then(dataData => {
@@ -43,7 +43,7 @@ describe ('data', () => {
   });
   describe('parsing pages', () => {
     it ('should correctly build data object from pages', () => {
-      return data.preparePages({ pages: path
+      return data.parsePages({ pages: path
         .join(__dirname, 'fixtures/pages/**/*.html') })
         .then(pageData => {
           expect(pageData).to.be.an('object');
@@ -52,7 +52,7 @@ describe ('data', () => {
         });
     });
     it ('should correctly parse front matter from pages', () => {
-      return data.preparePages({ pages: path
+      return data.parsePages({ pages: path
         .join(__dirname, 'fixtures/pages/**/*.html') })
         .then(pageData => {
           expect(pageData.pages.items.components)
@@ -63,7 +63,7 @@ describe ('data', () => {
         });
     });
     it ('should leave numbers intact in keys', () => {
-      return data.preparePages({ pages: path
+      return data.parsePages({ pages: path
         .join(__dirname, 'fixtures/pages/**/*.html') })
         .then(pageData => {
           expect(pageData.pages.items).to.contain.keys('04-sandbox');
