@@ -64,7 +64,21 @@ function parsePages ({pages} = {}) {
 }
 
 function parsePatterns ({patterns} = {}) {
-  return utils.getLocalDirs(patterns);
+  const patternData = {};
+  return utils.getLocalDirs(patterns).then(dirs => {
+    return utils.readFilesKeyed(patterns, {
+      contentFn: (contents, filepath) => {
+        const parent = utils.parentDirname(filepath);
+        const collection = utils.localDirname(filepath);
+        const isSubCollection = (dirs.indexOf(parent) > -1);
+        return {
+          parent,
+          collection,
+          isSubCollection
+        };
+      }
+    });
+  });
 }
 
 /**

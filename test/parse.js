@@ -73,8 +73,8 @@ describe ('data', () => {
   describe ('parsing patterns', () => {
     describe('directories and collections', () => {
       parse.parsePatterns({ patterns: config.fixturePath('patterns/**/*.html')})
-        .then(dirs => {
-          // @TODO console.log(dirs);
+        .then(fileData => {
+          //console.log(fileData);
         });
     });
   });
