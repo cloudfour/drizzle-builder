@@ -48,7 +48,7 @@ describe ('utils', () => {
       });
     });
   });
-  describe('dirGlob', () => {
+  describe('getDirs', () => {
     it ('should only return directories', () => {
       return utils.getDirs(config.fixturePath('helpers/**/*.js'))
         .then(dirs => {
@@ -57,6 +57,14 @@ describe ('utils', () => {
             // And should not contain immediate parent
             expect(path.basename(dir)).not.to.equal('helpers');
           });
+        });
+    });
+  });
+  describe ('getUniqueLocalDirs', () => {
+    it ('should only return unique local directories', () => {
+      return utils.getUniqueLocalDirs(config.fixturePath('patterns/**/*'))
+        .then(dirs => {
+          // @TODO
         });
     });
   });

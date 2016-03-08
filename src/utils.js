@@ -66,6 +66,12 @@ function getDirs (glob, options = {}) {
     opts);
 }
 
+function getUniqueLocalDirs (glob, options = {}) {
+  return getDirs(glob, options).then(dirList => {
+    return dirList.map(dir => path.basename(dir));
+  });
+}
+
 /**
  * @param {glob} glob
  * @return {Promise} resolving to {Array} of files matching glob
@@ -181,6 +187,7 @@ function titleCase (str) {
 
 export { dirname,
          getDirs,
+         getUniqueLocalDirs,
          getFiles,
          isGlob,
          keyname,

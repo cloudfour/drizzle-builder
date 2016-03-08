@@ -63,9 +63,9 @@ function parsePages ({pages} = {}) {
   });
 }
 
-// function preparePatterns () {
-//
-// }
+function parsePatterns ({patterns} = {}) {
+  return utils.getUniqueLocalDirs(patterns);
+}
 
 /**
  * Build a data/context object for use by the builder
@@ -79,5 +79,6 @@ function parsePages ({pages} = {}) {
 
 export { parseData,
          parseLayouts,
-         parsePages
+         parsePages,
+         parsePatterns
        };
