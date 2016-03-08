@@ -1,15 +1,17 @@
 /* global describe, it */
 var chai = require('chai');
+var config = require('./config');
+
 var expect = chai.expect;
-var data = require('../dist/parse');
-var path  = require('path');
+var parse = require('../dist/parse');
 var yaml  = require('js-yaml');
 
 describe ('data', () => {
   describe('parsing layouts', () => {
     it ('should correctly parse layout files', () => {
-      return data.parseLayouts({ layouts: path
-        .join(__dirname, 'fixtures/layouts/**/*.html') })
+      return parse.parseLayouts({
+        layouts: config.fixtures + 'layouts/**/*.html'
+      })
         .then(layoutData => {
           expect(layoutData).to.be.an('Object')
             .and.to.contain.keys('default');
@@ -19,8 +21,8 @@ describe ('data', () => {
   });
   describe('parsing data', () => {
     it ('should correctly parse YAML data from files', () => {
-      return data.parseData({
-        data: path.join(__dirname, 'fixtures/data/**/*.yaml'),
+      return parse.parseData({
+        data: config.fixtures + 'data/**/*.yaml',
         parseFn: (contents, path) => yaml.safeLoad(contents)
       }).then(dataData => {
         expect(dataData).to.be.an('Object')
@@ -30,8 +32,8 @@ describe ('data', () => {
       });
     });
     it ('should correctly parse JSON data from files', () => {
-      return data.parseData({
-        data: path.join(__dirname, 'fixtures/data/**/*.json'),
+      return parse.parseData({
+        data: config.fixtures + '/data/**/*.json',
         parseFn: (contents, path) => JSON.parse(contents)
       }).then(dataData => {
         expect(dataData).to.be.an('Object')
@@ -43,8 +45,7 @@ describe ('data', () => {
   });
   describe('parsing pages', () => {
     it ('should correctly build data object from pages', () => {
-      return data.parsePages({ pages: path
-        .join(__dirname, 'fixtures/pages/**/*.html') })
+      return parse.parsePages({ pages: config.fixtures + 'pages/**/*.html' })
         .then(pageData => {
           expect(pageData).to.be.an('object');
           expect(pageData).to.contain.keys('pages');
@@ -52,8 +53,7 @@ describe ('data', () => {
         });
     });
     it ('should correctly parse front matter from pages', () => {
-      return data.parsePages({ pages: path
-        .join(__dirname, 'fixtures/pages/**/*.html') })
+      return parse.parsePages({ pages: config.fixtures + 'pages/**/*.html' })
         .then(pageData => {
           expect(pageData.pages.items.components)
             .to.contain.keys('name', 'data');
@@ -63,10 +63,57 @@ describe ('data', () => {
         });
     });
     it ('should leave numbers intact in keys', () => {
-      return data.parsePages({ pages: path
-        .join(__dirname, 'fixtures/pages/**/*.html') })
+      return parse.parsePages({ pages: config.fixtures + 'pages/**/*.html' })
         .then(pageData => {
           expect(pageData.pages.items).to.contain.keys('04-sandbox');
+        });
+    });
+  });
+
+  describe ('parsing patterns', () => {
+    it ('builds an object organized by directories', () => {
+      return parse.parsePatterns({
+        patterns: config.fixturePath('patterns/**/*.html'),
+        patternKey: 'patterns'
+      })
+        .then(patternData => {
+          expect(patternData).to.contain.keys('patterns');
+          expect(patternData.patterns.items).to.contain.keys(
+            '01-fingers', 'components', 'pink');
+          expect(patternData.patterns.items.components.items).to.contain.keys(
+            'button', 'orange');
+        });
+    });
+    it ('structures each level of object correctly', () => {
+      return parse.parsePatterns({
+        patterns: config.fixturePath('patterns/**/*.html'),
+        patternKey: 'patterns'
+      })
+        .then(patternData => {
+          var aPatternObj = patternData.patterns.items['01-fingers'];
+          expect(aPatternObj).to.contain.keys(
+            'name', 'items'
+          );
+          expect(aPatternObj.name).to.equal('Fingers');
+          expect(aPatternObj.items).to.be.an('object');
+          expect(aPatternObj.items.pamp).to.be.an('object');
+          expect(aPatternObj.items.pamp).to.contain.keys(
+            'name', 'id', 'data', 'contents'
+          );
+        });
+    });
+    it ('parses and creates correct value types', () => {
+      return parse.parsePatterns({
+        patterns: config.fixturePath('patterns/**/*.html'),
+        patternKey: 'patterns'
+      })
+        .then(patternData => {
+          var aPatternObj = patternData.patterns.items['01-fingers'].items.pamp;
+          expect(aPatternObj.name).to.be.a('string').and.to.equal('Pamp');
+          expect(aPatternObj.id).to.be.a('string').and.to.equal(
+            'patterns.01-fingers.pamp');
+          expect(aPatternObj.data).to.be.an('object');
+          expect(aPatternObj.contents).to.be.a('string');
         });
     });
   });

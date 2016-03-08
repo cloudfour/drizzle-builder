@@ -1,77 +1,68 @@
 /* global describe, it */
 var chai       = require('chai');
+var config     = require('./config');
 var expect     = chai.expect;
 var Handlebars = require('handlebars');
 var template = require('../dist/template');
 
-describe ('template functions', () => {
-  describe ('preparing templates', () => {
-    describe ('preparing both helpers and partials', () => {
-      it('should register appropriate helpers and partials', done => {
-        template.prepareTemplates({
-          handlebars: Handlebars,
-          helpers: `${__dirname}/fixtures/helpers/*.js`,
-          partials: `${__dirname}/fixtures/partials/*`
-        }).then(handlebars => {
-          expect(handlebars.partials).to.contain.keys('menu', 'header');
-          expect(handlebars.helpers).to.contain.keys('toSlug', 'toJSON');
-          done();
-        });
+describe ('templates', () => {
+  var opts = {
+    handlebars: Handlebars,
+    helpers: config.fixturePath('helpers/*.js'),
+    partials: config.fixturePath('partials/*')
+  };
+  describe('helpers and partials', () => {
+    it ('should register correct helpers and partials', () => {
+      return template.prepareTemplates(opts).then(handlebars => {
+        expect(handlebars.partials).to.contain.keys('menu', 'header');
+        expect(handlebars.helpers).to.contain.keys('toSlug', 'toJSON');
       });
     });
-    describe ('preparing helpers', () => {
-      it ('should accept a string glob for helpers', done => {
-        template.prepareHelpers(Handlebars,
-            `${__dirname}/fixtures/helpers/*.js`)
+
+    describe ('helpers', () => {
+      it ('should acept a string glob for helpers', () => {
+        return template.prepareHelpers(Handlebars,
+          config.fixturePath('helpers/*.js'))
           .then(registeredPartials => {
-            expect(registeredPartials).to.contain.keys('toJSON',
-              'toSlug', 'toFraction');
-            done();
+            expect(registeredPartials).to.contain.keys('toJSON', 'toSlug',
+              'toFraction');
           });
       });
-
-      it ('should accept an array glob for helpers', done => {
-        template.prepareHelpers(Handlebars,
-            [`${__dirname}/fixtures/helpers/*.js`,
-             `${__dirname}/fixtures/helpers/moar-helpers/*.js`])
+      it ('should accept an array glob for helpers', () => {
+        return template.prepareHelpers(Handlebars,
+            [config.fixturePath('helpers/*.js'),
+             config.fixturePath('helpers/moar-helpers/*.js')])
           .then(registeredHelpers => {
             expect(registeredHelpers).to.contain.keys('toJSON',
               'toSlug', 'toFraction', 'random', 'toFixed', 'toTitle');
-            done();
           });
       });
-
-      it ('should accept an object with keyed helpers', done => {
-        template.prepareHelpers(Handlebars,
+      it ('should accept an object with keyed helpers', () => {
+        return template.prepareHelpers(Handlebars,
             { toJSON: str => str })
           .then(registeredHelpers => {
             expect(registeredHelpers).to.contain.keys('toJSON');
-            done();
           });
       });
 
-      it ('should behave acceptably if no helpers are passed', done => {
-        template.prepareHelpers(Handlebars)
+      it ('should behave acceptably if no helpers are passed', () => {
+        return template.prepareHelpers(Handlebars)
           .then(registeredHelpers => {
             expect(registeredHelpers).to.be.ok;
-            done();
           });
       });
     });
-
-    describe('preparing partials', () => {
-      it ('should accept a glob', done => {
-        template.preparePartials(Handlebars, `${__dirname}/fixtures/partials/*`)
+    describe ('partials', () => {
+      it ('should accept a glob for partials', () => {
+        template.preparePartials(Handlebars, config.fixturePath('partials/*'))
           .then(partials => {
             expect(partials).to.contain.keys('menu', 'header');
-            done();
           });
       });
-      it ('should behave acceptably if no partials passed', done => {
+      it ('should behave acceptably if no partials passed', () => {
         template.preparePartials(Handlebars)
           .then(registeredPartials => {
             expect(registeredPartials).to.be.ok;
-            done();
           });
       });
     });

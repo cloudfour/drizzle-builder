@@ -63,21 +63,67 @@ function parsePages ({pages} = {}) {
   });
 }
 
-// function preparePatterns () {
-//
-// }
+/**
+ * Retrieve the reference in the nested patterns
+ * object that is at the right spot to insert data about
+ * a pattern in the path indicated by pathKeys.
+ *
+ * If any object references don't exist as the path is traversed,
+ * the correct shape for one will be created on the patterns object.
+ *
+ * @example getPatternEntry(['patterns', 'foo', 'bar']);
+ *  // --> patterns.patterns.foo.bar.items
+ * @param {Array} pathKeys path elements relative to patterns dir
+ * @param {Object} patterns data object so far
+ */
+function getPatternEntry (pathKeys, patterns) {
+  return pathKeys.reduce((prev, curr) => {
+    prev[curr] = prev[curr] || {
+      name: utils.titleCase(utils.keyname(curr)),
+      items: {}
+    };
+    return prev[curr].items;
+  }, patterns);
+}
 
 /**
- * Build a data/context object for use by the builder
- * @TODO This may move into its own module if it seems appropriate
- * @TODO Make this testable
+ * Parse patterns files and build data object.
  *
- * @param {Object} options
- * @return {Promise} resolving to {Object} of keyed file data
+ * @param {Object} options with:
+ *   {glob} patterns   Where to look for patterns files
+ *   {patternKey}      String key for patterns directory, naming
+ * @TODO I still don't like the coupling between patternKey and directories
+ * @return {Object} Fully-built patterns data object
  */
-
+function parsePatterns ({patterns, patternKey} = {}) {
+  const patternData = {};
+  return utils.readFiles(patterns, {
+    contentFn: (contents, path) => frontMatter(contents)
+  }).then(fileData => {
+    fileData.forEach(patternFile => {
+      const keys = utils.relativePathArray(patternFile.path, patternKey);
+      const entryKey = utils.keyname(patternFile.path, { stripNumbers: false });
+      const pathKey = utils.keyname(patternFile.path);
+      getPatternEntry(keys, patternData)[entryKey] = {
+        name: utils.titleCase(pathKey),
+        id  : keys.concat(pathKey).join('.'),
+        data: patternFile.contents.attributes,
+        contents: patternFile.contents.body
+      };
+    });
+    // @TODO Figure out how to emulate "local namespacing" of HBS vars
+    // so that one can reference data from front matter in patterns
+    // @TODO Run some fields through markdown
+    // @TODO Do we need to trim whitespace from pattern content?
+    // @TODO Do we need to store pattern data on another object as well?
+    // @TODO Do we need any further sorting?
+    // @TODO Need to register Handlebars partial
+    return patternData;
+  });
+}
 
 export { parseData,
          parseLayouts,
-         parsePages
+         parsePages,
+         parsePatterns
        };

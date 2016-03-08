@@ -4,37 +4,61 @@ var expect = chai.expect;
 var parseOptions = require('../dist/options');
 var translateOptions = parseOptions.translator;
 
-describe ('drizzle-builder', () => {
+describe ('options', () => {
   var keys = [
     'data',
     'dataFn',
     'handlebars',
     'helpers',
+    'keys',
     'layouts',
     'pages',
-    'partials'
+    'partials',
+    'patterns'
   ];
-  describe ('options', () => {
+  describe ('options parsing', () => {
     describe('generating options', () => {
       it ('should not require options to be passed', () => {
         var opts = parseOptions();
         expect(opts).to.be.an('object');
       });
+      it ('should provide default templating options', () => {
+        var opts = parseOptions();
+        expect(opts).to.contain.keys(keys);
+        expect(opts.handlebars).to.be.an('object');
+        expect(opts.dataFn).to.be.a('function');
+      });
+      it ('should derive naming keys', () => {
+        var opts = parseOptions();
+        expect(opts.keys).to.be.an('object');
+        expect(opts.keys).to.contain.keys('patterns');
+      });
     });
-    describe ('translating options from fabricator', () => {
-      // This PASSES. Where on Earth are the `undefined`s coming from?
-      it ('should work', () => {
+    describe ('translateOptions', () => {
+      it ('should translate old properties', () => {
         var translated = translateOptions({
-          views: 'myViews'
+          data: 'foo/bar/baz.yml',
+          materials: 'src/materials/**',
+          views: 'myViews',
+          layoutIncludes: 'a path',
+          keys: {
+            materials: 'materials'
+          }
         });
         expect(translated).to.contain.keys(keys);
-        expect(translated).not.to.contain.keys('views');
+        expect(translated).not.to.contain.keys('views',
+          'materials', 'layoutIncludes');
+        expect(translated).to.contain.keys('pages', 'patterns', 'layouts');
+        expect(translated.keys).to.contain.keys('patterns');
+        expect(translated.keys.patterns).to.equal('materials');
       });
-      it ('should translate template options', () => {
+
+      it ('should translate and parse options correctly', () => {
         var opts = parseOptions({
           data: 'foo/bar/baz.yml',
+          materials: 'src/materials/**',
+          views: 'myViews',
           layoutIncludes: 'a path',
-          views: 'a path to views'
         });
         expect(opts).to.be.an('object');
         expect(opts.data).to.be.a('string');
@@ -44,18 +68,9 @@ describe ('drizzle-builder', () => {
         expect(opts.pages).to.be.a('string');
         expect(opts.partials).to.be.a('string');
         expect(opts.helpers).to.be.an('object').and.to.be.empty;
-        expect(opts).to.contain.keys('layouts', 'partials');
+        expect(opts).to.contain.keys('layouts', 'partials', 'patterns');
       });
     });
 
-    describe('default options', () => {
-
-      it ('should provide default templating options', () => {
-        var opts = parseOptions();
-        expect(opts).to.contain.keys(keys);
-        expect(opts.handlebars).to.be.an('object');
-        expect(opts.dataFn).to.be.a('function');
-      });
-    });
   });
 });
