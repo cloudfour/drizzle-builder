@@ -97,7 +97,9 @@ function getPatternEntry (pathKeys, patterns) {
  */
 function parsePatterns ({patterns, patternKey} = {}) {
   const patternData = {};
-  return utils.readFiles(patterns).then(fileData => {
+  return utils.readFiles(patterns, {
+    contentFn: (contents, path) => frontMatter(contents)
+  }).then(fileData => {
     fileData.forEach(patternFile => {
       const keys = utils.relativePathArray(patternFile.path, patternKey);
       const entryKey = utils.keyname(patternFile.path, { stripNumbers: false });
@@ -105,12 +107,13 @@ function parsePatterns ({patterns, patternKey} = {}) {
       getPatternEntry(keys, patternData)[entryKey] = {
         name: utils.titleCase(pathKey),
         id  : keys.concat(pathKey).join('.'),
-        data: frontMatter(patternFile.contents).attributes,
-        contents: patternFile.contents
+        data: patternFile.contents.attributes,
+        contents: patternFile.contents.body
       };
     });
     // @TODO Figure out how to emulate "local namespacing" of HBS vars
     // so that one can reference data from front matter in patterns
+    // @TODO Run some fields through markdown
     // @TODO Do we need to trim whitespace from pattern content?
     // @TODO Do we need to store pattern data on another object as well?
     // @TODO Do we need any further sorting?

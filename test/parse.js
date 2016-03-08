@@ -70,14 +70,50 @@ describe ('data', () => {
     });
   });
 
-  describe.only ('parsing patterns', () => {
-    it ('directories and collections', () => {
+  describe ('parsing patterns', () => {
+    it ('builds an object organized by directories', () => {
       return parse.parsePatterns({
         patterns: config.fixturePath('patterns/**/*.html'),
         patternKey: 'patterns'
       })
-        .then(fileData => {
-          console.log(JSON.stringify(fileData, null, '  '));
+        .then(patternData => {
+          expect(patternData).to.contain.keys('patterns');
+          expect(patternData.patterns.items).to.contain.keys(
+            '01-fingers', 'components', 'pink');
+          expect(patternData.patterns.items.components.items).to.contain.keys(
+            'button', 'orange');
+        });
+    });
+    it ('structures each level of object correctly', () => {
+      return parse.parsePatterns({
+        patterns: config.fixturePath('patterns/**/*.html'),
+        patternKey: 'patterns'
+      })
+        .then(patternData => {
+          var aPatternObj = patternData.patterns.items['01-fingers'];
+          expect(aPatternObj).to.contain.keys(
+            'name', 'items'
+          );
+          expect(aPatternObj.name).to.equal('Fingers');
+          expect(aPatternObj.items).to.be.an('object');
+          expect(aPatternObj.items.pamp).to.be.an('object');
+          expect(aPatternObj.items.pamp).to.contain.keys(
+            'name', 'id', 'data', 'contents'
+          );
+        });
+    });
+    it ('parses and creates correct value types', () => {
+      return parse.parsePatterns({
+        patterns: config.fixturePath('patterns/**/*.html'),
+        patternKey: 'patterns'
+      })
+        .then(patternData => {
+          var aPatternObj = patternData.patterns.items['01-fingers'].items.pamp;
+          expect(aPatternObj.name).to.be.a('string').and.to.equal('Pamp');
+          expect(aPatternObj.id).to.be.a('string').and.to.equal(
+            'patterns.01-fingers.pamp');
+          expect(aPatternObj.data).to.be.an('object');
+          expect(aPatternObj.contents).to.be.a('string');
         });
     });
   });
