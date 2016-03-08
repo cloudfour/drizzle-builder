@@ -95,39 +95,28 @@ function getPatternEntry (pathKeys, patterns) {
 }
 
 /**
- * Add a pattern to the patterns object. Will mutate the patterns obj.
- *
- * @param {Object newPattern}  Returned file object with {contents, path}
- * @param {Object}  Patterns object so far; to be extended
- * @param {Object}  Options with {patternKey}
- *
- * @return {Object} The new pattern entry.
- */
-function addPattern (newPattern, patterns, {patternKey = 'patterns'} = {}) {
-  const keys = relativePathArray(newPattern.path, patternKey);
-
-  const patternEntry = getPatternEntry(keys, patterns);
-
-  patternEntry[utils.keyname(newPattern.path)] = {
-    name: utils.titleCase(utils.keyname(newPattern.path)),
-    id: keys.join('.') + '.' + utils.keyname(newPattern.path),
-    data: 'foo'
-  };
-  return patternEntry;
-}
-
-/**
  * Parse patterns files and build data object.
  *
- * @param {Object} options with {patterns} (glob)
+ * @param {Object} options with:
+ *   {glob} patterns   Where to look for patterns files
+ *   {patternKey}      String key for patterns directory, naming
+ * @TODO I still don't like the coupling between patternKey and directories
  * @return {Object} Fully-built patterns data object
  */
-function parsePatterns ({patterns} = {}) {
-  const patternKey = 'patterns';  // @TODO Complete; make option
+function parsePatterns ({patterns, patternKey} = {}) {
   const patternData = {};
-  return utils.readFiles(patterns).then(fileData => {
-    fileData.forEach(fileEntry => {
-      addPattern(fileEntry, patternData, { patternKey });
+  return utils.readFiles(patterns, {
+    contentFn: (contents, path) => frontMatter(contents).attributes
+  }).then(fileData => {
+    fileData.forEach(patternFile => {
+      const keys = relativePathArray(patternFile.path, patternKey);
+      const entryKey = utils.keyname(patternFile.path, { stripNumbers: false });
+      const pathKey = utils.keyname(patternFile.path);
+      getPatternEntry(keys, patternData)[entryKey] = {
+        name: utils.titleCase(pathKey),
+        id  : keys.concat(pathKey).join('.'),
+        data: patternFile.contents
+      };
     });
     return patternData;
   });
