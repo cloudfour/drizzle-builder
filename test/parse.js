@@ -71,10 +71,12 @@ describe ('data', () => {
   });
 
   describe ('parsing patterns', () => {
-    describe('directories and collections', () => {
-      parse.parsePatterns({ patterns: config.fixturePath('patterns/**/*.html')})
+    it ('directories and collections', () => {
+      return parse.parsePatterns({
+        patterns: config.fixturePath('patterns/**/*.html')
+      })
         .then(fileData => {
-          //console.log(fileData);
+          //console.log(JSON.stringify(fileData, null, '  '));
         });
     });
   });

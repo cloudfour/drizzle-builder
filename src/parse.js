@@ -1,5 +1,6 @@
 import frontMatter from 'front-matter';
 import * as utils from './utils';
+import * as path from 'path';
 
 /**
  * Read files in options.layouts and key them
@@ -63,21 +64,41 @@ function parsePages ({pages} = {}) {
   });
 }
 
+function relativePathArray (filePath, fromPath) {
+  const pathChunks = path.dirname(filePath).split(path.sep);
+  return pathChunks.slice(pathChunks.indexOf(fromPath));
+}
+
+function getPatternEntry (pathKeys, patterns) {
+  return pathKeys.reduce((prev, curr) => {
+    prev[curr] = prev[curr] || {
+      name: utils.titleCase(utils.keyname(curr)),
+      items: {}
+    };
+    return prev[curr].items;
+  }, patterns);
+}
+
+function addPattern (newPattern, patterns, {patternKey = 'patterns'} = {}) {
+  const keys = relativePathArray(newPattern.path, patternKey);
+
+  const patternEntry = getPatternEntry(keys, patterns);
+  patternEntry[utils.keyname(newPattern.path)] = {
+    name: utils.titleCase(utils.keyname(newPattern.path)),
+    data: 'foo'
+  };
+  return patternEntry;
+}
+
 function parsePatterns ({patterns} = {}) {
+  const patternKey = 'patterns';  // @TODO Complete; make option
   const patternData = {};
-  return utils.getLocalDirs(patterns).then(dirs => {
-    return utils.readFilesKeyed(patterns, {
-      contentFn: (contents, filepath) => {
-        const parent = utils.parentDirname(filepath);
-        const collection = utils.localDirname(filepath);
-        const isSubCollection = (dirs.indexOf(parent) > -1);
-        return {
-          parent,
-          collection,
-          isSubCollection
-        };
-      }
+  return utils.readFiles(patterns).then(fileData => {
+    fileData.forEach(fileEntry => {
+      // Generate array of relevant path components
+      addPattern(fileEntry, patternData, { patternKey });
     });
+    return patternData;
   });
 }
 
