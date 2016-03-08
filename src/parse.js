@@ -64,7 +64,7 @@ function parsePages ({pages} = {}) {
 }
 
 function parsePatterns ({patterns} = {}) {
-  return utils.getUniqueLocalDirs(patterns);
+  return utils.getLocalDirs(patterns);
 }
 
 /**
