@@ -46,6 +46,26 @@ function parentDirname (filepath) {
 function removeLeadingNumbers (str) {
   return str.replace(/^[0-9|\.\-]+/, '');
 }
+
+/**
+ * Take a given glob and convert it to a glob that will match directories
+ * (instead of files). Return Promise that resolves to matching dirs.
+ *
+ * @example getDirs('foo/bar/baz')
+ *
+ * @param {glob}    glob to convert to directory glob
+ * @param {Object}  options to pass on to getFiles/globby
+ * @return {Promise} resolving to glob matches
+ */
+function getDirs (glob, options = {}) {
+  const opts = Object.assign({
+    nodir: false
+  }, options);
+  const dirGlob = (typeof glob === 'string') ? Array.of(glob) : glob;
+  return getFiles(dirGlob.map(dirEntry => path.dirname(dirEntry) + '/*/'),
+    opts);
+}
+
 /**
  * @param {glob} glob
  * @return {Promise} resolving to {Array} of files matching glob
@@ -160,6 +180,7 @@ function titleCase (str) {
 
 
 export { dirname,
+         getDirs,
          getFiles,
          isGlob,
          keyname,

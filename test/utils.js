@@ -2,6 +2,7 @@
 var chai = require('chai');
 var expect = chai.expect;
 var config = require('./config');
+var path = require('path');
 var utils = require('../dist/utils');
 
 describe ('utils', () => {
@@ -41,12 +42,22 @@ describe ('utils', () => {
         // This fileList should contain at least one directory
         expect(Array.isArray(fileList)).to.be.true;
         expect(fileList.filter(listEntry => {
-          // Make sure there is at least one entry in the Array
-          // with no "."s
-          return listEntry.indexOf('.') === -1;
+          return path.extname(listEntry).length === 0;
         })).to.have.length.of.at.least(1);
 
       });
+    });
+  });
+  describe('dirGlob', () => {
+    it ('should only return directories', () => {
+      return utils.getDirs(config.fixturePath('helpers/**/*.js'))
+        .then(dirs => {
+          dirs.forEach(dir => {
+            expect(path.extname(dir)).to.be.empty;
+            // And should not contain immediate parent
+            expect(path.basename(dir)).not.to.equal('helpers');
+          });
+        });
     });
   });
   describe('isGlob', () => {
