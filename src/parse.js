@@ -1,6 +1,5 @@
 import frontMatter from 'front-matter';
 import * as utils from './utils';
-import * as path from 'path';
 
 /**
  * Read files in options.layouts and key them
@@ -64,13 +63,6 @@ function parsePages ({pages} = {}) {
   });
 }
 
-function relativePathArray (filePath, fromPath) {
-  const pathChunks = path.dirname(filePath).split(path.sep).map(chunk => {
-    return utils.keyname(chunk, { stripNumbers: false });
-  });
-  return pathChunks.slice(pathChunks.indexOf(fromPath));
-}
-
 /**
  * Retrieve the reference in the nested patterns
  * object that is at the right spot to insert data about
@@ -105,19 +97,24 @@ function getPatternEntry (pathKeys, patterns) {
  */
 function parsePatterns ({patterns, patternKey} = {}) {
   const patternData = {};
-  return utils.readFiles(patterns, {
-    contentFn: (contents, path) => frontMatter(contents).attributes
-  }).then(fileData => {
+  return utils.readFiles(patterns).then(fileData => {
     fileData.forEach(patternFile => {
-      const keys = relativePathArray(patternFile.path, patternKey);
+      const keys = utils.relativePathArray(patternFile.path, patternKey);
       const entryKey = utils.keyname(patternFile.path, { stripNumbers: false });
       const pathKey = utils.keyname(patternFile.path);
       getPatternEntry(keys, patternData)[entryKey] = {
         name: utils.titleCase(pathKey),
         id  : keys.concat(pathKey).join('.'),
-        data: patternFile.contents
+        data: frontMatter(patternFile.contents).attributes,
+        contents: patternFile.contents
       };
     });
+    // @TODO Figure out how to emulate "local namespacing" of HBS vars
+    // so that one can reference data from front matter in patterns
+    // @TODO Do we need to trim whitespace from pattern content?
+    // @TODO Do we need to store pattern data on another object as well?
+    // @TODO Do we need any further sorting?
+    // @TODO Need to register Handlebars partial
     return patternData;
   });
 }

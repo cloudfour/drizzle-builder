@@ -192,6 +192,24 @@ function titleCase (str) {
     .replace(/\w\S*/g, word => word.charAt(0).toUpperCase() + word.substr(1));
 }
 
+/**
+ * Given a file's path and a string representing a directory name,
+ * return an Array that only contains directories at or beneath that
+ * directory.
+ *
+ * @example relativePathArray('/foo/bar/baz/ding/dong/tink.txt', 'baz')
+ *  // -> ['baz', 'ding', 'dong']
+ * @param {String} filePath
+ * @param {String} fromPath
+ * @return {Array}
+ */
+function relativePathArray (filePath, fromPath) {
+  const pathChunks = path.dirname(filePath).split(path.sep).map(chunk => {
+    return keyname(chunk, { stripNumbers: false });
+  });
+  return pathChunks.slice(pathChunks.indexOf(fromPath));
+}
+
 export { dirname,
          getDirs,
          getLocalDirs,
@@ -202,5 +220,6 @@ export { dirname,
          parentDirname,
          readFiles,
          readFilesKeyed,
+         relativePathArray,
          titleCase
        };
