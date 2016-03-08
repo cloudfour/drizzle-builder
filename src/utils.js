@@ -192,7 +192,6 @@ function titleCase (str) {
     .replace(/\w\S*/g, word => word.charAt(0).toUpperCase() + word.substr(1));
 }
 
-
 export { dirname,
          getDirs,
          getLocalDirs,

@@ -6,6 +6,9 @@ const defaults = {
   dataFn: (contents, path) => yaml.safeLoad(contents),
   handlebars: Handlebars,
   helpers   : {},
+  keys      : {
+    patterns: 'patterns'
+  },
   layouts   : ['src/layouts/*'],
   pages     : ['src/pages/**/*'],
   partials  : ['src/partials/**/*'],
@@ -16,12 +19,15 @@ const defaults = {
  * Merge defaults into options.
  * @return {object} merged options
  */
-function mergeDefaults (options = {}) {
+function mergeDefaults (defaultOpts, options = {}) {
   // Please don't hate me
   Object.keys(options).map(key => {
     if (typeof options[key] === 'undefined') { delete options[key]; }
+    if (typeof options[key] === 'object') {
+      options[key] = mergeDefaults(defaultOpts[key], options[key]);
+    }
   });
-  return Object.assign({}, defaults, options);
+  return Object.assign({}, defaultOpts, options);
 }
 
 /**
@@ -47,6 +53,10 @@ function translateOptions (options = {}) {
     layoutIncludes: partials
   } = options;
 
+  const {
+    materials: patternKey
+  } = options.keys || {};
+
   const result = {
     data,
     dataFn,
@@ -58,10 +68,14 @@ function translateOptions (options = {}) {
     partials
   };
 
+  result.keys = {
+    patterns: patternKey
+  };
   return result;
 }
 
-const parseOptions = options => mergeDefaults(translateOptions(options));
+const parseOptions = options => mergeDefaults(defaults,
+  translateOptions(options));
 
 /**
  * Sigh...

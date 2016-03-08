@@ -65,7 +65,9 @@ function parsePages ({pages} = {}) {
 }
 
 function relativePathArray (filePath, fromPath) {
-  const pathChunks = path.dirname(filePath).split(path.sep);
+  const pathChunks = path.dirname(filePath).split(path.sep).map(chunk => {
+    return utils.keyname(chunk, { stripNumbers: false });
+  });
   return pathChunks.slice(pathChunks.indexOf(fromPath));
 }
 
@@ -108,6 +110,7 @@ function addPattern (newPattern, patterns, {patternKey = 'patterns'} = {}) {
 
   patternEntry[utils.keyname(newPattern.path)] = {
     name: utils.titleCase(utils.keyname(newPattern.path)),
+    id: keys.join('.') + '.' + utils.keyname(newPattern.path),
     data: 'foo'
   };
   return patternEntry;

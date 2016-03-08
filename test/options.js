@@ -10,6 +10,7 @@ describe ('options', () => {
     'dataFn',
     'handlebars',
     'helpers',
+    'keys',
     'layouts',
     'pages',
     'partials',
@@ -27,6 +28,11 @@ describe ('options', () => {
         expect(opts.handlebars).to.be.an('object');
         expect(opts.dataFn).to.be.a('function');
       });
+      it ('should derive naming keys', () => {
+        var opts = parseOptions();
+        expect(opts.keys).to.be.an('object');
+        expect(opts.keys).to.contain.keys('patterns');
+      });
     });
     describe ('translateOptions', () => {
       it ('should translate old properties', () => {
@@ -35,12 +41,16 @@ describe ('options', () => {
           materials: 'src/materials/**',
           views: 'myViews',
           layoutIncludes: 'a path',
+          keys: {
+            materials: 'materials'
+          }
         });
         expect(translated).to.contain.keys(keys);
         expect(translated).not.to.contain.keys('views',
           'materials', 'layoutIncludes');
         expect(translated).to.contain.keys('pages', 'patterns', 'layouts');
-
+        expect(translated.keys).to.contain.keys('patterns');
+        expect(translated.keys.patterns).to.equal('materials');
       });
 
       it ('should translate and parse options correctly', () => {

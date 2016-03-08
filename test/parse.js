@@ -76,7 +76,7 @@ describe ('data', () => {
         patterns: config.fixturePath('patterns/**/*.html')
       })
         .then(fileData => {
-          //console.log(JSON.stringify(fileData, null, '  '));
+          // console.log(JSON.stringify(fileData, null, '  '));
         });
     });
   });
