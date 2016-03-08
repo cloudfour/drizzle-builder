@@ -69,6 +69,19 @@ function relativePathArray (filePath, fromPath) {
   return pathChunks.slice(pathChunks.indexOf(fromPath));
 }
 
+/**
+ * Retrieve the reference in the nested patterns
+ * object that is at the right spot to insert data about
+ * a pattern in the path indicated by pathKeys.
+ *
+ * If any object references don't exist as the path is traversed,
+ * the correct shape for one will be created on the patterns object.
+ *
+ * @example getPatternEntry(['patterns', 'foo', 'bar']);
+ *  // --> patterns.patterns.foo.bar.items
+ * @param {Array} pathKeys path elements relative to patterns dir
+ * @param {Object} patterns data object so far
+ */
 function getPatternEntry (pathKeys, patterns) {
   return pathKeys.reduce((prev, curr) => {
     prev[curr] = prev[curr] || {
@@ -79,10 +92,20 @@ function getPatternEntry (pathKeys, patterns) {
   }, patterns);
 }
 
+/**
+ * Add a pattern to the patterns object. Will mutate the patterns obj.
+ *
+ * @param {Object newPattern}  Returned file object with {contents, path}
+ * @param {Object}  Patterns object so far; to be extended
+ * @param {Object}  Options with {patternKey}
+ *
+ * @return {Object} The new pattern entry.
+ */
 function addPattern (newPattern, patterns, {patternKey = 'patterns'} = {}) {
   const keys = relativePathArray(newPattern.path, patternKey);
 
   const patternEntry = getPatternEntry(keys, patterns);
+
   patternEntry[utils.keyname(newPattern.path)] = {
     name: utils.titleCase(utils.keyname(newPattern.path)),
     data: 'foo'
@@ -90,27 +113,22 @@ function addPattern (newPattern, patterns, {patternKey = 'patterns'} = {}) {
   return patternEntry;
 }
 
+/**
+ * Parse patterns files and build data object.
+ *
+ * @param {Object} options with {patterns} (glob)
+ * @return {Object} Fully-built patterns data object
+ */
 function parsePatterns ({patterns} = {}) {
   const patternKey = 'patterns';  // @TODO Complete; make option
   const patternData = {};
   return utils.readFiles(patterns).then(fileData => {
     fileData.forEach(fileEntry => {
-      // Generate array of relevant path components
       addPattern(fileEntry, patternData, { patternKey });
     });
     return patternData;
   });
 }
-
-/**
- * Build a data/context object for use by the builder
- * @TODO This may move into its own module if it seems appropriate
- * @TODO Make this testable
- *
- * @param {Object} options
- * @return {Promise} resolving to {Object} of keyed file data
- */
-
 
 export { parseData,
          parseLayouts,
