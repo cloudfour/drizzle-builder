@@ -5,6 +5,7 @@ var config = require('./config');
 var expect = chai.expect;
 var parse = require('../dist/parse');
 var yaml  = require('js-yaml');
+var marked = require('marked');
 
 describe ('data', () => {
   describe('parsing layouts', () => {
@@ -41,6 +42,19 @@ describe ('data', () => {
         expect(dataData['data-as-json']).to.be.an('Object')
           .and.to.contain.keys('foo', 'fortunately');
       });
+    });
+  });
+  describe('parsing docs', () => {
+    it ('should build an object with docs files', () => {
+      return parse.parseDocs({
+        docs: config.fixturePath('docs/**/*.md'),
+        parseFn: (contents, path) => marked(contents)
+      })
+        .then(docData => {
+          expect(docData).to.contain.keys('doThis');
+          expect(docData.doThis).to.be.a('string');
+          expect(docData.doThis).to.contain('<ul>');
+        });
     });
   });
   describe('parsing pages', () => {

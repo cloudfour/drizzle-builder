@@ -27,6 +27,19 @@ function parseData ({data, parseFn} = {}) {
 }
 
 /**
+ * Read and parse files in options.docs and parse them
+ * with options.parseFn
+ *
+ * @param {Object} options with
+ *   - {glob} docs        glob of docs files to parse
+ *   - {Function} parseFn parsing function for docs
+ * @return {Promise} resolving to keyed parsed file contents
+ */
+function parseDocs ({docs, parseFn } = {}) {
+  return utils.readFilesKeyed(docs, { contentFn: parseFn });
+}
+
+/**
  * Parse data from pages and build data to be used as part of
  * template compilation context.
  *
@@ -123,6 +136,7 @@ function parsePatterns ({patterns, patternKey} = {}) {
 }
 
 export { parseData,
+         parseDocs,
          parseLayouts,
          parsePages,
          parsePatterns

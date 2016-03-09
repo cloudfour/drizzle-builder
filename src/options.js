@@ -1,9 +1,12 @@
 import Handlebars from 'handlebars';
 import yaml from 'js-yaml';
+import marked from 'marked';
 
 const defaults = {
   data: ['src/data/**/*.yaml'],
   dataFn: (contents, path) => yaml.safeLoad(contents),
+  docs: ['src/docs/**/*.md'],
+  docsFn: (contents, path) => marked(contents),
   handlebars: Handlebars,
   helpers   : {},
   keys      : {
@@ -45,6 +48,8 @@ function translateOptions (options = {}) {
   const {
     data,
     dataFn,
+    docs,
+    docsFn,
     handlebars,
     helpers,
     layouts,
@@ -60,6 +65,8 @@ function translateOptions (options = {}) {
   const result = {
     data,
     dataFn,
+    docs,
+    docsFn,
     handlebars,
     helpers,
     layouts,

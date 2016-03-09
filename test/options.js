@@ -8,6 +8,8 @@ describe ('options', () => {
   var keys = [
     'data',
     'dataFn',
+    'docs',
+    'docsFn',
     'handlebars',
     'helpers',
     'keys',
@@ -38,6 +40,7 @@ describe ('options', () => {
       it ('should translate old properties', () => {
         var translated = translateOptions({
           data: 'foo/bar/baz.yml',
+          docs: 'foo/bar/baz.md',
           materials: 'src/materials/**',
           views: 'myViews',
           layoutIncludes: 'a path',
@@ -48,7 +51,8 @@ describe ('options', () => {
         expect(translated).to.contain.keys(keys);
         expect(translated).not.to.contain.keys('views',
           'materials', 'layoutIncludes');
-        expect(translated).to.contain.keys('pages', 'patterns', 'layouts');
+        expect(translated).to.contain.keys(
+          'docs', 'pages', 'patterns', 'layouts');
         expect(translated.keys).to.contain.keys('patterns');
         expect(translated.keys.patterns).to.equal('materials');
       });
