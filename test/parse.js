@@ -52,8 +52,11 @@ describe ('data', () => {
       })
         .then(docData => {
           expect(docData).to.contain.keys('doThis');
-          expect(docData.doThis).to.be.a('string');
-          expect(docData.doThis).to.contain('<ul>');
+          expect(docData.doThis).to.be.an('object');
+          expect(docData.doThis).to.contain.keys('name', 'contents');
+          expect(docData.doThis.name).to.equal('Dothis');
+          expect(docData.doThis.contents).to.be.a('string');
+          expect(docData.doThis.contents).to.contain('<ul>');
         });
     });
   });
