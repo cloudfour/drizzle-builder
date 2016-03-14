@@ -27,14 +27,14 @@ var parsers = {
   },
   yaml: {
     pattern: /\.(yaml|yml)$/,
-    parseFn: (contents, path) => yaml.safeLoad(contents)
+    parseFn: (contents, path) => ({ contents: yaml.safeLoad(contents) })
   },
   json: {
     pattern: /\.json$/,
-    parseFn: (contents, path) => JSON.parse(contents)
+    parseFn: (contents, path) => ({ contents: JSON.parse(contents) })
   },
   default: {
-    parseFn: (contents, path) => contents
+    parseFn: (contents, path) => ({ contents: contents })
   }
 };
 

@@ -49,17 +49,15 @@ describe ('data', () => {
       });
     });
   });
-  describe('parsing docs', () => {
+  describe ('parsing docs', () => {
     it ('should build an object with docs files', () => {
-      return parse.parseDocs({
-        docs: config.fixturePath('docs/**/*.md'),
-        parseFn: (contents, path) => marked(contents)
-      })
+      return parse.parseDocs(config.fixturePath('docs/**/*.md'),
+        { parsers: defaultParsers }
+      )
         .then(docData => {
           expect(docData).to.contain.keys('doThis');
           expect(docData.doThis).to.be.an('object');
-          expect(docData.doThis).to.contain.keys('name', 'contents');
-          expect(docData.doThis.name).to.equal('Dothis');
+          expect(docData.doThis).to.contain.keys('path', 'contents');
           expect(docData.doThis.contents).to.be.a('string');
           expect(docData.doThis.contents).to.contain('<ul>');
         });

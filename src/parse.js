@@ -36,17 +36,8 @@ function parseData (data, options) {
  *   - {Function} parseFn parsing function for docs
  * @return {Promise} resolving to keyed parsed file contents
  */
-function parseDocs ({docs, parseFn } = {}) {
-  // Wrap the provided parsing function so that we can construct
-  // object entries in a particular way
-  const wrappedParseFn = function (contents, path) {
-    const fileContents = parseFn(contents, path);
-    return {
-      name: utils.titleCase(utils.keyname(path)),
-      contents: fileContents
-    };
-  };
-  return utils.readFilesKeyed(docs, { contentFn: wrappedParseFn });
+function parseDocs (docs, options) {
+  return utils.readFilesKeyed(docs, options);
 }
 
 /**

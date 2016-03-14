@@ -5,7 +5,7 @@ var config = require('./config');
 var path = require('path');
 var utils = require('../dist/utils');
 
-describe.only ('utils', () => {
+describe ('utils', () => {
   describe('titleCase', () => {
     it ('should correctly title-case a string', () => {
       // @TODO move these into fixtures?
