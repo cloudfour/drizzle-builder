@@ -44,11 +44,11 @@ function parseDocs (docs, options) {
  * Parse data from pages and build data to be used as part of
  * template compilation context.
  * @TODO documentation
+ * @TODO add option for keys.pages
  */
 function parsePages (pages, options) {
-  const pageOpts = Object.assign({}, options, { stripNumbers: false });
   const pageData = {};
-  return utils.readFiles(pages, pageOpts).then(allPageData => {
+  return utils.readFiles(pages, options).then(allPageData => {
     allPageData.forEach(pageFile => {
       const keys = utils.relativePathArray(pageFile.path, 'pages');
       const entryKey = utils.keyname(pageFile.path, { stripNumbers: false });
@@ -56,8 +56,8 @@ function parsePages (pages, options) {
       deepRef(keys, pageData)[entryKey] = {
         name: utils.titleCase(pathKey),
         id  : keys.concat(pathKey).join('.'),
-        data: pageFile.contents.attributes,
-        contents: pageFile.contents.body
+        data: pageFile.data,
+        contents: pageFile.contents
       };
     });
     return pageData;
@@ -76,27 +76,21 @@ function deepRef (pathKeys, obj) {
 
 /**
  * Parse patterns files and build data object.
- *
- * @param {Object} options with:
- *   {glob} patterns   Where to look for patterns files
- *   {patternKey}      String key for patterns directory, naming
- * @TODO I still don't like the coupling between patternKey and directories
- * @return {Object} Fully-built patterns data object
+ * @TODO document
  */
-function parsePatterns ({patterns, patternKey} = {}) {
+function parsePatterns (patterns, options) {
   const patternData = {};
-  return utils.readFiles(patterns, {
-    contentFn: (contents, path) => frontMatter(contents)
-  }).then(fileData => {
+  return utils.readFiles(patterns, options).then(fileData => {
     fileData.forEach(patternFile => {
-      const keys = utils.relativePathArray(patternFile.path, patternKey);
+      const keys = utils.relativePathArray(patternFile.path,
+        options.keys.patterns);
       const entryKey = utils.keyname(patternFile.path, { stripNumbers: false });
       const pathKey = utils.keyname(patternFile.path);
       deepRef(keys, patternData)[entryKey] = {
         name: utils.titleCase(pathKey),
         id  : keys.concat(pathKey).join('.'),
-        data: patternFile.contents.attributes,
-        contents: patternFile.contents.body
+        data: patternFile.data,
+        contents: patternFile.contents
       };
     });
     // @TODO Figure out how to emulate "local namespacing" of HBS vars

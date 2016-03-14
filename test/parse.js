@@ -4,7 +4,7 @@ var config = require('./config');
 var expect = chai.expect;
 var parse = require('../dist/parse');
 
-describe ('data', () => {
+describe.only ('parse', () => {
   const defaultParsers = config.parsers;
   describe('parsing layouts', () => {
     it ('should correctly parse layout files', () => {
@@ -60,7 +60,7 @@ describe ('data', () => {
         });
     });
   });
-  describe.only ('parsing pages', () => {
+  describe ('parsing pages', () => {
     it ('should correctly build data object from pages', () => {
       return parse.parsePages(config.fixturePath('pages/**/*.html'),
         { parsers: defaultParsers }
@@ -76,10 +76,11 @@ describe ('data', () => {
 
   describe ('parsing patterns', () => {
     it ('builds an object organized by directories', () => {
-      return parse.parsePatterns({
-        patterns: config.fixturePath('patterns/**/*.html'),
-        patternKey: 'patterns'
-      })
+      return parse.parsePatterns(config.fixturePath('patterns/**/*.html'),
+        { keys: { patterns: 'patterns'},
+          parsers: defaultParsers
+        }
+      )
         .then(patternData => {
           expect(patternData).to.contain.keys('patterns');
           expect(patternData.patterns.items).to.contain.keys(
@@ -89,10 +90,11 @@ describe ('data', () => {
         });
     });
     it ('structures each level of object correctly', () => {
-      return parse.parsePatterns({
-        patterns: config.fixturePath('patterns/**/*.html'),
-        patternKey: 'patterns'
-      })
+      return parse.parsePatterns(config.fixturePath('patterns/**/*.html'),
+        { keys: { patterns: 'patterns'},
+          parsers: defaultParsers
+        }
+      )
         .then(patternData => {
           var aPatternObj = patternData.patterns.items['01-fingers'];
           expect(aPatternObj).to.contain.keys(
@@ -107,10 +109,11 @@ describe ('data', () => {
         });
     });
     it ('parses and creates correct value types', () => {
-      return parse.parsePatterns({
-        patterns: config.fixturePath('patterns/**/*.html'),
-        patternKey: 'patterns'
-      })
+      return parse.parsePatterns(config.fixturePath('patterns/**/*.html'),
+        { keys: { patterns: 'patterns'},
+          parsers: defaultParsers
+        }
+      )
         .then(patternData => {
           var aPatternObj = patternData.patterns.items['01-fingers'].items.pamp;
           expect(aPatternObj.name).to.be.a('string').and.to.equal('Pamp');
