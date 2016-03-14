@@ -1,11 +1,8 @@
 /* global describe, it */
 var chai = require('chai');
 var config = require('./config');
-
 var expect = chai.expect;
 var parse = require('../dist/parse');
-var yaml  = require('js-yaml');
-var marked = require('marked');
 
 describe ('data', () => {
   const defaultParsers = config.parsers;
@@ -63,29 +60,16 @@ describe ('data', () => {
         });
     });
   });
-  describe('parsing pages', () => {
+  describe.only ('parsing pages', () => {
     it ('should correctly build data object from pages', () => {
-      return parse.parsePages({ pages: config.fixtures + 'pages/**/*.html' })
+      return parse.parsePages(config.fixturePath('pages/**/*.html'),
+        { parsers: defaultParsers }
+      )
         .then(pageData => {
           expect(pageData).to.be.an('object');
-          expect(pageData).to.contain.keys('pages');
-          expect(pageData.pages).to.contain.keys('items', 'name');
-        });
-    });
-    it ('should correctly parse front matter from pages', () => {
-      return parse.parsePages({ pages: config.fixtures + 'pages/**/*.html' })
-        .then(pageData => {
-          expect(pageData.pages.items.components)
-            .to.contain.keys('name', 'data');
-          expect(pageData.pages.items.components.data).to.be.an('Object');
-          expect(pageData.pages.items.components.data)
-            .to.contain.keys('fabricator', 'title');
-        });
-    });
-    it ('should leave numbers intact in keys', () => {
-      return parse.parsePages({ pages: config.fixtures + 'pages/**/*.html' })
-        .then(pageData => {
-          expect(pageData.pages.items).to.contain.keys('04-sandbox');
+          expect(pageData.pages).to.be.an('object');
+          expect(pageData.pages).to.contain.keys('name', 'items');
+          expect(pageData.pages.items).to.contain.keys('04-sandbox', 'index');
         });
     });
   });

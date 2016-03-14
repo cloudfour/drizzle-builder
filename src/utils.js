@@ -148,7 +148,7 @@ function readFiles (glob, {
         .then(fileData => {
           const parser = matchParser(filepath, parsers);
           fileData = parser(fileData, filepath);
-          if (typeof fileData === 'string' ) {
+          if (typeof fileData === 'string') {
             fileData = { contents: fileData };
           }
           return Object.assign(fileData, { path: filepath });

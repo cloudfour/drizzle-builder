@@ -43,61 +43,35 @@ function parseDocs (docs, options) {
 /**
  * Parse data from pages and build data to be used as part of
  * template compilation context.
- *
- * @param {Object} options with
- *   - {glob} pages: glob representing where pages live
- * @return {Promise} resolving to {Object} contextual page data
+ * @TODO documentation
  */
-function parsePages ({pages} = {}) {
-  // First, read pages files' content...
-  return utils.readFilesKeyed(pages, {
-    contentFn: (contents, path) => {
-      // Generate an object from content
-      return {
-        data: frontMatter(contents).attributes,
-        parent: utils.localDirname(path)
-      };
-    },
-    stripNumbers: false // Leave leading numerals intact
-  }).then(pageFileData => {
-    // Shape page data into the objects we need
-    const pageData = {};
-    Object.keys(pageFileData).forEach(pageKey => {
-      const page = pageFileData[pageKey];
-      pageData[page.parent] = pageData[page.parent] || {
-        name: utils.titleCase(page.parent),
-        items: {}
-      };
-      pageData[page.parent].items[pageKey] = {
-        name: utils.titleCase(pageKey),
-        data: page.data
+function parsePages (pages, options) {
+  const pageOpts = Object.assign({}, options, { stripNumbers: false });
+  const pageData = {};
+  return utils.readFiles(pages, pageOpts).then(allPageData => {
+    allPageData.forEach(pageFile => {
+      const keys = utils.relativePathArray(pageFile.path, 'pages');
+      const entryKey = utils.keyname(pageFile.path, { stripNumbers: false });
+      const pathKey = utils.keyname(pageFile.path);
+      deepRef(keys, pageData)[entryKey] = {
+        name: utils.titleCase(pathKey),
+        id  : keys.concat(pathKey).join('.'),
+        data: pageFile.contents.attributes,
+        contents: pageFile.contents.body
       };
     });
     return pageData;
   });
 }
 
-/**
- * Retrieve the reference in the nested patterns
- * object that is at the right spot to insert data about
- * a pattern in the path indicated by pathKeys.
- *
- * If any object references don't exist as the path is traversed,
- * the correct shape for one will be created on the patterns object.
- *
- * @example getPatternEntry(['patterns', 'foo', 'bar']);
- *  // --> patterns.patterns.foo.bar.items
- * @param {Array} pathKeys path elements relative to patterns dir
- * @param {Object} patterns data object so far
- */
-function getPatternEntry (pathKeys, patterns) {
+function deepRef (pathKeys, obj) {
   return pathKeys.reduce((prev, curr) => {
     prev[curr] = prev[curr] || {
       name: utils.titleCase(utils.keyname(curr)),
       items: {}
     };
     return prev[curr].items;
-  }, patterns);
+  }, obj);
 }
 
 /**
@@ -118,7 +92,7 @@ function parsePatterns ({patterns, patternKey} = {}) {
       const keys = utils.relativePathArray(patternFile.path, patternKey);
       const entryKey = utils.keyname(patternFile.path, { stripNumbers: false });
       const pathKey = utils.keyname(patternFile.path);
-      getPatternEntry(keys, patternData)[entryKey] = {
+      deepRef(keys, patternData)[entryKey] = {
         name: utils.titleCase(pathKey),
         id  : keys.concat(pathKey).join('.'),
         data: patternFile.contents.attributes,
