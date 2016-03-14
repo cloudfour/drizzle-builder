@@ -1,5 +1,6 @@
 import frontMatter from 'front-matter';
 import * as utils from './utils';
+import Promise from 'bluebird';
 
 /**
  * Read files in options.layouts and key them
@@ -36,7 +37,16 @@ function parseData ({data, parseFn} = {}) {
  * @return {Promise} resolving to keyed parsed file contents
  */
 function parseDocs ({docs, parseFn } = {}) {
-  return utils.readFilesKeyed(docs, { contentFn: parseFn });
+  // Wrap the provided parsing function so that we can construct
+  // object entries in a particular way
+  const wrappedParseFn = function (contents, path) {
+    const fileContents = parseFn(contents, path);
+    return {
+      name: utils.titleCase(utils.keyname(path)),
+      contents: fileContents
+    };
+  };
+  return utils.readFilesKeyed(docs, { contentFn: wrappedParseFn });
 }
 
 /**
@@ -135,7 +145,35 @@ function parsePatterns ({patterns, patternKey} = {}) {
   });
 }
 
-export { parseData,
+function parseAll (options = {}) {
+  return Promise.all([
+    parseData({
+      data: options.data,
+      parseFn: options.dataFn
+    }),
+    parseDocs({
+      docs: options.docs,
+      parseFn: options.docsFn
+    }),
+    parseLayouts(options),
+    parsePages({ pages: options.pages }),
+    parsePatterns({
+      patterns: options.patterns,
+      patternKey: options.keys.patterns
+    })
+  ]).then(allData => {
+    return {
+      data    : allData[0],
+      docs    : allData[1],
+      layouts : allData[2],
+      pages   : allData[3],
+      patterns: allData[4]
+    };
+  });
+}
+
+export { parseAll,
+         parseData,
          parseDocs,
          parseLayouts,
          parsePages,

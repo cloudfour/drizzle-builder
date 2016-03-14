@@ -1,5 +1,6 @@
 /* global describe, it */
 var chai = require('chai');
+var config = require('./config');
 var expect = chai.expect;
 var parseOptions = require('../dist/options');
 var translateOptions = parseOptions.translator;
@@ -34,6 +35,16 @@ describe ('options', () => {
         var opts = parseOptions();
         expect(opts.keys).to.be.an('object');
         expect(opts.keys).to.contain.keys('patterns');
+      });
+    });
+    describe('respecting passed options', () => {
+      it('should respect passed paths/globs', () => {
+        var options = config.fixtureOpts;
+        var opts = parseOptions(options);
+        Object.keys(options).forEach(key => {
+          expect(opts[key]).to.exist.and.to.equal(options[key]);
+        });
+
       });
     });
     describe ('translateOptions', () => {

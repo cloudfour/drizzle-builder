@@ -53,9 +53,12 @@ function translateOptions (options = {}) {
     handlebars,
     helpers,
     layouts,
-    materials: patterns,
-    views: pages,
-    layoutIncludes: partials
+    materials: newPatterns,
+    pages,
+    partials,
+    patterns,
+    views: newPages,
+    layoutIncludes: newPartials
   } = options;
 
   const {
@@ -70,9 +73,9 @@ function translateOptions (options = {}) {
     handlebars,
     helpers,
     layouts,
-    pages,
-    patterns,
-    partials
+    pages: pages || newPages,
+    patterns: patterns || newPatterns,
+    partials: partials || newPartials
   };
 
   result.keys = {
