@@ -8,38 +8,43 @@ var yaml  = require('js-yaml');
 var marked = require('marked');
 
 describe ('data', () => {
+  const defaultParsers = config.parsers;
   describe('parsing layouts', () => {
     it ('should correctly parse layout files', () => {
-      return parse.parseLayouts({
-        layouts: config.fixtures + 'layouts/**/*.html'
-      })
+      return parse.parseLayouts(config.fixturePath('layouts/**/*.html'),
+        { parsers: defaultParsers }
+      )
         .then(layoutData => {
           expect(layoutData).to.be.an('Object')
             .and.to.contain.keys('default');
-          expect(layoutData.default).to.be.a('string');
+          expect(layoutData.default).to.be.an('object');
+          expect(layoutData.default.contents).to.be.a('string');
+          expect(layoutData.default).to.contain.keys('path');
         });
     });
   });
   describe('parsing data', () => {
     it ('should correctly parse YAML data from files', () => {
-      return parse.parseData({
-        data: config.fixtures + 'data/**/*.yaml',
-        parseFn: (contents, path) => yaml.safeLoad(contents)
-      }).then(dataData => {
+      return parse.parseData(
+        config.fixturePath('data/**/*.yaml'),
+        { parsers: defaultParsers }
+      ).then(dataData => {
         expect(dataData).to.be.an('Object')
           .and.to.contain.keys('another-data', 'sample-data');
         expect(dataData['another-data']).to.be.an('Object')
-          .and.to.contain.keys('ding', 'forestry');
+          .and.to.contain.keys('contents', 'path');
+        expect(dataData['another-data'].contents).to.be.an('object');
       });
     });
     it ('should correctly parse JSON data from files', () => {
-      return parse.parseData({
-        data: config.fixtures + '/data/**/*.json',
-        parseFn: (contents, path) => JSON.parse(contents)
-      }).then(dataData => {
+      return parse.parseData(config.fixturePath('data/**/*.json'),
+        { parsers: defaultParsers }
+      ).then(dataData => {
         expect(dataData).to.be.an('Object')
           .and.to.contain.keys('data-as-json');
         expect(dataData['data-as-json']).to.be.an('Object')
+          .and.to.contain.keys('path', 'contents');
+        expect(dataData['data-as-json'].contents).to.be.an('Object')
           .and.to.contain.keys('foo', 'fortunately');
       });
     });

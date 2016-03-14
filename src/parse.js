@@ -10,8 +10,8 @@ import Promise from 'bluebird';
  *  - {glob} layouts   glob of layout files to parse
  * @return {Promise} resolving to keyed file contents
  */
-function parseLayouts ({layouts} = {}) {
-  return utils.readFilesKeyed(layouts);
+function parseLayouts (layouts, options) {
+  return utils.readFilesKeyed(layouts, options);
 }
 
 /**
@@ -23,8 +23,8 @@ function parseLayouts ({layouts} = {}) {
  *   - {Function} parseFn parsing function for data
  * @return {Promise} resolving to keyed parsed file contents
  */
-function parseData ({data, parseFn} = {}) {
-  return utils.readFilesKeyed(data, { contentFn: parseFn });
+function parseData (data, options) {
+  return utils.readFilesKeyed(data, options);
 }
 
 /**
@@ -155,7 +155,7 @@ function parseAll (options = {}) {
       docs: options.docs,
       parseFn: options.docsFn
     }),
-    parseLayouts(options),
+    parseLayouts(options.layouts, options),
     parsePages({ pages: options.pages }),
     parsePatterns({
       patterns: options.patterns,
