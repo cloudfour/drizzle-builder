@@ -1,5 +1,5 @@
 import parseOptions from './options';
-import { prepareData } from './parse';
+import { parseAll } from './parse';
 import { prepareTemplates } from './template';
 
 /**
@@ -9,7 +9,12 @@ import { prepareTemplates } from './template';
  */
 function drizzle (options) {
   const opts = parseOptions(options);
-  return Promise.all([prepareData(opts), prepareTemplates(opts)]);
+  return Promise.all([parseAll(opts), prepareTemplates(opts)]).then(allData => {
+    return {
+      context: allData[0],
+      templates: allData[1]
+    };
+  });
 }
 
 export default drizzle;

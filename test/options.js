@@ -39,14 +39,7 @@ describe ('options', () => {
     });
     describe('respecting passed options', () => {
       it('should respect passed paths/globs', () => {
-        var options = {
-          data: config.fixturePath('data/**/*.yaml'),
-          docs: config.fixturePath('docs/**/*.md'),
-          layouts: config.fixturePath('layouts/**/*.hbs'),
-          pages: config.fixturePath('pages/**/*'),
-          partials: config.fixturePath('partials/**/*.hbs'),
-          patterns: config.fixturePath('patterns/**/*.hbs')
-        };
+        var options = config.fixtureOpts;
         var opts = parseOptions(options);
         Object.keys(options).forEach(key => {
           expect(opts[key]).to.exist.and.to.equal(options[key]);
