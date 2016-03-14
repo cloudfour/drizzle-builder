@@ -12,6 +12,7 @@ describe ('options', () => {
     'keys',
     'layouts',
     'pages',
+    'parsers',
     'partials',
     'patterns'
   ];

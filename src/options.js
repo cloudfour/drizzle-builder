@@ -3,6 +3,21 @@ import Handlebars from 'handlebars';
 import yaml from 'js-yaml';
 import marked from 'marked';
 
+var parsers = {
+  markdown: {
+    pattern: /\.(md|markdown)$/,
+    parseFn: (contents, path) => marked(contents)
+  },
+  yaml: {
+    pattern: /\.(yaml|yml)$/,
+    parseFn: (contents, path) => yaml.safeLoad(contents)
+  },
+  json: {
+    pattern: /\.json$/,
+    parseFn: (contents, path) => JSON.parse(contents)
+  }
+};
+
 const defaults = {
   data: ['src/data/**/*.yaml'],
   dataFn: (contents, path) => yaml.safeLoad(contents),
@@ -15,6 +30,7 @@ const defaults = {
   },
   layouts   : ['src/layouts/*'],
   pages     : ['src/pages/**/*'],
+  parsers   : parsers,
   partials  : ['src/partials/**/*'],
   patterns  : ['src/patterns/**/*']
 };
