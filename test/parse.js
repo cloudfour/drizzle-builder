@@ -6,6 +6,25 @@ var parse = require('../dist/parse');
 
 describe.only ('parse', () => {
   const defaultParsers = config.parsers;
+  describe ('parseRecursive', () => {
+    it('should build a recursive, deep object', () => {
+      parse.parseRecursive(config.fixturePath('patterns/**/*'),
+        'patterns',
+        { parsers: defaultParsers }
+      ).then(deepObject => {
+        expect(deepObject).to.be.an('object');
+        expect(deepObject).to.contain.keys('patterns');
+        expect(deepObject.patterns.items).to.be.an('object');
+        expect(deepObject.patterns.items['01-fingers']).to.be.an('object');
+        var aPattern = deepObject.patterns.items['01-fingers'];
+        var deepPattern = aPattern.items.pamp;
+        expect(aPattern).to.be.an('object');
+        expect(deepPattern).to.be.an('object');
+        expect(deepPattern).to.contain.keys('name', 'id',
+          'contents', 'data', 'path');
+      });
+    });
+  });
   describe('parsing layouts', () => {
     it ('should correctly parse layout files', () => {
       return parse.parseLayouts(config.fixturePath('layouts/**/*.html'),

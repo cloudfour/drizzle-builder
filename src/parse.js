@@ -74,6 +74,23 @@ function deepRef (pathKeys, obj) {
   }, obj);
 }
 
+function parseRecursive (glob, relativeKey, options) {
+  const objectData = {};
+  return utils.readFiles(glob, options).then(fileData => {
+    fileData.forEach(objectFile => {
+      const keys = utils.relativePathArray(objectFile.path,
+        relativeKey);
+      const entryKey = utils.keyname(objectFile.path, { stripNumbers: false });
+      const pathKey = utils.keyname(objectFile.path);
+      deepRef(keys, objectData)[entryKey] = Object.assign({
+        name: utils.titleCase(pathKey),
+        id: keys.concat(pathKey).join('.')
+      }, objectFile);
+    });
+    return objectData;
+  });
+}
+
 /**
  * Parse patterns files and build data object.
  * @TODO document
@@ -136,5 +153,6 @@ export { parseAll,
          parseDocs,
          parseLayouts,
          parsePages,
-         parsePatterns
+         parsePatterns,
+         parseRecursive
        };
