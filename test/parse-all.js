@@ -16,7 +16,7 @@ describe ('all data parsing', () => {
         layouts: config.fixturePath('layouts/**/*.hbs'),
         pages: config.fixturePath('pages/**/*'),
         partials: config.fixturePath('partials/**/*.hbs'),
-        patterns: config.fixturePath('patterns/**/*.hbs')
+        patterns: config.fixturePath('patterns/**/*.html')
       });
       return parse.parseAll(opts).then(dataObj => {
         expect(dataObj).to.be.an('object').and.to.contain.keys(

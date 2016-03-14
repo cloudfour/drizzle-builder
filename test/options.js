@@ -37,7 +37,7 @@ describe ('options', () => {
         expect(opts.keys).to.contain.keys('patterns');
       });
     });
-    describe.only('respecting passed options', () => {
+    describe('respecting passed options', () => {
       it('should respect passed paths/globs', () => {
         var options = {
           data: config.fixturePath('data/**/*.yaml'),
