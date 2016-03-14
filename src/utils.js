@@ -47,6 +47,7 @@ function removeLeadingNumbers (str) {
   return str.replace(/^[0-9|\.\-]+/, '');
 }
 
+
 /**
  * Retrieve the correct parsing function for a file based on its
  * path.
@@ -54,11 +55,13 @@ function removeLeadingNumbers (str) {
  */
 function matchParser (filepath, parsers = {}) {
   for (var parserKey in parsers) {
-    if (parsers[parserKey].pattern.test(filepath)) {
+    if (parsers[parserKey].pattern &&
+        parsers[parserKey].pattern.test(filepath)) {
       return parsers[parserKey].parseFn;
     }
   }
-  return (parsers.default) || ((contents, filepath) => contents);
+  return (parsers.default && parsers.default.parseFn) ||
+    ((contents, filepath) => contents);
 }
 
 /**
@@ -127,8 +130,7 @@ function isGlob (candidate) {
  *
  * @param {glob} glob of files to read
  * @param {Object} Options:
- *  - {Function} contentFn(content, path): optional function to run over content
- * in files; defaults to a no-op
+ *  - {Object} available parsers
  *  - {String} encoding
  *  - {Object} globOpts gets passed to getFiles
  * @return {Promise} resolving to Array of Objects:
@@ -136,16 +138,20 @@ function isGlob (candidate) {
  *  - {String || Mixed} contents: contents of file after contentFn
  */
 function readFiles (glob, {
-  contentFn = (contents, filepath) => contents,
+  parsers = {},
   encoding = 'utf-8',
   globOpts = {}
 } = {}) {
   return getFiles(glob, globOpts).then(paths => {
     return Promise.all(paths.map(filepath => {
       return readFile(filepath, encoding)
-        .then(contents => {
-          contents = contentFn(contents, filepath);
-          return { contents, path: filepath };
+        .then(fileData => {
+          const parser = matchParser(filepath, parsers);
+          fileData = parser(fileData, filepath);
+          if (typeof fileData === 'string') {
+            fileData = { contents: fileData };
+          }
+          return Object.assign(fileData, { path: filepath });
         });
     }));
   });
@@ -172,7 +178,7 @@ function readFilesKeyed (glob, options = {}) {
   return readFiles(glob, options).then(allFileData => {
     const keyedFileData = new Object();
     for (var aFile of allFileData) {
-      keyedFileData[keyFn(aFile.path, options)] = aFile.contents;
+      keyedFileData[keyFn(aFile.path, options)] = aFile;
     }
     return keyedFileData;
   });
