@@ -105,6 +105,23 @@ describe ('utils', () => {
       expect(result).to.contain('01-');
     });
   });
+  describe('matchParser', () => {
+    it ('should return a default parser function', () => {
+      var parser = utils.matchParser('/foo/bar/baz.txt');
+      expect(parser).to.be.a('function');
+    });
+    it ('should accept a default parser function', () => {
+      var defaultParsers = {
+        default: {
+          pattern: /.*/,
+          parseFn: (contents, filepath) => 'foo'
+        }
+      };
+      var parser = utils.matchParser('/foo/bar/baz.txt', defaultParsers);
+      expect(parser).to.be.a('function');
+      expect(parser('ding')).to.equal('foo');
+    });
+  });
   describe('readFiles', () => {
     it ('should read files from a glob', () => {
       var glob = config.fixturePath('helpers/*.js');

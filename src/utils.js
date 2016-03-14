@@ -48,6 +48,20 @@ function removeLeadingNumbers (str) {
 }
 
 /**
+ * Retrieve the correct parsing function for a file based on its
+ * path.
+ * TODO More docs
+ */
+function matchParser (filepath, parsers = {}) {
+  for (var parserKey in parsers) {
+    if (parsers[parserKey].pattern.test(filepath)) {
+      return parsers[parserKey].parseFn;
+    }
+  }
+  return (parsers.default) || ((contents, filepath) => contents);
+}
+
+/**
  * Take a given glob and convert it to a glob that will match directories
  * (instead of files). Return Promise that resolves to matching dirs.
  *
@@ -84,10 +98,10 @@ function getLocalDirs (glob, options = {}) {
  * @param {glob} glob
  * @return {Promise} resolving to {Array} of files matching glob
  */
-function getFiles (glob, options = {}) {
+function getFiles (glob, globOpts = {}) {
   const opts = Object.assign({
     nodir: true
-  }, options);
+  }, globOpts);
   return globby(glob, opts);
 }
 
@@ -122,16 +136,16 @@ function isGlob (candidate) {
  *  - {String || Mixed} contents: contents of file after contentFn
  */
 function readFiles (glob, {
-  contentFn = (content, path) => content,
+  contentFn = (contents, filepath) => contents,
   encoding = 'utf-8',
   globOpts = {}
 } = {}) {
   return getFiles(glob, globOpts).then(paths => {
-    return Promise.all(paths.map(path => {
-      return readFile(path, encoding)
+    return Promise.all(paths.map(filepath => {
+      return readFile(filepath, encoding)
         .then(contents => {
-          contents = contentFn(contents, path);
-          return { path, contents };
+          contents = contentFn(contents, filepath);
+          return { contents, path: filepath };
         });
     }));
   });
@@ -217,6 +231,7 @@ export { dirname,
          isGlob,
          keyname,
          localDirname,
+         matchParser,
          parentDirname,
          readFiles,
          readFilesKeyed,
