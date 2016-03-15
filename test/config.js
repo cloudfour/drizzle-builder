@@ -41,11 +41,11 @@ var config = {
       }
     },
     yaml: {
-      pattern: '\.(yaml|yml)$/',
+      pattern: '\.(yaml|yml)$',
       parseFn: (contents, path) => ({ contents: yaml.safeLoad(contents) })
     },
     json: {
-      pattern: '\.json$/',
+      pattern: '\.json$',
       parseFn: (contents, path) => ({ contents: JSON.parse(contents) })
     },
     default: {

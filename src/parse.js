@@ -101,7 +101,7 @@ function parseAll (options = {}) {
     parseDocs(options.docs, options), // TODO No such thing as docs
     parseLayouts(options.layouts, options),
     parsePages(options.pages, options),
-    parsePatterns(options.pages, options)
+    parsePatterns(options.patterns, options)
   ]).then(allData => {
     return {
       data    : allData[0],
