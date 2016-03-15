@@ -6,7 +6,7 @@ import frontMatter from 'front-matter';
 
 var parsers = {
   content: {
-    pattern: /\.(html|hbs|handlebars)$/,
+    pattern: '\.(html|hbs|handlebars)$',
     parseFn: (contents, path) => {
       var matter = frontMatter(contents);
       return {
