@@ -7,7 +7,7 @@ var expect = chai.expect;
 var parse = require('../dist/parse');
 var options = require('../dist/options');
 
-describe.only ('all data parsing', () => {
+describe ('all data parsing', () => {
   describe('building data context object', () => {
     it('builds a basic context object', () => {
       var opts = config.fixtureOpts;
