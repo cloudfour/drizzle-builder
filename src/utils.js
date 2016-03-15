@@ -47,6 +47,53 @@ function removeLeadingNumbers (str) {
   return str.replace(/^[0-9|\.\-]+/, '');
 }
 
+
+/**
+ * Retrieve the correct parsing function for a file based on its
+ * path. Each parser with a `pattern` property will compile that pattern
+ * to a RegExp and test it against the filepath. If no match is found
+ * against any of the parsers by path pattern, a default parser will be
+ * returned: either a parser keyed by `default` in the `parsers` object
+ * or, lacking that, a default function that leaves the contents of the
+ * file untouched.
+ *
+ * @param {String} filepath
+ * @param {Object} parsers
+ * @see options module
+ * @return {Function} applicable parsing function for file contents
+ */
+function matchParser (filepath, parsers = {}) {
+  for (var parserKey in parsers) {
+    if (parsers[parserKey].pattern) {
+      if (new RegExp(parsers[parserKey].pattern).test(filepath)) {
+        return parsers[parserKey].parseFn;
+      }
+    }
+  }
+  return (parsers.default && parsers.default.parseFn) ||
+    ((contents, filepath) => ({ contents: contents }));
+}
+
+/**
+ * Return (creating if necessary) a deep reference to a nested object
+ * based on path elements. This will mutate `obj` by adding needed properties
+ * to it.
+ *
+ * @param {Array} pathKeys    Elements making up the "path" to the reference
+ * @param {Object}            Object to add needed references to
+ *
+ * @example deepRef(['foo', 'bar', 'baz'], { foo: {} }); // => foo.bar.baz
+ */
+function deepRef (pathKeys, obj) {
+  return pathKeys.reduce((prev, curr) => {
+    prev[curr] = prev[curr] || {
+      name: titleCase(keyname(curr)),
+      items: {}
+    };
+    return prev[curr].items;
+  }, obj);
+}
+
 /**
  * Take a given glob and convert it to a glob that will match directories
  * (instead of files). Return Promise that resolves to matching dirs.
@@ -84,10 +131,10 @@ function getLocalDirs (glob, options = {}) {
  * @param {glob} glob
  * @return {Promise} resolving to {Array} of files matching glob
  */
-function getFiles (glob, options = {}) {
+function getFiles (glob, globOpts = {}) {
   const opts = Object.assign({
     nodir: true
-  }, options);
+  }, globOpts);
   return globby(glob, opts);
 }
 
@@ -113,8 +160,7 @@ function isGlob (candidate) {
  *
  * @param {glob} glob of files to read
  * @param {Object} Options:
- *  - {Function} contentFn(content, path): optional function to run over content
- * in files; defaults to a no-op
+ *  - {Object} available parsers
  *  - {String} encoding
  *  - {Object} globOpts gets passed to getFiles
  * @return {Promise} resolving to Array of Objects:
@@ -122,16 +168,20 @@ function isGlob (candidate) {
  *  - {String || Mixed} contents: contents of file after contentFn
  */
 function readFiles (glob, {
-  contentFn = (content, path) => content,
+  parsers = {},
   encoding = 'utf-8',
   globOpts = {}
 } = {}) {
   return getFiles(glob, globOpts).then(paths => {
-    return Promise.all(paths.map(path => {
-      return readFile(path, encoding)
-        .then(contents => {
-          contents = contentFn(contents, path);
-          return { path, contents };
+    return Promise.all(paths.map(filepath => {
+      return readFile(filepath, encoding)
+        .then(fileData => {
+          const parser = matchParser(filepath, parsers);
+          fileData = parser(fileData, filepath);
+          if (typeof fileData === 'string') {
+            fileData = { contents: fileData };
+          }
+          return Object.assign(fileData, { path: filepath });
         });
     }));
   });
@@ -158,7 +208,7 @@ function readFilesKeyed (glob, options = {}) {
   return readFiles(glob, options).then(allFileData => {
     const keyedFileData = new Object();
     for (var aFile of allFileData) {
-      keyedFileData[keyFn(aFile.path, options)] = aFile.contents;
+      keyedFileData[keyFn(aFile.path, options)] = aFile;
     }
     return keyedFileData;
   });
@@ -210,13 +260,15 @@ function relativePathArray (filePath, fromPath) {
   return pathChunks.slice(pathChunks.indexOf(fromPath));
 }
 
-export { dirname,
+export { deepRef,
+         dirname,
          getDirs,
          getLocalDirs,
          getFiles,
          isGlob,
          keyname,
          localDirname,
+         matchParser,
          parentDirname,
          readFiles,
          readFilesKeyed,

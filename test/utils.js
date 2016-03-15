@@ -105,7 +105,29 @@ describe ('utils', () => {
       expect(result).to.contain('01-');
     });
   });
+  describe('matchParser', () => {
+    it ('should return a default parser function', () => {
+      var parser = utils.matchParser('/foo/bar/baz.txt');
+      expect(parser).to.be.a('function');
+    });
+    it ('should accept a default parser function', () => {
+      var defaultParsers = {
+        default: {
+          pattern: /.*/,
+          parseFn: (contents, filepath) => 'foo'
+        }
+      };
+      var parser = utils.matchParser('/foo/bar/baz.txt', defaultParsers);
+      expect(parser).to.be.a('function');
+      expect(parser('ding')).to.equal('foo');
+    });
+  });
   describe('readFiles', () => {
+    var parsers = {
+      default: {
+        parseFn: (contents, filepath) => 'foo'
+      }
+    };
     it ('should read files from a glob', () => {
       var glob = config.fixturePath('helpers/*.js');
       return utils.readFiles(glob).then(allFileData => {
@@ -115,7 +137,7 @@ describe ('utils', () => {
     });
     it ('should run passed function over content', () => {
       var glob = config.fixturePath('helpers/*.js');
-      return utils.readFiles(glob, { contentFn: (content, path) => 'foo' })
+      return utils.readFiles(glob, { parsers })
         .then(allFileData => {
           expect(allFileData).to.have.length.of(3);
           expect(allFileData[0].contents).to.equal('foo');
@@ -125,7 +147,7 @@ describe ('utils', () => {
       var glob = config.fixturePath('files/*');
       // Include dotfiles
       return utils.readFiles(glob, {
-        contentFn: (content, path) => 'foo',
+        parsers: parsers,
         globOpts: { dot: true }
       })
         .then(allFileData => {
@@ -134,6 +156,11 @@ describe ('utils', () => {
     });
   });
   describe('readFilesKeyed', () => {
+    var parsers = {
+      default: {
+        parseFn: (contents, filepath) => 'foo'
+      }
+    };
     it ('should be able to key files by keyname', () => {
       var glob = config.fixturePath('helpers/*.js');
       return utils.readFilesKeyed(glob).then(allFileData => {
@@ -160,11 +187,11 @@ describe ('utils', () => {
       var glob = config.fixturePath('data/*.yaml');
       return utils.readFilesKeyed(glob, {
         keyFn: (path, options) => 'foo' + path,
-        contentFn: (content, path) => 'foo'
+        parsers: parsers
       }).then(allFileData => {
         for (var fileKey in allFileData) {
           expect(fileKey).to.contain('foo');
-          expect(allFileData[fileKey]).to.equal('foo');
+          expect(allFileData[fileKey].contents).to.equal('foo');
         }
       });
     });
