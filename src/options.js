@@ -39,18 +39,17 @@ var parsers = {
 };
 
 const defaults = {
-  data: ['src/data/**/*.yaml'],
-  docs: ['src/docs/**/*.md'],
+  data: 'src/data/**/*.yaml',
   handlebars: Handlebars,
   helpers   : {},
   keys      : {
     patterns: 'patterns'
   },
-  layouts   : ['src/layouts/*'],
-  pages     : ['src/pages/**/*'],
+  layouts   : 'src/layouts/*',
+  pages     : 'src/pages/**/*',
   parsers   : parsers,
-  partials  : ['src/partials/**/*'],
-  patterns  : ['src/patterns/**/*']
+  partials  : 'src/partials/**/*',
+  patterns  : 'src/patterns/**/*'
 };
 
 /**
