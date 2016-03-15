@@ -50,20 +50,28 @@ function removeLeadingNumbers (str) {
 
 /**
  * Retrieve the correct parsing function for a file based on its
- * path.
- * TODO More docs
+ * path. Each parser with a `pattern` property will compile that pattern
+ * to a RegExp and test it against the filepath. If no match is found
+ * against any of the parsers by path pattern, a default parser will be
+ * returned: either a parser keyed by `default` in the `parsers` object
+ * or, lacking that, a default function that leaves the contents of the
+ * file untouched.
+ *
+ * @param {String} filepath
+ * @param {Object} parsers
+ * @see options module
+ * @return {Function} applicable parsing function for file contents
  */
 function matchParser (filepath, parsers = {}) {
   for (var parserKey in parsers) {
     if (parsers[parserKey].pattern) {
-      const regex = new RegExp(parsers[parserKey].pattern);
-      if (regex.test(filepath)) {
+      if (new RegExp(parsers[parserKey].pattern).test(filepath)) {
         return parsers[parserKey].parseFn;
       }
     }
   }
   return (parsers.default && parsers.default.parseFn) ||
-    ((contents, filepath) => contents);
+    ((contents, filepath) => ({ contents: contents }));
 }
 
 /**
