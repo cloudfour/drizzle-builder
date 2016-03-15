@@ -42,7 +42,7 @@ function parseRecursive (glob, relativeKey, options) {
         id: keys.concat(pathKey).join('.')
       }, objectFile);
     });
-    return objectData;
+    return objectData[relativeKey];
   });
 }
 

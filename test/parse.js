@@ -72,13 +72,12 @@ describe ('parse', () => {
       )
         .then(pageData => {
           expect(pageData).to.be.an('object');
-          expect(pageData.pages).to.be.an('object');
-          expect(pageData.pages).to.contain.keys('name', 'items');
-          expect(pageData.pages.items).to.contain.keys(
+          expect(pageData).to.contain.keys('name', 'items');
+          expect(pageData.items).to.contain.keys(
             '04-sandbox', 'index', 'doThis');
-          expect(pageData.pages.items.doThis).to.be.an('object');
-          expect(pageData.pages.items.doThis.contents).to.be.a('string');
-          expect(pageData.pages.items.subfolder.items.subpage)
+          expect(pageData.items.doThis).to.be.an('object');
+          expect(pageData.items.doThis.contents).to.be.a('string');
+          expect(pageData.items.subfolder.items.subpage)
             .to.be.an('object');
         });
     });
@@ -92,10 +91,10 @@ describe ('parse', () => {
         }
       )
         .then(patternData => {
-          expect(patternData).to.contain.keys('patterns');
-          expect(patternData.patterns.items).to.contain.keys(
+          expect(patternData).to.contain.keys('name', 'items');
+          expect(patternData.items).to.contain.keys(
             '01-fingers', 'components', 'pink');
-          expect(patternData.patterns.items.components.items).to.contain.keys(
+          expect(patternData.items.components.items).to.contain.keys(
             'button', 'orange');
         });
     });
@@ -106,7 +105,7 @@ describe ('parse', () => {
         }
       )
         .then(patternData => {
-          var aPatternObj = patternData.patterns.items['01-fingers'];
+          var aPatternObj = patternData.items['01-fingers'];
           expect(aPatternObj).to.contain.keys(
             'name', 'items'
           );
@@ -125,7 +124,7 @@ describe ('parse', () => {
         }
       )
         .then(patternData => {
-          var aPatternObj = patternData.patterns.items['01-fingers'].items.pamp;
+          var aPatternObj = patternData.items['01-fingers'].items.pamp;
           expect(aPatternObj.name).to.be.a('string').and.to.equal('Pamp');
           expect(aPatternObj.id).to.be.a('string').and.to.equal(
             'patterns.01-fingers.pamp');
