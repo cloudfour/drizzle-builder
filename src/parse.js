@@ -81,9 +81,9 @@ function parseAll (options = {}) {
   ]).then(allData => {
     return {
       data    : allData[0],
-      layouts : allData[2], // TODO Does this really belong here?
-      pages   : allData[3],
-      patterns: allData[4]
+      layouts : allData[1],
+      pages   : allData[2],
+      patterns: allData[3]
     };
   });
 }
