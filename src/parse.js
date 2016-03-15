@@ -39,16 +39,6 @@ function parseDocs (docs, options) {
   return utils.readFilesKeyed(docs, options);
 }
 
-function deepRef (pathKeys, obj) {
-  return pathKeys.reduce((prev, curr) => {
-    prev[curr] = prev[curr] || {
-      name: utils.titleCase(utils.keyname(curr)),
-      items: {}
-    };
-    return prev[curr].items;
-  }, obj);
-}
-
 /**
  * TODO Instead of maintaining keys, figure out what the "top"
  * directory in a glob match is
@@ -60,7 +50,7 @@ function parseRecursive (glob, relativeKey, options) {
       const keys = utils.relativePathArray(objectFile.path, relativeKey);
       const entryKey = utils.keyname(objectFile.path, { stripNumbers: false });
       const pathKey = utils.keyname(objectFile.path);
-      deepRef(keys, objectData)[entryKey] = Object.assign({
+      utils.deepRef(keys, objectData)[entryKey] = Object.assign({
         name: utils.titleCase(pathKey),
         id: keys.concat(pathKey).join('.')
       }, objectFile);

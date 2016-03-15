@@ -75,6 +75,26 @@ function matchParser (filepath, parsers = {}) {
 }
 
 /**
+ * Return (creating if necessary) a deep reference to a nested object
+ * based on path elements. This will mutate `obj` by adding needed properties
+ * to it.
+ *
+ * @param {Array} pathKeys    Elements making up the "path" to the reference
+ * @param {Object}            Object to add needed references to
+ *
+ * @example deepRef(['foo', 'bar', 'baz'], { foo: {} }); // => foo.bar.baz
+ */
+function deepRef (pathKeys, obj) {
+  return pathKeys.reduce((prev, curr) => {
+    prev[curr] = prev[curr] || {
+      name: titleCase(keyname(curr)),
+      items: {}
+    };
+    return prev[curr].items;
+  }, obj);
+}
+
+/**
  * Take a given glob and convert it to a glob that will match directories
  * (instead of files). Return Promise that resolves to matching dirs.
  *
@@ -240,7 +260,8 @@ function relativePathArray (filePath, fromPath) {
   return pathChunks.slice(pathChunks.indexOf(fromPath));
 }
 
-export { dirname,
+export { deepRef,
+         dirname,
          getDirs,
          getLocalDirs,
          getFiles,
