@@ -1,4 +1,3 @@
-import frontMatter from 'front-matter';
 import * as utils from './utils';
 import Promise from 'bluebird';
 
@@ -50,12 +49,15 @@ function deepRef (pathKeys, obj) {
   }, obj);
 }
 
+/**
+ * TODO Instead of maintaining keys, figure out what the "top"
+ * directory in a glob match is
+ */
 function parseRecursive (glob, relativeKey, options) {
   const objectData = {};
   return utils.readFiles(glob, options).then(fileData => {
     fileData.forEach(objectFile => {
-      const keys = utils.relativePathArray(objectFile.path,
-        relativeKey);
+      const keys = utils.relativePathArray(objectFile.path, relativeKey);
       const entryKey = utils.keyname(objectFile.path, { stripNumbers: false });
       const pathKey = utils.keyname(objectFile.path);
       deepRef(keys, objectData)[entryKey] = Object.assign({
@@ -96,15 +98,15 @@ function parsePatterns (patterns, options) {
 function parseAll (options = {}) {
   return Promise.all([
     parseData(options.data, options),
-    parseDocs(options.docs, options),
+    parseDocs(options.docs, options), // TODO No such thing as docs
     parseLayouts(options.layouts, options),
     parsePages(options.pages, options),
     parsePatterns(options.pages, options)
   ]).then(allData => {
     return {
       data    : allData[0],
-      docs    : allData[1],
-      layouts : allData[2],
+      docs    : allData[1], // TODO no such thing
+      layouts : allData[2], // TODO Does this really belong here?
       pages   : allData[3],
       patterns: allData[4]
     };
