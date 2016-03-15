@@ -2,33 +2,21 @@ import * as utils from './utils';
 import Promise from 'bluebird';
 
 /**
- * Read files in options.layouts and key them
- * Layouts are HTML documents that get wrapped around pages
+ * Parse a file structure of files matching `glob` into a nested object
+ * structure:
+ * { name: 'Directory Name in Title Case',
+ *   items: {
+ *     name: 'Sub Directory',
+ *     items: { ... },
+ *     'item-in-topdirectory': {
+ *       name: 'Item In Top Directory',
+ *       items: {   }
+ *     }
+ *   }
+ * }
  *
- * @param {Object} options with
- *  - {glob} layouts   glob of layout files to parse
- * @return {Promise} resolving to keyed file contents
- */
-function parseLayouts (layouts, options) {
-  return utils.readFilesKeyed(layouts, options);
-}
-
-/**
- * Read and parse files in options.data and parse them
- * with options.parseFn
- *
- * @param {Object} options with
- *   - {glob} data        glob of data files to parse
- *   - {Function} parseFn parsing function for data
- * @return {Promise} resolving to keyed parsed file contents
- */
-function parseData (data, options) {
-  return utils.readFilesKeyed(data, options);
-}
-
-/**
- * TODO Instead of maintaining keys, figure out what the "top"
- * directory in a glob match is
+ * Each object in `items` will be an object structured per the return value
+ * of the parser associated with that file path pattern.
  */
 function parseRecursive (glob, relativeKey, options) {
   const objectData = {};
@@ -42,56 +30,52 @@ function parseRecursive (glob, relativeKey, options) {
         id: keys.concat(pathKey).join('.')
       }, objectFile);
     });
-    return objectData;
+    return objectData[relativeKey];
   });
 }
 
 /**
- * Parse data from pages and build data to be used as part of
- * template compilation context.
- * @TODO documentation
- * @TODO add option for keys.pages
+ * Parse a glob of files into flat-keyed object (no nested objects). Objects
+ * will take form of return value from associated parser for the given file
+ * path.
+ * @TODO namespace conflicts, then what?
+ * @param {glob} glob
+ * @param {Object} options
+ * @return {Promise} resolving to {Object}
  */
-function parsePages (pages, options) {
-  return parseRecursive(pages, 'pages', options);
+function parseFlat (glob, options) {
+  return utils.readFilesKeyed(glob, options);
 }
+
+
+// @TODO Figure out how to emulate "local namespacing" of HBS vars
+// so that one can reference data from front matter in patterns
+// @TODO Run some fields through markdown
+// @TODO Do we need to trim whitespace from pattern content?
+// @TODO Do we need to store pattern data on another object as well?
+// @TODO Do we need any further sorting?
+// @TODO Need to register Handlebars partial
 
 /**
- * Parse patterns files and build data object.
- * @TODO document
+ * Parse all the items needed for a drizzle build.
  */
-function parsePatterns (patterns, options) {
-  return parseRecursive(patterns, options.keys.patterns, options);
-
-  // @TODO Figure out how to emulate "local namespacing" of HBS vars
-  // so that one can reference data from front matter in patterns
-  // @TODO Run some fields through markdown
-  // @TODO Do we need to trim whitespace from pattern content?
-  // @TODO Do we need to store pattern data on another object as well?
-  // @TODO Do we need any further sorting?
-  // @TODO Need to register Handlebars partial
-}
-
 function parseAll (options = {}) {
   return Promise.all([
-    parseData(options.data, options),
-    parseLayouts(options.layouts, options),
-    parsePages(options.pages, options),
-    parsePatterns(options.patterns, options)
+    parseFlat(options.data, options),
+    parseFlat(options.layouts, options),
+    parseRecursive(options.pages, 'pages', options),
+    parseRecursive(options.patterns, options.keys.patterns, options)
   ]).then(allData => {
     return {
       data    : allData[0],
-      layouts : allData[2], // TODO Does this really belong here?
-      pages   : allData[3],
-      patterns: allData[4]
+      layouts : allData[1],
+      pages   : allData[2],
+      patterns: allData[3]
     };
   });
 }
 
 export { parseAll,
-         parseData,
-         parseLayouts,
-         parsePages,
-         parsePatterns,
+         parseFlat,
          parseRecursive
        };

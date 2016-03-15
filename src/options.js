@@ -39,20 +39,17 @@ var parsers = {
 };
 
 const defaults = {
-  data: ['src/data/**/*.yaml'],
-  dataFn: (contents, path) => yaml.safeLoad(contents),
-  docs: ['src/docs/**/*.md'],
-  docsFn: (contents, path) => marked(contents),
+  data: 'src/data/**/*.yaml',
   handlebars: Handlebars,
   helpers   : {},
   keys      : {
     patterns: 'patterns'
   },
-  layouts   : ['src/layouts/*'],
-  pages     : ['src/pages/**/*'],
+  layouts   : 'src/layouts/*',
+  pages     : 'src/pages/**/*',
   parsers   : parsers,
-  partials  : ['src/partials/**/*'],
-  patterns  : ['src/patterns/**/*']
+  partials  : 'src/partials/**/*',
+  patterns  : 'src/patterns/**/*'
 };
 
 /**

@@ -16,6 +16,8 @@ describe ('all data parsing', () => {
       return parse.parseAll(opts).then(dataObj => {
         expect(dataObj).to.be.an('object').and.to.contain.keys('data',
           'pages', 'patterns', 'layouts');
+        expect(dataObj.patterns).to.contain.keys('name', 'items');
+        expect(dataObj.pages).to.contain.keys('name', 'items');
       });
     });
   });
