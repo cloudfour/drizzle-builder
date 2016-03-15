@@ -15,7 +15,7 @@ describe ('all data parsing', () => {
       opts = options(opts);
       return parse.parseAll(opts).then(dataObj => {
         expect(dataObj).to.be.an('object').and.to.contain.keys('data',
-          'docs', 'pages', 'patterns', 'layouts');
+          'pages', 'patterns', 'layouts');
       });
     });
   });

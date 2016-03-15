@@ -27,19 +27,6 @@ function parseData (data, options) {
 }
 
 /**
- * Read and parse files in options.docs and parse them
- * with options.parseFn
- *
- * @param {Object} options with
- *   - {glob} docs        glob of docs files to parse
- *   - {Function} parseFn parsing function for docs
- * @return {Promise} resolving to keyed parsed file contents
- */
-function parseDocs (docs, options) {
-  return utils.readFilesKeyed(docs, options);
-}
-
-/**
  * TODO Instead of maintaining keys, figure out what the "top"
  * directory in a glob match is
  */
@@ -88,14 +75,12 @@ function parsePatterns (patterns, options) {
 function parseAll (options = {}) {
   return Promise.all([
     parseData(options.data, options),
-    parseDocs(options.docs, options), // TODO No such thing as docs
     parseLayouts(options.layouts, options),
     parsePages(options.pages, options),
     parsePatterns(options.patterns, options)
   ]).then(allData => {
     return {
       data    : allData[0],
-      docs    : allData[1], // TODO no such thing
       layouts : allData[2], // TODO Does this really belong here?
       pages   : allData[3],
       patterns: allData[4]
@@ -105,7 +90,6 @@ function parseAll (options = {}) {
 
 export { parseAll,
          parseData,
-         parseDocs,
          parseLayouts,
          parsePages,
          parsePatterns,

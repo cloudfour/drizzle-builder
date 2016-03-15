@@ -65,30 +65,17 @@ describe ('parse', () => {
       });
     });
   });
-  describe ('parsing docs', () => {
-    it ('should build an object with docs files', () => {
-      return parse.parseDocs(config.fixturePath('docs/**/*.md'),
-        { parsers: defaultParsers }
-      )
-        .then(docData => {
-          expect(docData).to.contain.keys('doThis');
-          expect(docData.doThis).to.be.an('object');
-          expect(docData.doThis).to.contain.keys('path', 'contents');
-          expect(docData.doThis.contents).to.be.a('string');
-          expect(docData.doThis.contents).to.contain('<ul>');
-        });
-    });
-  });
   describe ('parsing pages', () => {
     it ('should correctly build data object from pages', () => {
-      return parse.parsePages(config.fixturePath('pages/**/*.html'),
+      return parse.parsePages(config.fixturePath('pages/**/*'),
         { parsers: defaultParsers }
       )
         .then(pageData => {
           expect(pageData).to.be.an('object');
           expect(pageData.pages).to.be.an('object');
           expect(pageData.pages).to.contain.keys('name', 'items');
-          expect(pageData.pages.items).to.contain.keys('04-sandbox', 'index');
+          expect(pageData.pages.items).to.contain.keys(
+            '04-sandbox', 'index', 'doThis');
         });
     });
   });
