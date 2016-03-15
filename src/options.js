@@ -40,9 +40,7 @@ var parsers = {
 
 const defaults = {
   data: ['src/data/**/*.yaml'],
-  dataFn: (contents, path) => yaml.safeLoad(contents),
   docs: ['src/docs/**/*.md'],
-  docsFn: (contents, path) => marked(contents),
   handlebars: Handlebars,
   helpers   : {},
   keys      : {
