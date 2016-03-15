@@ -27,7 +27,7 @@ describe ('parse', () => {
   });
   describe('parsing layouts', () => {
     it ('should correctly parse layout files', () => {
-      return parse.parseLayouts(config.fixturePath('layouts/**/*.html'),
+      return parse.parseFlat(config.fixturePath('layouts/**/*.html'),
         { parsers: defaultParsers }
       )
         .then(layoutData => {
@@ -41,7 +41,7 @@ describe ('parse', () => {
   });
   describe('parsing data', () => {
     it ('should correctly parse YAML data from files', () => {
-      return parse.parseData(
+      return parse.parseFlat(
         config.fixturePath('data/**/*.yaml'),
         { parsers: defaultParsers }
       ).then(dataData => {
@@ -53,7 +53,7 @@ describe ('parse', () => {
       });
     });
     it ('should correctly parse JSON data from files', () => {
-      return parse.parseData(config.fixturePath('data/**/*.json'),
+      return parse.parseFlat(config.fixturePath('data/**/*.json'),
         { parsers: defaultParsers }
       ).then(dataData => {
         expect(dataData).to.be.an('Object')
@@ -67,7 +67,7 @@ describe ('parse', () => {
   });
   describe ('parsing pages', () => {
     it ('should correctly build data object from pages', () => {
-      return parse.parsePages(config.fixturePath('pages/**/*'),
+      return parse.parseRecursive(config.fixturePath('pages/**/*'), 'pages',
         { parsers: defaultParsers }
       )
         .then(pageData => {
@@ -85,7 +85,8 @@ describe ('parse', () => {
 
   describe ('parsing patterns', () => {
     it ('builds an object organized by directories', () => {
-      return parse.parsePatterns(config.fixturePath('patterns/**/*.html'),
+      return parse.parseRecursive(config.fixturePath('patterns/**/*.html'),
+        'patterns',
         { keys: { patterns: 'patterns'},
           parsers: defaultParsers
         }
@@ -99,7 +100,8 @@ describe ('parse', () => {
         });
     });
     it ('structures each level of object correctly', () => {
-      return parse.parsePatterns(config.fixturePath('patterns/**/*.html'),
+      return parse.parseRecursive(config.fixturePath('patterns/**/*.html'),
+        'patterns',
         { keys: { patterns: 'patterns'},
           parsers: defaultParsers
         }
@@ -118,7 +120,8 @@ describe ('parse', () => {
         });
     });
     it ('parses and creates correct value types', () => {
-      return parse.parsePatterns(config.fixturePath('patterns/**/*.html'),
+      return parse.parseRecursive(config.fixturePath('patterns/**/*.html'),
+        'patterns',
         { keys: { patterns: 'patterns'},
           parsers: defaultParsers
         }
