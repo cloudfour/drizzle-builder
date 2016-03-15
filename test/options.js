@@ -23,7 +23,7 @@ describe ('options', () => {
     'yaml',
     'default'
   ];
-  describe.only ('parseOptions', () => {
+  describe ('parseOptions', () => {
     describe('generating default options', () => {
       it ('should generate default options when none passed', () => {
         var opts = parseOptions();

@@ -55,9 +55,11 @@ function removeLeadingNumbers (str) {
  */
 function matchParser (filepath, parsers = {}) {
   for (var parserKey in parsers) {
-    if (parsers[parserKey].pattern &&
-        parsers[parserKey].pattern.test(filepath)) {
-      return parsers[parserKey].parseFn;
+    if (parsers[parserKey].pattern) {
+      const regex = new RegExp(parsers[parserKey].pattern);
+      if (regex.test(filepath)) {
+        return parsers[parserKey].parseFn;
+      }
     }
   }
   return (parsers.default && parsers.default.parseFn) ||
