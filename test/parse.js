@@ -4,7 +4,7 @@ var config = require('./config');
 var expect = chai.expect;
 var parse = require('../dist/parse');
 
-describe.only ('parse', () => {
+describe ('parse', () => {
   const defaultParsers = config.parsers;
   describe ('parseRecursive', () => {
     it('should build a recursive, deep object', () => {

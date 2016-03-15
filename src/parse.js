@@ -95,20 +95,11 @@ function parsePatterns (patterns, options) {
 
 function parseAll (options = {}) {
   return Promise.all([
-    parseData({
-      data: options.data,
-      parseFn: options.dataFn
-    }),
-    parseDocs({
-      docs: options.docs,
-      parseFn: options.docsFn
-    }),
+    parseData(options.data, options),
+    parseDocs(options.docs, options),
     parseLayouts(options.layouts, options),
-    parsePages({ pages: options.pages }),
-    parsePatterns({
-      patterns: options.patterns,
-      patternKey: options.keys.patterns
-    })
+    parsePages(options.pages, options),
+    parsePatterns(options.pages, options)
   ]).then(allData => {
     return {
       data    : allData[0],
