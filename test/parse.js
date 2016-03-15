@@ -76,6 +76,10 @@ describe ('parse', () => {
           expect(pageData.pages).to.contain.keys('name', 'items');
           expect(pageData.pages.items).to.contain.keys(
             '04-sandbox', 'index', 'doThis');
+          expect(pageData.pages.items.doThis).to.be.an('object');
+          expect(pageData.pages.items.doThis.contents).to.be.a('string');
+          expect(pageData.pages.items.subfolder.items.subpage)
+            .to.be.an('object');
         });
     });
   });
