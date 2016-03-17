@@ -65,7 +65,7 @@ function parseAll (options = {}) {
   return Promise.all([
     parseFlat(options.data, options),
     parseFlat(options.layouts, options),
-    parseRecursive(options.pages, 'pages', options),
+    parseRecursive(options.pages, options.keys.pages, options),
     parseRecursive(options.patterns, options.keys.patterns, options)
   ]).then(allData => {
     return {

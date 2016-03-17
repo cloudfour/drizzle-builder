@@ -43,6 +43,7 @@ const defaults = {
   handlebars: Handlebars,
   helpers   : {},
   keys      : {
+    pages   : 'pages',
     patterns: 'patterns'
   },
   layouts   : 'src/layouts/*',
