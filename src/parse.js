@@ -29,7 +29,7 @@ function parseLocalData (fileObj, options) {
  * Build a single-page object for the page data object
  */
 function pageEntry (pageFile, keys, options) {
-  const idKeys = keys.map(key => utils.keyname(key));
+  const idKeys = keys.map(utils.keyname);
   const pathKey = utils.keyname(pageFile.path);
   const id = idKeys.concat(pathKey).join('.');
   return Object.assign(parseLocalData(pageFile, options), pageFile, {
