@@ -1,6 +1,16 @@
 import * as utils from './utils';
 import Promise from 'bluebird';
 
+
+function patternEntry (patternFile, keys) {
+  const idKeys = keys.map(key => utils.keyname(key));
+  const pathKey = utils.keyname(patternFile.path);
+  const id = idKeys.concat(pathKey).join('.');
+  return {
+    id,
+    name: utils.titleCase(pathKey)
+  };
+}
 /**
  * Parse a file structure of files matching `glob` into a nested object
  * structure:
@@ -18,19 +28,18 @@ import Promise from 'bluebird';
  * Each object in `items` will be an object structured per the return value
  * of the parser associated with that file path pattern.
  */
-function parseRecursive (glob, relativeKey, options) {
+function parseRecursive (glob, relativeKey, entryFn, options) {
+  if (typeof entryFn !== 'function') {
+    options = entryFn;
+    entryFn = patternEntry;
+  }
   const objectData = {};
   return utils.readFiles(glob, options).then(fileData => {
     fileData.forEach(objectFile => {
-      const keys     = utils.relativePathArray(objectFile.path, relativeKey);
-      const idKeys   = keys.map(key => utils.keyname(key));
       const entryKey = utils.keyname(objectFile.path, { stripNumbers: false });
-      const pathKey  = utils.keyname(objectFile.path);
-      const id       = idKeys.concat(pathKey).join('.');
-      utils.deepRef(keys, objectData).items[entryKey] = Object.assign({
-        id,
-        name: utils.titleCase(pathKey)
-      }, objectFile);
+      const keys     = utils.relativePathArray(objectFile.path, relativeKey);
+      utils.deepRef(keys, objectData).items[entryKey] = Object.assign(
+        entryFn(objectFile, keys), objectFile);
     });
     return objectData[relativeKey];
   });
@@ -65,8 +74,9 @@ function parseAll (options = {}) {
   return Promise.all([
     parseFlat(options.data, options),
     parseFlat(options.layouts, options),
-    parseRecursive(options.pages, options.keys.pages, options),
-    parseRecursive(options.patterns, options.keys.patterns, options)
+    parseRecursive(options.pages, options.keys.pages, patternEntry, options),
+    parseRecursive(options.patterns,
+      options.keys.patterns, patternEntry, options)
   ]).then(allData => {
     return {
       data    : allData[0],

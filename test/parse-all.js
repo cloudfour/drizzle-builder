@@ -7,7 +7,7 @@ var expect = chai.expect;
 var parse = require('../dist/parse');
 var options = require('../dist/options');
 
-describe ('all data parsing', () => {
+describe('all data parsing', () => {
   describe('building data context object', () => {
     it('builds a basic context object', () => {
       var opts = config.fixtureOpts;
@@ -18,6 +18,7 @@ describe ('all data parsing', () => {
           'pages', 'patterns', 'layouts');
         expect(dataObj.patterns).to.contain.keys('name', 'items');
         expect(dataObj.pages).to.contain.keys('name', 'items');
+        //config.logObj(dataObj.patterns);
       });
     });
   });

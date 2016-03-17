@@ -19,6 +19,9 @@ var config = {
     partials: fixturePath('partials/**/*.hbs'),
     patterns: fixturePath('patterns/**/*.html')
   },
+  logObj: obj => {
+    console.log(JSON.stringify(obj, null, '  '));
+  },
   parsers: {
     content: {
       pattern: '\.(html|hbs|handlebars)$',
