@@ -1,7 +1,22 @@
 import * as utils from './utils';
 import Promise from 'bluebird';
 
+/**
+ * Build a single-page object for the page data object
+ */
+function pageEntry (pageFile, keys) {
+  const idKeys = keys.map(key => utils.keyname(key));
+  const pathKey = utils.keyname(pageFile.path);
+  const id = idKeys.concat(pathKey).join('.');
+  return {
+    id,
+    name: utils.titleCase(pathKey)
+  };
+}
 
+/**
+ * Build a single-pattern object for the pattern object
+ */
 function patternEntry (patternFile, keys) {
   const idKeys = keys.map(key => utils.keyname(key));
   const pathKey = utils.keyname(patternFile.path);
@@ -74,7 +89,7 @@ function parseAll (options = {}) {
   return Promise.all([
     parseFlat(options.data, options),
     parseFlat(options.layouts, options),
-    parseRecursive(options.pages, options.keys.pages, patternEntry, options),
+    parseRecursive(options.pages, options.keys.pages, pageEntry, options),
     parseRecursive(options.patterns,
       options.keys.patterns, patternEntry, options)
   ]).then(allData => {
