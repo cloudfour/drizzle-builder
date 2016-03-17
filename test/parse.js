@@ -77,7 +77,7 @@ describe ('parse', () => {
             '04-sandbox', 'index', 'doThis');
           expect(pageData.items.doThis).to.be.an('object');
           expect(pageData.items.doThis.contents).to.be.a('string');
-          expect(pageData.items.subfolder.items.subpage)
+          expect(pageData.subfolder.items.subpage)
             .to.be.an('object');
         });
     });
@@ -92,11 +92,10 @@ describe ('parse', () => {
         }
       )
         .then(patternData => {
-          expect(patternData).to.contain.keys('name', 'items');
-          expect(patternData.items).to.contain.keys(
-            '01-fingers', 'components', 'pink');
-          expect(patternData.items.components.items).to.contain.keys(
-            'button', 'orange');
+          expect(patternData).to.contain.keys(
+            'name', 'items', '01-fingers', 'components');
+          expect(patternData.items).to.contain.keys('pink');
+          expect(patternData.components.items).to.contain.keys('orange');
         });
     });
     it ('structures each level of object correctly', () => {
@@ -107,7 +106,7 @@ describe ('parse', () => {
         }
       )
         .then(patternData => {
-          var aPatternObj = patternData.items['01-fingers'];
+          var aPatternObj = patternData['01-fingers'];
           expect(aPatternObj).to.contain.keys(
             'name', 'items'
           );
@@ -127,10 +126,10 @@ describe ('parse', () => {
         }
       )
         .then(patternData => {
-          var aPatternObj = patternData.items['01-fingers'].items.pamp;
+          var aPatternObj = patternData['01-fingers'].items.pamp;
           expect(aPatternObj.name).to.be.a('string').and.to.equal('Pamp');
           expect(aPatternObj.id).to.be.a('string').and.to.equal(
-            'patterns.01-fingers.pamp');
+            'patterns.fingers.pamp');
           expect(aPatternObj.data).to.be.an('object');
           expect(aPatternObj.contents).to.be.a('string');
         });

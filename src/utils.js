@@ -77,7 +77,8 @@ function matchParser (filepath, parsers = {}) {
 /**
  * Return (creating if necessary) a deep reference to a nested object
  * based on path elements. This will mutate `obj` by adding needed properties
- * to it.
+ * to it. Think of it like mkdir with a multi-directory path that will create
+ * directory entries if they don't exist.
  *
  * @param {Array} pathKeys    Elements making up the "path" to the reference
  * @param {Object}            Object to add needed references to
@@ -90,7 +91,7 @@ function deepRef (pathKeys, obj) {
       name: titleCase(keyname(curr)),
       items: {}
     };
-    return prev[curr].items;
+    return prev[curr];
   }, obj);
 }
 

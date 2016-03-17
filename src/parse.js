@@ -22,12 +22,14 @@ function parseRecursive (glob, relativeKey, options) {
   const objectData = {};
   return utils.readFiles(glob, options).then(fileData => {
     fileData.forEach(objectFile => {
-      const keys = utils.relativePathArray(objectFile.path, relativeKey);
+      const keys     = utils.relativePathArray(objectFile.path, relativeKey);
+      const idKeys   = keys.map(key => utils.keyname(key));
       const entryKey = utils.keyname(objectFile.path, { stripNumbers: false });
-      const pathKey = utils.keyname(objectFile.path);
-      utils.deepRef(keys, objectData)[entryKey] = Object.assign({
-        name: utils.titleCase(pathKey),
-        id: keys.concat(pathKey).join('.')
+      const pathKey  = utils.keyname(objectFile.path);
+      const id       = idKeys.concat(pathKey).join('.');
+      utils.deepRef(keys, objectData).items[entryKey] = Object.assign({
+        id,
+        name: utils.titleCase(pathKey)
       }, objectFile);
     });
     return objectData[relativeKey];
