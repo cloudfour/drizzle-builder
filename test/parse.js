@@ -21,7 +21,7 @@ describe ('parse', () => {
         expect(aPattern).to.be.an('object');
         expect(deepPattern).to.be.an('object');
         expect(deepPattern).to.contain.keys('name', 'id',
-          'contents', 'data', 'path');
+          'contents', 'path');
       });
     });
   });
@@ -117,7 +117,7 @@ describe ('parse', () => {
           expect(aPatternObj.items).to.be.an('object');
           expect(aPatternObj.items.pamp).to.be.an('object');
           expect(aPatternObj.items.pamp).to.contain.keys(
-            'name', 'id', 'data', 'contents'
+            'name', 'id', 'contents', 'notes', 'links'
           );
         });
     });
@@ -134,7 +134,7 @@ describe ('parse', () => {
           expect(aPatternObj.name).to.be.a('string').and.to.equal('Pamp');
           expect(aPatternObj.id).to.be.a('string').and.to.equal(
             'patterns.fingers.pamp');
-          expect(aPatternObj.data).to.be.an('object');
+          expect(aPatternObj.data).not.to.be.ok;
           expect(aPatternObj.contents).to.be.a('string');
         });
     });

@@ -17,6 +17,10 @@ function parseLocalData (fileObj, options) {
         fileObj.data[mdField] = marked(fileObj.data[mdField]);
       }
     });
+    for (var dataKey in fileObj.data) {
+      fileObj[dataKey] = fileObj.data[dataKey];
+    }
+    delete fileObj.data;
   }
   return fileObj;
 }
@@ -112,7 +116,6 @@ function parseFlat (glob, options) {
 
 // @TODO Figure out how to emulate "local namespacing" of HBS vars
 // so that one can reference data from front matter in patterns
-// @TODO Run some fields through markdown
 // @TODO Do we need to trim whitespace from pattern content?
 // @TODO Do we need to store pattern data on another object as well?
 // @TODO Do we need any further sorting?
