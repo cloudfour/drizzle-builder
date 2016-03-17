@@ -11,6 +11,7 @@ describe ('options', () => {
     'helpers',
     'keys',
     'layouts',
+    'markdownFields',
     'pages',
     'parsers',
     'partials',
@@ -33,6 +34,33 @@ describe ('options', () => {
         var opts = parseOptions();
         expect(opts.parsers).to.be.an('object').and.to.contain.keys(parserKeys);
       });
+      it ('should assign keys for different resources', () => {
+        var opts = parseOptions();
+        expect(opts.keys).to.be.an('object').and.to.contain
+        .keys('patterns', 'pages');
+      });
+    });
+    describe('parsing keys', () => {
+      const keyOpts = {
+        keys: {
+          patterns: 'bar',
+          another: 'baz'
+        }
+      };
+      var opts = parseOptions(keyOpts);
+      expect(opts.keys).to.be.an('object').and.to.contain.keys(
+        'pages', 'patterns', 'another'
+      );
+      expect(opts.keys.pages).to.equal('pages');
+      expect(opts.keys.patterns).to.equal('bar');
+    });
+    describe('parsing markdownFields', () => {
+      const mdOpts = {
+        markdownFields: ['notes', 'foo']
+      };
+      var opts = parseOptions(mdOpts);
+      expect(opts.markdownFields).to.be.an('Array').and.to
+        .contain('notes', 'foo');
     });
     describe('parsing parsers', () => {
       var differentParsers = {

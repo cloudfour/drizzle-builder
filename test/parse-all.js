@@ -14,10 +14,11 @@ describe ('all data parsing', () => {
       opts.parsers = config.parsers;
       opts = options(opts);
       return parse.parseAll(opts).then(dataObj => {
-        expect(dataObj).to.be.an('object').and.to.contain.keys('data',
+        expect(dataObj).to.be.an('object').and.to.contain.keys(
           'pages', 'patterns', 'layouts');
         expect(dataObj.patterns).to.contain.keys('name', 'items');
         expect(dataObj.pages).to.contain.keys('name', 'items');
+        //config.logObj(dataObj.pages);
       });
     });
   });
