@@ -11,6 +11,7 @@ describe ('options', () => {
     'helpers',
     'keys',
     'layouts',
+    'markdownFields',
     'pages',
     'parsers',
     'partials',
@@ -52,6 +53,14 @@ describe ('options', () => {
       );
       expect(opts.keys.pages).to.equal('pages');
       expect(opts.keys.patterns).to.equal('bar');
+    });
+    describe('parsing markdownFields', () => {
+      const mdOpts = {
+        markdownFields: ['notes', 'foo']
+      };
+      var opts = parseOptions(mdOpts);
+      expect(opts.markdownFields).to.be.an('Array').and.to
+        .contain('notes', 'foo');
     });
     describe('parsing parsers', () => {
       var differentParsers = {
