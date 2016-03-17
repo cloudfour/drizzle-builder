@@ -4,7 +4,7 @@ import Promise from 'bluebird';
 /**
  * Build a single-page object for the page data object
  */
-function pageEntry (pageFile, keys) {
+function pageEntry (pageFile, keys, options) {
   const idKeys = keys.map(key => utils.keyname(key));
   const pathKey = utils.keyname(pageFile.path);
   const id = idKeys.concat(pathKey).join('.');
@@ -15,9 +15,16 @@ function pageEntry (pageFile, keys) {
 }
 
 /**
+ * Parse pages files and build context object
+ */
+function parsePages (options) {
+  return parseRecursive(options.pages, options.keys.pages, pageEntry, options);
+}
+
+/**
  * Build a single-pattern object for the pattern object
  */
-function patternEntry (patternFile, keys) {
+function patternEntry (patternFile, keys, options) {
   const idKeys = keys.map(key => utils.keyname(key));
   const pathKey = utils.keyname(patternFile.path);
   const id = idKeys.concat(pathKey).join('.');
@@ -25,6 +32,14 @@ function patternEntry (patternFile, keys) {
     id,
     name: utils.titleCase(pathKey)
   };
+}
+
+/**
+ * Parse patterns files and build context object
+ */
+function parsePatterns (options) {
+  return parseRecursive(options.patterns,
+    options.keys.patterns, patternEntry, options);
 }
 /**
  * Parse a file structure of files matching `glob` into a nested object
@@ -54,7 +69,7 @@ function parseRecursive (glob, relativeKey, entryFn, options) {
       const entryKey = utils.keyname(objectFile.path, { stripNumbers: false });
       const keys     = utils.relativePathArray(objectFile.path, relativeKey);
       utils.deepRef(keys, objectData).items[entryKey] = Object.assign(
-        entryFn(objectFile, keys), objectFile);
+        entryFn(objectFile, keys, options), objectFile);
     });
     return objectData[relativeKey];
   });
@@ -89,9 +104,8 @@ function parseAll (options = {}) {
   return Promise.all([
     parseFlat(options.data, options),
     parseFlat(options.layouts, options),
-    parseRecursive(options.pages, options.keys.pages, pageEntry, options),
-    parseRecursive(options.patterns,
-      options.keys.patterns, patternEntry, options)
+    parsePages(options),
+    parsePatterns(options)
   ]).then(allData => {
     return {
       data    : allData[0],
