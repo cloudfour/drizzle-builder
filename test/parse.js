@@ -68,7 +68,8 @@ describe ('parse', () => {
   describe ('parsing pages', () => {
     it ('should correctly build data object from pages', () => {
       return parse.parseRecursive(config.fixturePath('pages/**/*'), 'pages',
-        { parsers: defaultParsers }
+        { parsers: defaultParsers,
+          markdownFields: ['notes'] }
       )
         .then(pageData => {
           expect(pageData).to.be.an('object');
@@ -88,6 +89,7 @@ describe ('parse', () => {
       return parse.parseRecursive(config.fixturePath('patterns/**/*.html'),
         'patterns',
         { keys: { patterns: 'patterns'},
+          markdownFields: ['notes'],
           parsers: defaultParsers
         }
       )
@@ -102,6 +104,7 @@ describe ('parse', () => {
       return parse.parseRecursive(config.fixturePath('patterns/**/*.html'),
         'patterns',
         { keys: { patterns: 'patterns'},
+          markdownFields: ['notes'],
           parsers: defaultParsers
         }
       )
@@ -122,6 +125,7 @@ describe ('parse', () => {
       return parse.parseRecursive(config.fixturePath('patterns/**/*.html'),
         'patterns',
         { keys: { patterns: 'patterns'},
+          markdownFields: ['notes'],
           parsers: defaultParsers
         }
       )

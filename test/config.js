@@ -15,6 +15,7 @@ var config = {
     data: fixturePath('data/**/*.yaml'),
     docs: fixturePath('docs/**/*.md'),
     layouts: fixturePath('layouts/**/*.html'),
+    markdownFields: ['notes'],
     pages: fixturePath('pages/**/*'),
     partials: fixturePath('partials/**/*.hbs'),
     patterns: fixturePath('patterns/**/*.html')

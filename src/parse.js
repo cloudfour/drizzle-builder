@@ -1,5 +1,25 @@
 import * as utils from './utils';
 import Promise from 'bluebird';
+import marked from 'marked';
+
+/**
+ * Given an object representing a page or pattern or other file:
+ * If that object has a `data` property, use that to
+ * create the right kind of context for the object. Process relevant fields
+ * with markdown.
+ */
+function parseLocalData (fileObj, options) {
+  const mdFields = options.markdownFields || [];
+  if (fileObj.data && typeof fileObj.data === 'object') {
+    // First, clean up data object by running markdown over relevant fields
+    mdFields.forEach(mdField => {
+      if (fileObj.data[mdField]) {
+        fileObj.data[mdField] = marked(fileObj.data[mdField]);
+      }
+    });
+  }
+  return fileObj;
+}
 
 /**
  * Build a single-page object for the page data object
@@ -8,10 +28,10 @@ function pageEntry (pageFile, keys, options) {
   const idKeys = keys.map(key => utils.keyname(key));
   const pathKey = utils.keyname(pageFile.path);
   const id = idKeys.concat(pathKey).join('.');
-  return {
+  return Object.assign(parseLocalData(pageFile, options), pageFile, {
     id,
     name: utils.titleCase(pathKey)
-  };
+  });
 }
 
 /**
@@ -28,10 +48,11 @@ function patternEntry (patternFile, keys, options) {
   const idKeys = keys.map(key => utils.keyname(key));
   const pathKey = utils.keyname(patternFile.path);
   const id = idKeys.concat(pathKey).join('.');
-  return {
-    id,
-    name: utils.titleCase(pathKey)
-  };
+  return Object.assign(parseLocalData(patternFile, options),  patternFile,
+    {
+      id,
+      name: utils.titleCase(pathKey)
+    });
 }
 
 /**
@@ -68,8 +89,8 @@ function parseRecursive (glob, relativeKey, entryFn, options) {
     fileData.forEach(objectFile => {
       const entryKey = utils.keyname(objectFile.path, { stripNumbers: false });
       const keys     = utils.relativePathArray(objectFile.path, relativeKey);
-      utils.deepRef(keys, objectData).items[entryKey] = Object.assign(
-        entryFn(objectFile, keys, options), objectFile);
+      utils.deepRef(keys, objectData)
+        .items[entryKey] = entryFn(objectFile, keys, options);
     });
     return objectData[relativeKey];
   });
