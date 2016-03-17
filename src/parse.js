@@ -34,7 +34,8 @@ function pageEntry (pageFile, keys, options) {
   const id = idKeys.concat(pathKey).join('.');
   return Object.assign(parseLocalData(pageFile, options), pageFile, {
     id,
-    name: utils.titleCase(pathKey)
+    name: utils.titleCase(pathKey),
+    resourceType: 'page'
   });
 }
 

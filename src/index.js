@@ -12,6 +12,7 @@ function drizzle (options) {
   return Promise.all([parseAll(opts), prepareTemplates(opts)]).then(allData => {
     return {
       context: allData[0],
+      options: opts,
       templates: allData[1]
     };
   });
