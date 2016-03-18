@@ -8,13 +8,7 @@ import prepare from './prepare';
  */
 function drizzle (options) {
   const opts = parseOptions(options);
-  return prepare(opts).then(drizzleData => {
-    return {
-      context: drizzleData.context,
-      handlebars: drizzleData.handlebars,
-      options: opts
-    };
-  });
+  return prepare(opts);
 }
 
 export default drizzle;
