@@ -1,5 +1,5 @@
 import path from 'path';
-import { applyTemplate } from '../template';
+import { applyTemplate } from '../render/templates';
 import { write } from './utils';
 
 function isPage (obj) {

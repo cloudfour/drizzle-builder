@@ -1,4 +1,4 @@
-// TODO: Move into render module
+
 function applyTemplate (template, context, options) {
   if (typeof template !== 'function') {
     template = options.handlebars.compile(template);
