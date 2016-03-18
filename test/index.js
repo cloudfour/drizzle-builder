@@ -4,7 +4,7 @@ var config = require('./config');
 var expect = chai.expect;
 var drizzle = require('../dist/');
 
-describe ('drizzle builder integration', () => {
+describe.skip ('drizzle builder integration', () => {
   const options = config.fixtureOpts;
   it ('should return data and context',  () => {
     return drizzle(options).then(drizzleData => {
