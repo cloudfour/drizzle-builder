@@ -1,6 +1,7 @@
 import { applyTemplate } from './template';
 import path from 'path';
 import Promise from 'bluebird';
+/* TODO: FS stuff in separate module */
 import {writeFile as writeFileCB} from 'fs';
 import {mkdirp as mkdirpCB} from 'mkdirp';
 var writeFile = Promise.promisify(writeFileCB);
@@ -12,6 +13,9 @@ function isPage (obj) {
     obj.resourceType === 'page');
 }
 
+/**
+ * TODO: Move to another module, separate out fs stuff
+ */
 function writePage (page, drizzleData) {
   const templateContext = Object.assign({}, drizzleData.context, page);
   const compiled = applyTemplate(page.contents,
@@ -23,6 +27,9 @@ function writePage (page, drizzleData) {
   return writeFile(outputPath, compiled);
 }
 
+/**
+ * TODO: Comment
+ */
 function writePages (pages, drizzleData, writePromises = []) {
   if (isPage(pages)) {
     return writePage(pages, drizzleData);
@@ -34,6 +41,10 @@ function writePages (pages, drizzleData, writePromises = []) {
   return writePromises;
 }
 
+/**
+ * TODO: Comment
+ * TODO: Better resolve/return value
+ */
 function pages (drizzleData) {
   return Promise.all(writePages(drizzleData.context.pages, drizzleData))
     .then(() => {

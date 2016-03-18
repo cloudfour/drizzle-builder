@@ -11,6 +11,7 @@ describe ('building pages', () => {
     return config.prepareAll(config.fixtureOpts).then(pages)
     .then(result => {
       expect(result).to.be.true;
+      // TODO: Many more tests
     });
   });
 });
