@@ -40,7 +40,7 @@ function writePages (pages, drizzleData, writePromises = []) {
  * TODO: Better resolve/return value
  */
 function pages (drizzleData) {
-  return Promise.all(writePages(drizzleData.context.pages, drizzleData))
+  return Promise.all(writePages(drizzleData.pages, drizzleData))
     .then(() => {
       return true;
     });

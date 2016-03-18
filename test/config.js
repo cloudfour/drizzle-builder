@@ -72,6 +72,7 @@ var config = {
   fixtureOpts: {
     data: fixturePath('data/**/*'),
     dest: './test/dist',
+    helpers: fixturePath('helpers/**/*.js'),
     layouts: fixturePath('layouts/**/*.html'),
     markdownFields: ['notes'],
     pages: fixturePath('pages/**/*'),

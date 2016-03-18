@@ -11,7 +11,8 @@ function parseAll (options = {}) {
     return {
       data    : allData[0],
       pages   : allData[1],
-      patterns: allData[2]
+      patterns: allData[2],
+      options : options
     };
   });
 }

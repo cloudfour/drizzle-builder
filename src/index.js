@@ -1,5 +1,6 @@
 import parseOptions from './options';
 import prepare from './prepare';
+import parse from './parse';
 
 /**
  * Build the drizzle!
@@ -8,7 +9,9 @@ import prepare from './prepare';
  */
 function drizzle (options) {
   const opts = parseOptions(options);
-  return prepare(opts);
+  return prepare(opts).then(parse).then(drizzleData => {
+    return drizzleData;
+  });
 }
 
 export default drizzle;
