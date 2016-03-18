@@ -66,27 +66,6 @@ describe ('parse', () => {
       });
     });
   });
-  describe ('parsing pages', () => {
-    it ('should correctly build data object from pages', () => {
-      var opts = parseOptions(config.fixtureOpts);
-      return parse.parsePages(opts).then(pageData => {
-        expect(pageData).to.be.an('object');
-        expect(pageData).not.to.contain.keys('items');
-        expect(pageData).to.contain.keys(
-          'subfolder', '04-sandbox', 'components', 'doThis', 'index');
-        expect(pageData.components).to.contain.keys(
-          'title', 'resourceType', 'outputPath', 'path', 'contents'
-        );
-        expect(pageData.subfolder).not.to.contain.keys('resourceType');
-        expect(pageData.subfolder).to.contain.keys('subpage');
-        expect(pageData.subfolder.subpage).to.contain.keys(
-          'resourceType', 'outputPath', 'path'
-        );
-        expect(pageData.subfolder.subpage.outputPath).to.equal(
-          'subfolder/subpage.html');
-      });
-    });
-  });
 
   describe ('parsing patterns', () => {
     it ('builds an object organized by directories', () => {
