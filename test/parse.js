@@ -82,7 +82,8 @@ describe ('parse', () => {
         expect(pageData.subfolder.subpage).to.contain.keys(
           'resourceType', 'outputPath', 'path'
         );
-        expect(pageData.subfolder.subpage.outputPath).to.equal('subfolder');
+        expect(pageData.subfolder.subpage.outputPath).to.equal(
+          'subfolder/subpage.html');
       });
     });
   });

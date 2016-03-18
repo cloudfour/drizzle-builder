@@ -83,7 +83,7 @@ function parsePages (options) {
       const keys       = utils.relativePathArray(
         pageFile.path, options.keys.pages);
       keys.shift();
-      const outputPath = keys.join(path.sep);
+      const outputPath = path.join(keys.join(path.sep), entryKey + '.html');
       utils.deepObj(keys, pageData)[entryKey] = Object.assign(
         parseLocalData(pageFile, options), pageFile, {
           outputPath,
