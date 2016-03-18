@@ -3,17 +3,36 @@ import { parseAll } from './parse';
 import { prepareTemplates } from './template';
 
 /**
- * Build the drizzle output
+ * Parse resource files and prepare templates and handlebars.
+ * @TODO Possibly move into a different module.
  *
- * @return {Promise}; resolves to [dataObj, Handlebars] for now
+ * @param {Object} options
+ * @return {Promise}
+ */
+function prepare (options) {
+  return Promise.all([
+    parseAll(options),
+    prepareTemplates(options)
+  ]).then(allData => {
+    return {
+      context: allData[0],
+      handlebars: allData[1]
+    };
+  });
+}
+
+/**
+ * Build the drizzle!
+ *
+ * @return {Promise}; ...
  */
 function drizzle (options) {
   const opts = parseOptions(options);
-  return Promise.all([parseAll(opts), prepareTemplates(opts)]).then(allData => {
+  return prepare(opts).then(drizzleData => {
     return {
-      context: allData[0],
-      options: opts,
-      templates: allData[1]
+      context: drizzleData.context,
+      handlebars: drizzleData.handlebars,
+      options: opts
     };
   });
 }

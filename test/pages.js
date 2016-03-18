@@ -7,7 +7,7 @@ var expect = chai.expect;
 var pages = require('../dist/pages');
 var drizzle = require('../dist');
 
-describe.only ('building pages', () => {
+describe ('building pages', () => {
   it ('should build pages', () => {
     return drizzle(config.fixtureOpts).then(drizzleData => {
       pages(drizzleData.options, drizzleData.context, drizzleData.templates);
