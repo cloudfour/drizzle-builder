@@ -11,7 +11,7 @@ describe('write/pages', () => {
   it ('should write page files', () => {
     var opts = options(config.fixtureOpts);
     return prepare(opts).then(parse).then(pages).then(pageData => {
-      expect(pageData).to.be.true;
+      expect(pageData).to.be.an('object');
     });
   });
   it ('should have more tests');

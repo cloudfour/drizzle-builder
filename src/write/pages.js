@@ -42,7 +42,7 @@ function writePages (pages, drizzleData, writePromises = []) {
 function pages (drizzleData) {
   return Promise.all(writePages(drizzleData.pages, drizzleData))
     .then(() => {
-      return true;
+      return drizzleData;
     });
 }
 

@@ -1,7 +1,7 @@
 import parseOptions from './options';
-import prepare from './prepare';
-import parse from './parse';
-import write from './write';
+import prepare from './prepare/';
+import parse from './parse/';
+import write from './write/';
 
 /**
  * Build the drizzle!
