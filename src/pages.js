@@ -1,12 +1,13 @@
 import * as utils from './utils';
 import Promise from 'bluebird';
 
-function outputPages (pages, context, options, handlebars) {
-  // write me
+function writePages (pages, drizzleData) {
+  //console.log(JSON.stringify(pages, null, '  '));
+  return {};
 }
 
-function buildPages (drizzleData) {
-  // outputPages(context.pages, context, options, handlebars);
+function pages (drizzleData) {
+  return writePages(drizzleData.context.pages, drizzleData);
 }
 
-export default buildPages;
+export default pages;

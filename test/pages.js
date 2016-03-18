@@ -5,10 +5,12 @@ var config = require('./config');
 
 var expect = chai.expect;
 var pages = require('../dist/pages');
-var drizzle = require('../dist');
 
 describe ('building pages', () => {
   it ('should build pages', () => {
-    
+    return config.prepare(config.fixtureOpts).then(pages)
+    .then(pageStructure => {
+      expect(pageStructure).to.be.an('object');
+    });
   });
 });

@@ -3,6 +3,9 @@ var yaml = require('js-yaml');
 var frontMatter = require('front-matter');
 var marked = require('marked');
 
+var prepareDrizzle = require('../dist/prepare');
+var parseOptions = require('../dist/options');
+
 const fixtures = path.join(__dirname, 'fixtures/');
 const parsers = {
   content: {
@@ -42,9 +45,15 @@ function fixturePath (glob) {
   return path.normalize(path.join(fixtures, glob));
 }
 
+function prepare (options) {
+  const opts = parseOptions(options);
+  return prepareDrizzle(opts);
+}
 var config = {
-  fixturePath: fixturePath,
-  fixtures: fixtures,
+  parsers,
+  fixturePath,
+  fixtures,
+  prepare,
   fixtureOpts: {
     data: fixturePath('data/**/*'),
     layouts: fixturePath('layouts/**/*.html'),
@@ -56,8 +65,7 @@ var config = {
   },
   logObj: obj => {
     console.log(JSON.stringify(obj, null, '  '));
-  },
-  parsers: parsers
+  }
 };
 
 module.exports = config;
