@@ -96,6 +96,16 @@ function deepRef (pathKeys, obj) {
 }
 
 /**
+ * TODO: Temporary
+ */
+function deepObj (pathKeys, obj) {
+  return pathKeys.reduce((prev, curr) => {
+    prev[curr] = prev[curr] || {};
+    return prev[curr];
+  }, obj);
+}
+
+/**
  * Take a given glob and convert it to a glob that will match directories
  * (instead of files). Return Promise that resolves to matching dirs.
  *
@@ -262,6 +272,7 @@ function relativePathArray (filePath, fromPath) {
 }
 
 export { deepRef,
+         deepObj,
          dirname,
          getDirs,
          getLocalDirs,

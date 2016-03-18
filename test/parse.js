@@ -3,6 +3,7 @@ var chai = require('chai');
 var config = require('./config');
 var expect = chai.expect;
 var parse = require('../dist/parse');
+var parseOptions = require('../dist/options');
 
 describe ('parse', () => {
   const defaultParsers = config.parsers;
@@ -67,20 +68,23 @@ describe ('parse', () => {
   });
   describe ('parsing pages', () => {
     it ('should correctly build data object from pages', () => {
-      return parse.parseRecursive(config.fixturePath('pages/**/*'), 'pages',
-        { parsers: defaultParsers,
-          markdownFields: ['notes'] }
-      )
-        .then(pageData => {
-          expect(pageData).to.be.an('object');
-          expect(pageData).to.contain.keys('name', 'items');
-          expect(pageData.items).to.contain.keys(
-            '04-sandbox', 'index', 'doThis');
-          expect(pageData.items.doThis).to.be.an('object');
-          expect(pageData.items.doThis.contents).to.be.a('string');
-          expect(pageData.subfolder.items.subpage)
-            .to.be.an('object');
-        });
+      var opts = parseOptions(config.fixtureOpts);
+      return parse.parsePages(opts).then(pageData => {
+        expect(pageData).to.be.an('object');
+        expect(pageData).not.to.contain.keys('items');
+        expect(pageData).to.contain.keys(
+          'subfolder', '04-sandbox', 'components', 'doThis', 'index');
+        expect(pageData.components).to.contain.keys(
+          'title', 'resourceType', 'outputPath', 'path', 'contents'
+        );
+        expect(pageData.subfolder).not.to.contain.keys('resourceType');
+        expect(pageData.subfolder).to.contain.keys('subpage');
+        expect(pageData.subfolder.subpage).to.contain.keys(
+          'resourceType', 'outputPath', 'path'
+        );
+        expect(pageData.subfolder.subpage.outputPath).to.equal(
+          'subfolder/subpage.html');
+      });
     });
   });
 

@@ -1,6 +1,7 @@
 import * as utils from './utils';
 import Promise from 'bluebird';
 import marked from 'marked';
+import path from 'path';
 
 /**
  * Given an object representing a page or pattern or other file:
@@ -26,26 +27,6 @@ function parseLocalData (fileObj, options) {
 }
 
 /**
- * Build a single-page object for the page data object
- */
-function pageEntry (pageFile, keys, options) {
-  const idKeys = keys.map(utils.keyname);
-  const pathKey = utils.keyname(pageFile.path);
-  const id = idKeys.concat(pathKey).join('.');
-  return Object.assign(parseLocalData(pageFile, options), pageFile, {
-    id,
-    name: utils.titleCase(pathKey)
-  });
-}
-
-/**
- * Parse pages files and build context object
- */
-function parsePages (options) {
-  return parseRecursive(options.pages, options.keys.pages, pageEntry, options);
-}
-
-/**
  * Build a single-pattern object for the pattern object
  */
 function patternEntry (patternFile, keys, options) {
@@ -68,17 +49,7 @@ function parsePatterns (options) {
 }
 /**
  * Parse a file structure of files matching `glob` into a nested object
- * structure:
- * { name: 'Directory Name in Title Case',
- *   items: {
- *     name: 'Sub Directory',
- *     items: { ... },
- *     'item-in-topdirectory': {
- *       name: 'Item In Top Directory',
- *       items: {   }
- *     }
- *   }
- * }
+ * structure: @TODO
  *
  * Each object in `items` will be an object structured per the return value
  * of the parser associated with that file path pattern.
@@ -97,6 +68,29 @@ function parseRecursive (glob, relativeKey, entryFn, options) {
         .items[entryKey] = entryFn(objectFile, keys, options);
     });
     return objectData[relativeKey];
+  });
+}
+
+/**
+ * Parse the pages...TODO
+ */
+function parsePages (options) {
+  const pageData = {};
+
+  return utils.readFiles(options.pages, options).then(fileData => {
+    fileData.forEach(pageFile => {
+      const entryKey   = utils.keyname(pageFile.path, { stripNumbers: false });
+      const keys       = utils.relativePathArray(
+        pageFile.path, options.keys.pages);
+      keys.shift();
+      const outputPath = path.join(keys.join(path.sep), entryKey + '.html');
+      utils.deepObj(keys, pageData)[entryKey] = Object.assign(
+        parseLocalData(pageFile, options), pageFile, {
+          outputPath,
+          resourceType: 'page'
+        });
+    });
+    return pageData;
   });
 }
 
@@ -142,5 +136,6 @@ function parseAll (options = {}) {
 
 export { parseAll,
          parseFlat,
+         parsePages,
          parseRecursive
        };

@@ -38,8 +38,10 @@ var parsers = {
   }
 };
 
+/* TODO: options for path prefixes for patterns, pages */
 const defaults = {
   data          : 'src/data/**/*.yaml',
+  dest          : 'dist',
   handlebars    : Handlebars,
   helpers       : {},
   keys          : {

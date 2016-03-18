@@ -1,18 +1,18 @@
 import parseOptions from './options';
-import { parseAll } from './parse';
-import { prepareTemplates } from './template';
+import prepare from './prepare';
 
 /**
- * Build the drizzle output
+ * Build the drizzle!
  *
- * @return {Promise}; resolves to [dataObj, Handlebars] for now
+ * @return {Promise}; ...
  */
 function drizzle (options) {
   const opts = parseOptions(options);
-  return Promise.all([parseAll(opts), prepareTemplates(opts)]).then(allData => {
+  return prepare(opts).then(drizzleData => {
     return {
-      context: allData[0],
-      templates: allData[1]
+      context: drizzleData.context,
+      handlebars: drizzleData.handlebars,
+      options: opts
     };
   });
 }

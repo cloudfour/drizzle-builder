@@ -17,7 +17,7 @@ describe ('all data parsing', () => {
         expect(dataObj).to.be.an('object').and.to.contain.keys(
           'pages', 'patterns', 'layouts');
         expect(dataObj.patterns).to.contain.keys('name', 'items');
-        expect(dataObj.pages).to.contain.keys('name', 'items');
+        expect(dataObj.pages).not.to.contain.keys('name', 'items');
         //config.logObj(dataObj.pages);
       });
     });
