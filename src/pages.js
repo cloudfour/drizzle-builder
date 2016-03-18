@@ -23,18 +23,22 @@ function writePage (page, drizzleData) {
   return writeFile(outputPath, compiled);
 }
 
-function writePages (pages, drizzleData) {
+function writePages (pages, drizzleData, writePromises = []) {
   if (isPage(pages)) {
     return writePage(pages, drizzleData);
   }
   for (var pageKey in pages) {
-    writePages(pages[pageKey], drizzleData);
+    writePromises = writePromises.concat(
+      writePages(pages[pageKey], drizzleData, writePromises));
   }
-  return {};
+  return writePromises;
 }
 
 function pages (drizzleData) {
-  return writePages(drizzleData.context.pages, drizzleData);
+  return Promise.all(writePages(drizzleData.context.pages, drizzleData))
+    .then(() => {
+      return true;
+    });
 }
 
 export default pages;
