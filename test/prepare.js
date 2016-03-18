@@ -17,7 +17,7 @@ describe('prepare', () => {
       return preparePromise.then(drizzleData => {
         expect(drizzleData).to.contain.keys('context', 'handlebars');
         expect(drizzleData.context).to.contain.keys(
-          'data', 'pages', 'patterns', 'layouts'
+          'data', 'pages', 'patterns'
         );
       });
     });

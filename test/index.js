@@ -12,7 +12,7 @@ describe.skip ('drizzle builder integration', () => {
       expect(drizzleData.options).to.be.an('object');
       expect(drizzleData.handlebars).to.be.an('object');
       expect(drizzleData.context).to.contain.keys(
-        'pages', 'patterns', 'data', 'layouts'
+        'pages', 'patterns', 'data'
       );
       // TODO deeper tests as we go
     });

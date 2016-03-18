@@ -1,4 +1,4 @@
-import { parseAll } from './parse';
+import parseAll from './parse/';
 import { prepareTemplates } from './template';
 
 /**
