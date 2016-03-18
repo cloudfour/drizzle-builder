@@ -40,6 +40,7 @@ var parsers = {
 
 const defaults = {
   data          : 'src/data/**/*.yaml',
+  dest          : 'dist',
   handlebars    : Handlebars,
   helpers       : {},
   keys          : {

@@ -71,6 +71,7 @@ var config = {
   prepareAll,
   fixtureOpts: {
     data: fixturePath('data/**/*'),
+    dest: './test/dist',
     layouts: fixturePath('layouts/**/*.html'),
     markdownFields: ['notes'],
     pages: fixturePath('pages/**/*'),

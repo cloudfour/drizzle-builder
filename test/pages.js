@@ -9,7 +9,8 @@ var pages = require('../dist/pages');
 describe ('building pages', () => {
   it ('should build pages', () => {
     return config.prepareAll(config.fixtureOpts).then(pages)
-    .then(pageStructure => {
+    .then(writePromises => {
+      console.log(writePromises);
     });
   });
 });

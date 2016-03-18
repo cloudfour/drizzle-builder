@@ -1,4 +1,10 @@
 import { applyTemplate } from './template';
+import path from 'path';
+import Promise from 'bluebird';
+import {writeFile as writeFileCB} from 'fs';
+import {mkdirp as mkdirpCB} from 'mkdirp';
+var writeFile = Promise.promisify(writeFileCB);
+var mkdirp    = Promise.promisify(mkdirpCB);
 
 function isPage (obj) {
   return (typeof obj === 'object' &&
@@ -10,7 +16,11 @@ function writePage (page, drizzleData) {
   const templateContext = Object.assign({}, drizzleData.context, page);
   const compiled = applyTemplate(page.contents,
     templateContext, drizzleData.options);
-  return compiled;
+  const outputPath = path.normalize(path.join(
+    drizzleData.options.dest,
+    page.outputPath));
+  mkdirp(path.dirname(outputPath));
+  return writeFile(outputPath, compiled);
 }
 
 function writePages (pages, drizzleData) {
@@ -20,7 +30,7 @@ function writePages (pages, drizzleData) {
   for (var pageKey in pages) {
     writePages(pages[pageKey], drizzleData);
   }
-  return {}; // TODO
+  return {};
 }
 
 function pages (drizzleData) {
