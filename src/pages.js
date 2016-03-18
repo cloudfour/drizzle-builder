@@ -1,5 +1,4 @@
-import * as utils from './utils';
-import Promise from 'bluebird';
+import { applyTemplate } from './template';
 
 function isPage (obj) {
   return (typeof obj === 'object' &&
@@ -8,7 +7,10 @@ function isPage (obj) {
 }
 
 function writePage (page, drizzleData) {
-  console.log('writing page', page.outputPath);
+  const templateContext = Object.assign({}, drizzleData.context, page);
+  const compiled = applyTemplate(page.contents,
+    templateContext, drizzleData.options);
+  return compiled;
 }
 
 function writePages (pages, drizzleData) {

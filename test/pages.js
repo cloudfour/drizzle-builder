@@ -8,9 +8,8 @@ var pages = require('../dist/pages');
 
 describe ('building pages', () => {
   it ('should build pages', () => {
-    return config.prepare(config.fixtureOpts).then(pages)
+    return config.prepareAll(config.fixtureOpts).then(pages)
     .then(pageStructure => {
-      expect(pageStructure).to.be.an('object');
     });
   });
 });

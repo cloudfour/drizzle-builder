@@ -4,7 +4,7 @@ var frontMatter = require('front-matter');
 var marked = require('marked');
 
 var prepareDrizzle = require('../dist/prepare');
-var parseOptions = require('../dist/options');
+var parseDrizzleOptions = require('../dist/options');
 
 const fixtures = path.join(__dirname, 'fixtures/');
 const parsers = {
@@ -45,15 +45,30 @@ function fixturePath (glob) {
   return path.normalize(path.join(fixtures, glob));
 }
 
-function prepare (options) {
-  const opts = parseOptions(options);
-  return prepareDrizzle(opts);
+function parseOptions (options) {
+  return parseDrizzleOptions(options);
 }
+function prepare (options) {
+  return prepareDrizzle(options);
+}
+function prepareAll (options) {
+  var opts = parseOptions(options);
+  return prepare(opts).then(drizzleData => {
+    return {
+      context: drizzleData.context,
+      handlebars: drizzleData.handlebars,
+      options: opts
+    };
+  });
+}
+
 var config = {
   parsers,
   fixturePath,
   fixtures,
+  parseOptions,
   prepare,
+  prepareAll,
   fixtureOpts: {
     data: fixturePath('data/**/*'),
     layouts: fixturePath('layouts/**/*.html'),
