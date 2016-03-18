@@ -9,8 +9,6 @@ var drizzle = require('../dist');
 
 describe ('building pages', () => {
   it ('should build pages', () => {
-    return drizzle(config.fixtureOpts).then(drizzleData => {
-      pages(drizzleData.options, drizzleData.context, drizzleData.templates);
-    });
+    
   });
 });
