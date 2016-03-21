@@ -9,7 +9,7 @@
   "scripts": {
     "build": "babel src --out-dir dist",
     "prepublish": "npm run test",
-    "test": "npm run build; mocha"
+    "test": "npm run build; mocha --recursive"
   },
   "keywords": [
     "fabricator"

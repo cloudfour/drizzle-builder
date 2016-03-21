@@ -1,4 +1,4 @@
-import * as utils from './utils';
+import * as utils from '../utils';
 
 /**
  * Register helpers on Handlebars. Helpers (helperOpts) can be provided as
@@ -48,41 +48,4 @@ function prepareHelpers (Handlebars, helperOpts = {}) {
     });
 }
 
-/**
- * Register a glob of partials.
- * @param {Object} Handlebars instance
- * @param {String || Array} glob
- */
-function preparePartials (Handlebars, partials = '') {
-  return utils.readFiles(partials).then(partialFiles => {
-    partialFiles.forEach(partialFile => {
-      const partialKey = utils.keyname(partialFile.path);
-      Handlebars.registerPartial(partialKey, partialFile.contents);
-    });
-    return Handlebars.partials;
-  });
-}
-
-/**
- * Register partials and helpers per opts
- *
- * @param {Object} opts Drizzle options
- * @return {Promise} resolves to {Object} Handlebars instance
- */
-function prepareTemplates (opts) {
-  return Promise.all([
-    prepareHelpers(opts.handlebars, opts.helpers),
-    preparePartials(opts.handlebars, opts.partials)
-  ]).then(handlebarsInfo => {
-    return opts.handlebars;
-  });
-}
-
-function applyTemplate (template, context, options) {
-  if (typeof template !== 'function') {
-    template = options.handlebars.compile(template);
-  }
-  return template(context);
-}
-
-export { applyTemplate, prepareTemplates, prepareHelpers, preparePartials };
+export default prepareHelpers;

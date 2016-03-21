@@ -1,11 +1,6 @@
-import { applyTemplate } from './template';
 import path from 'path';
-import Promise from 'bluebird';
-/* TODO: FS stuff in separate module */
-import {writeFile as writeFileCB} from 'fs';
-import {mkdirp as mkdirpCB} from 'mkdirp';
-var writeFile = Promise.promisify(writeFileCB);
-var mkdirp    = Promise.promisify(mkdirpCB);
+import { applyTemplate } from '../render/templates';
+import { write } from './utils';
 
 function isPage (obj) {
   return (typeof obj === 'object' &&
@@ -23,8 +18,7 @@ function writePage (page, drizzleData) {
   const outputPath = path.normalize(path.join(
     drizzleData.options.dest,
     page.outputPath));
-  mkdirp(path.dirname(outputPath));
-  return writeFile(outputPath, compiled);
+  return write(outputPath, compiled);
 }
 
 /**
@@ -46,9 +40,9 @@ function writePages (pages, drizzleData, writePromises = []) {
  * TODO: Better resolve/return value
  */
 function pages (drizzleData) {
-  return Promise.all(writePages(drizzleData.context.pages, drizzleData))
+  return Promise.all(writePages(drizzleData.pages, drizzleData))
     .then(() => {
-      return true;
+      return drizzleData;
     });
 }
 
