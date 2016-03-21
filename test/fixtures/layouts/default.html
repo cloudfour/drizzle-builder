@@ -1,44 +1,17 @@
 <!DOCTYPE html>
-<html class="no-js {{#if fabricator}}f-Layout{{/if}}">
+<html>
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{title}}</title>
-  {{#if fabricator}}
-    <link rel="stylesheet" href="{{baseurl}}/assets/fabricator/styles/fabricator.css">
-  {{/if}}
-  <link rel="stylesheet" href="{{baseurl}}/assets/toolkit/styles/toolkit.css" id="stylesheet">
-  {{#each stylesheets}}
-    <link rel="stylesheet" href="{{baseurl}}/assets/toolkit/styles/{{this}}.css">
-  {{/each}}
+  {{#block "head"}}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{title}}</title>
+  {{/block}}
 </head>
-<body class="{{#if fabricator}}f-Layout-body{{/if}}">
-  {{#if fabricator}}
-    {{> f-icons}}
-    {{> f-nav}}
-    <div class="f-Layout-main f-u-cf">
-      <div class="f-u-pad">
-  {{/if}}
 
-        {% body %}
-
-  {{#if fabricator}}
-      </div>
-    </div>
-  {{/if}}
-
-
-  {{!-- jQuery and Bootstrap --}}
-  <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-  {{!-- Fabricator UI bundle --}}
-  {{#if fabricator}}
-    <script src="{{baseurl}}/assets/fabricator/scripts/fabricator.js"></script>
-  {{/if}}
-  {{!-- Components bundle --}}
-  <script src="{{baseurl}}/assets/toolkit/scripts/toolkit.js"></script>
-  {{#each scripts}}
-    <script src="{{baseurl}}/assets/toolkit/scripts/{{this}}.js"></script>
-  {{/each}}
+<body>
+  {{#block "body"}}
+    Body content should replace this.
+  {{/block}}
 </body>
+
 </html>
