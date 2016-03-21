@@ -8,7 +8,7 @@ var render = require('../../dist/render/');
 var writePages = require('../../dist/write/pages');
 var options = require('../../dist/options');
 
-describe.only ('write/pages', () => {
+describe ('write/pages', () => {
   var opts = options(config.fixtureOpts);
   var allData;
   before (() => {

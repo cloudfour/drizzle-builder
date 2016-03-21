@@ -1,11 +1,18 @@
-import * as templates from './templates';
+import * as renderUtils from './utils';
 
+/**
+ * Render an individual page: replace its `contents` property
+ * with compiled contents
+ */
 function renderPage (page, drizzleData) {
-  page.contents = templates.applyTemplate(page.contents,
-    templates.localContext(page, drizzleData),
+  page.contents = renderUtils.applyTemplate(page.contents,
+    renderUtils.localContext(page, drizzleData),
     drizzleData.options);
 }
 
+/**
+ * Traverse pages data object. render individual pages
+ */
 function walkPages (pages, drizzleData) {
   if (pages.contents) {
     return renderPage(pages, drizzleData);
