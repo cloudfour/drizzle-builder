@@ -1,9 +1,18 @@
-
 function applyTemplate (template, context, options) {
   if (typeof template !== 'function') {
-    template = options.handlebars.compile(template);
+    template = compileTemplate(template, options);
   }
   return template(context);
 }
 
-export { applyTemplate };
+function compileTemplate (template, options) {
+  return options.handlebars.compile(template);
+}
+
+function localContext (localData, drizzleData) {
+  return Object.assign({}, drizzleData, localData);
+}
+
+export { applyTemplate,
+         compileTemplate,
+         localContext };
