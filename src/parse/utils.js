@@ -8,18 +8,15 @@ import marked from 'marked';
  */
 function parseLocalData (fileObj, options) {
   const mdFields = options.markdownFields || [];
-  if (fileObj.data && typeof fileObj.data === 'object') {
-    // First, clean up data object by running markdown over relevant fields
-    mdFields.forEach(mdField => {
-      if (fileObj.data[mdField]) {
-        fileObj.data[mdField] = marked(fileObj.data[mdField]);
-      }
-    });
-    for (var dataKey in fileObj.data) {
-      fileObj[dataKey] = fileObj.data[dataKey];
+  const localData = Object.assign({}, fileObj.data);
+  // First, clean up data object by running markdown over relevant fields
+  // TODO: This feels awkward here
+  mdFields.forEach(mdField => {
+    if (localData[mdField]) {
+      localData[mdField] = marked(localData[mdField]);
     }
-    delete fileObj.data;
-  }
+  });
+  fileObj = Object.assign(localData, fileObj);
   return fileObj;
 }
 

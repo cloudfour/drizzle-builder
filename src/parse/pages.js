@@ -1,6 +1,6 @@
 import * as utils from '../utils';
 import * as parseUtils from './utils';
-import path from 'path';
+//import path from 'path';
 
 function parsePages (options) {
   const pageData = {};
@@ -11,12 +11,9 @@ function parsePages (options) {
       const keys       = utils.relativePathArray(
         pageFile.path, options.keys.pages);
       keys.shift();
-      const outputPath = path.join(keys.join(path.sep), entryKey + '.html');
-      utils.deepObj(keys, pageData)[entryKey] = Object.assign(
-        parseUtils.parseLocalData(pageFile, options), pageFile, {
-          outputPath,
-          resourceType: 'page'
-        });
+      //const outputPath = path.join(keys.join(path.sep), entryKey + '.html');
+      utils.deepObj(keys, pageData)[entryKey] = parseUtils
+        .parseLocalData(pageFile, options);
     });
     return pageData;
   });
