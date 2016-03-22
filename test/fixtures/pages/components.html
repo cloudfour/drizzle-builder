@@ -1,9 +1,15 @@
 ---
 title: Components
+customHeader: ding
+layout: page
 ---
 
-<h1>{{title}}</h1>
+{{#extend 'page'}}
+  {{#content 'body'}}
+    <h1>{{title}}</h1>
 
-{{#each patterns.components.items}}
-  foo
-{{/each}}
+    {{#each patterns.components.items}}
+      foo
+    {{/each}}
+  {{/content}}
+{{/extend}}

@@ -19,4 +19,11 @@ describe ('render/pages', () => {
         .to.have.string('<h1>Sandbox</h1>');
     });
   });
+  it ('should override layouts when told to', () => {
+    return allData.then(drizzleData => {
+      const customPage = drizzleData.pages.doThis;
+      expect(customPage.contents).to.contain('This is the Page Layout');
+      expect(customPage.contents).to.contain('<h2>foobar</h2>');
+    });
+  });
 });
