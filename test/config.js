@@ -70,15 +70,17 @@ var config = {
   prepare,
   prepareAll,
   fixtureOpts: {
-    data: fixturePath('data/**/*'),
+    src: {
+      data    : fixturePath('data/**/*'),
+      layouts : fixturePath('layouts/**/*'),
+      pages   : fixturePath('pages/**/*'),
+      partials: fixturePath('partials/**/*.hbs'),
+      patterns: fixturePath('patterns/**/*')
+    },
     dest: './test/dist',
     helpers: fixturePath('helpers/**/*.js'),
-    layouts: fixturePath('layouts/**/*.html'),
     markdownFields: ['notes'],
-    pages: fixturePath('pages/**/*'),
-    parsers: parsers,
-    partials: fixturePath('partials/**/*.hbs'),
-    patterns: fixturePath('patterns/**/*')
+    parsers: parsers
   },
   logObj: obj => {
     console.log(JSON.stringify(obj, null, '  '));

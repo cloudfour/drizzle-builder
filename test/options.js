@@ -6,17 +6,12 @@ var parseOptions = require('../dist/options');
 
 describe ('options', () => {
   var keys = [
-    'data',
     'dest',
+    'destPaths',
     'handlebars',
     'helpers',
-    'keys',
-    'layouts',
     'markdownFields',
-    'pages',
-    'parsers',
-    'partials',
-    'patterns'
+    'parsers'
   ];
   var parserKeys = [
     'content',
@@ -35,25 +30,32 @@ describe ('options', () => {
         var opts = parseOptions();
         expect(opts.parsers).to.be.an('object').and.to.contain.keys(parserKeys);
       });
-      it ('should assign keys for different resources', () => {
-        var opts = parseOptions();
-        expect(opts.keys).to.be.an('object').and.to.contain
-        .keys('patterns', 'pages');
+    });
+    describe('generating src globs', () => {
+      var opts = parseOptions();
+      it ('should contain default src globs', () => {
+        expect(opts).to.include.key('src');
+        expect(opts.src).to.include.keys(
+          'data', 'pages', 'layouts', 'partials', 'patterns');
       });
     });
-    describe('parsing keys', () => {
-      const keyOpts = {
-        keys: {
-          patterns: 'bar',
-          another: 'baz'
-        }
-      };
-      var opts = parseOptions(keyOpts);
-      expect(opts.keys).to.be.an('object').and.to.contain.keys(
-        'pages', 'patterns', 'another'
-      );
-      expect(opts.keys.pages).to.equal('pages');
-      expect(opts.keys.patterns).to.equal('bar');
+    describe('generating dist paths', () => {
+      var opts = parseOptions();
+      it('should provide default distPaths', () => {
+        expect(opts.destPaths).to.have.keys('pages', 'patterns');
+        expect(opts.destPaths.patterns).to.equal('patterns/');
+      });
+      it('should allow override of distPaths', () => {
+        var opts = parseOptions({ destPaths: {
+          pages: 'foo/',
+          patterns: 'bar/',
+          something: 'baz/'
+        }});
+        expect(opts.destPaths).to.contain.keys(
+          'pages', 'patterns', 'something');
+        expect(opts.destPaths.pages).to.equal('foo/');
+        expect(opts.destPaths.patterns).to.equal('bar/');
+      });
     });
     describe('parsing markdownFields', () => {
       const mdOpts = {

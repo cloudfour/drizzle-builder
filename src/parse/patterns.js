@@ -6,14 +6,15 @@ import * as parseUtils from './utils';
  */
 function parsePatterns (options) {
   const patternData = {};
-  return utils.readFiles(options.patterns, options).then(fileData => {
+  return utils.readFiles(options.src.patterns, options).then(fileData => {
+    const relativeRoot = utils.commonRoot(fileData);
     fileData.forEach(patternFile => {
       const entryKey = utils.keyname(patternFile.path, { stripNumbers: false });
-      const keys     = utils.relativePathArray(patternFile.path,
-        options.keys.patterns);
-      const patternEntry = utils.deepObj(keys, patternData);
+      const pathKeys = utils.relativePathArray(patternFile.path,
+        relativeRoot);
+      const patternEntry = utils.deepObj(pathKeys, patternData);
 
-      const idKeys = keys.map(key => utils.keyname(key));
+      const idKeys = pathKeys.map(utils.keyname);
       const pathKey = utils.keyname(patternFile.path);
       const id = idKeys.concat(pathKey).join('.');
 
@@ -27,7 +28,7 @@ function parsePatterns (options) {
         }
       );
     });
-    return patternData[options.keys.patterns];
+    return patternData;
   });
 }
 

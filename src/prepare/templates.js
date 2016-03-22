@@ -11,8 +11,8 @@ import prepareLayouts from './layouts';
 function prepareTemplates (opts) {
   return Promise.all([
     prepareHelpers(opts.handlebars, opts.helpers),
-    prepareLayouts(opts.handlebars, opts.layouts),
-    preparePartials(opts.handlebars, opts.partials)
+    prepareLayouts(opts.handlebars, opts.src.layouts),
+    preparePartials(opts.handlebars, opts.src.partials)
   ]).then(handlebarsInfo => {
     return opts;
   });

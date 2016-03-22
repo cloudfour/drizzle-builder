@@ -60,17 +60,6 @@ describe ('utils', () => {
         });
     });
   });
-  describe ('getLocalDirs', () => {
-    it ('should only return unique local directories', () => {
-      return utils.getLocalDirs(config.fixturePath('patterns/**/*'))
-        .then(dirs => {
-          expect(dirs).to.contain('components');
-          expect(dirs).to.contain('button');
-          expect(dirs).to.contain('typography');
-          expect(dirs).not.to.contain('patterns');
-        });
-    });
-  });
   describe('isGlob', () => {
     it ('should correctly identify valid glob patterns', () => {
       var goodGlobs = [
