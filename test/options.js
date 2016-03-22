@@ -10,12 +10,8 @@ describe ('options', () => {
     'handlebars',
     'helpers',
     'keys',
-    'layouts',
     'markdownFields',
-    'pages',
-    'parsers',
-    'partials',
-    'patterns'
+    'parsers'
   ];
   var parserKeys = [
     'content',
@@ -38,6 +34,14 @@ describe ('options', () => {
         var opts = parseOptions();
         expect(opts.keys).to.be.an('object').and.to.contain
         .keys('patterns', 'pages');
+      });
+    });
+    describe('generating src globs', () => {
+      var opts = parseOptions();
+      it ('should contain default src globs', () => {
+        expect(opts).to.include.key('src');
+        expect(opts.src).to.include.keys(
+          'data', 'pages', 'layouts', 'partials', 'patterns');
       });
     });
     describe('parsing keys', () => {

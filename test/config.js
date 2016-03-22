@@ -79,12 +79,8 @@ var config = {
     },
     dest: './test/dist',
     helpers: fixturePath('helpers/**/*.js'),
-    layouts: fixturePath('layouts/**/*.html'),
     markdownFields: ['notes'],
-    pages: fixturePath('pages/**/*'),
-    parsers: parsers,
-    partials: fixturePath('partials/**/*.hbs'),
-    patterns: fixturePath('patterns/**/*')
+    parsers: parsers
   },
   logObj: obj => {
     console.log(JSON.stringify(obj, null, '  '));

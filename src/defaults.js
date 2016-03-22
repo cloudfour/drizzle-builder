@@ -53,12 +53,8 @@ const defaults = {
     pages       : 'pages',
     patterns    : 'patterns'
   },
-  layouts       : 'src/layouts/*',
   markdownFields: ['notes'],
-  pages         : 'src/pages/**/*',
-  parsers       : parsers,
-  partials      : 'src/partials/**/*',
-  patterns      : 'src/patterns/**/*'
+  parsers       : parsers
 };
 
 export default defaults;
