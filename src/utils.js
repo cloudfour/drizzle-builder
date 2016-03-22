@@ -251,32 +251,37 @@ function titleCase (str) {
  * @return {Array}
  */
 function relativePathArray (filePath, fromPath) {
-  const pathChunks = path.dirname(filePath).split(path.sep).map(chunk => {
-    return keyname(chunk, { stripNumbers: false });
-  });
-  return pathChunks.slice(pathChunks.indexOf(fromPath));
+  const keys = path.relative(fromPath, path.dirname(filePath));
+  if (keys && keys.length) {
+    return keys.split(path.sep);
+  }
+  return [];
+  // const pathChunks = path.dirname(filePath).split(path.sep).map(chunk => {
+  //   return keyname(chunk, { stripNumbers: false });
+  // });
+  // return pathChunks.slice(pathChunks.indexOf(fromPath));
 }
 
-function globRoot (glob) {
-  return getDirs(glob).then(globDirs => {
-    const rootDir = globDirs.reduce((prev, curr) => {
-      prev = prev.split(path.sep);
-      curr = curr.split(path.sep);
-      prev = prev.filter(prevBit => {
-        return curr.some(currBit => currBit === prevBit);
-      });
-      return prev.join(path.sep);
+function commonRoot (files) {
+  const paths = files.map(file => file.path);
+  const relativePath = paths.reduce((prev, curr) => {
+    prev = prev.split(path.sep);
+    curr = curr.split(path.sep);
+    prev = prev.filter(prevBit => {
+      return curr.some(currBit => prevBit === currBit);
     });
-    return rootDir;
+    return prev.join(path.sep);
   });
+  return relativePath;
 }
 
-export { deepRef,
+
+export { commonRoot,
+         deepRef,
          deepObj,
          dirname,
          getDirs,
          getFiles,
-         globRoot,
          isGlob,
          keyname,
          localDirname,
