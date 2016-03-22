@@ -7,6 +7,7 @@ var parseOptions = require('../dist/options');
 describe ('options', () => {
   var keys = [
     'dest',
+    'destPaths',
     'handlebars',
     'helpers',
     'markdownFields',
@@ -36,6 +37,24 @@ describe ('options', () => {
         expect(opts).to.include.key('src');
         expect(opts.src).to.include.keys(
           'data', 'pages', 'layouts', 'partials', 'patterns');
+      });
+    });
+    describe('generating dist paths', () => {
+      var opts = parseOptions();
+      it('should provide default distPaths', () => {
+        expect(opts.destPaths).to.have.keys('pages', 'patterns');
+        expect(opts.destPaths.patterns).to.equal('patterns/');
+      });
+      it('should allow override of distPaths', () => {
+        var opts = parseOptions({ destPaths: {
+          pages: 'foo/',
+          patterns: 'bar/',
+          something: 'baz/'
+        }});
+        expect(opts.destPaths).to.contain.keys(
+          'pages', 'patterns', 'something');
+        expect(opts.destPaths.pages).to.equal('foo/');
+        expect(opts.destPaths.patterns).to.equal('bar/');
       });
     });
     describe('parsing markdownFields', () => {

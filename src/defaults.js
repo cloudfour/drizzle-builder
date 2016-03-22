@@ -37,7 +37,6 @@ var parsers = {
   }
 };
 
-/* TODO: options for path prefixes for patterns, pages */
 const defaults = {
   src: {
     data    : ['src/data/**/*'],
@@ -47,6 +46,10 @@ const defaults = {
     patterns: ['src/patterns/**/*']
   },
   dest          : 'dist',
+  destPaths     : {
+    pages   : '',
+    patterns: 'patterns/'
+  },
   handlebars    : Handlebars,
   helpers       : {},
   markdownFields: ['notes'],

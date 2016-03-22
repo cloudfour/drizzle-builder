@@ -15,9 +15,9 @@ import * as utils from '../utils';
 function writePage (page, drizzleData, entryKeys) {
   const fileKey = entryKeys.pop();
   const outputPath = path.join(entryKeys.join(path.sep), fileKey + '.html');
-  // TODO: path prefixing for pages
   const fullPath = path.normalize(path.join(
     drizzleData.options.dest,
+    drizzleData.options.destPaths.pages,
     outputPath));
   page.outputPath = fullPath;
   return write(fullPath, page.contents);
