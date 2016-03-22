@@ -4,7 +4,7 @@ var config = require('../config');
 var expect = chai.expect;
 var parsePages = require('../../dist/parse/pages');
 
-describe ('parse/pages', () => {
+describe('parse/pages', () => {
   var pageData, opts;
   before (() => {
     opts = config.parseOptions(config.fixtureOpts);
