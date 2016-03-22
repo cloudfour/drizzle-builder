@@ -13,6 +13,7 @@ function writePage (page, drizzleData, entryKey) {
   const fullPath = path.normalize(path.join(
     drizzleData.options.dest,
     outputPath));
+  page.outputPath = fullPath;
   return write(fullPath, page.contents);
 }
 
