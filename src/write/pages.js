@@ -12,11 +12,10 @@ import * as utils from '../utils';
  * @param {String} entryKey     The keyname (filename) of the file
  * @return {Promise} for file write
  */
-function writePage (page, drizzleData, entryKey) {
-  const keys       = utils.relativePathArray(
-    page.path, drizzleData.options.keys.pages);
-  keys.shift();
-  const outputPath = path.join(keys.join(path.sep), entryKey + '.html');
+function writePage (page, drizzleData, entryKeys) {
+  const fileKey = entryKeys.pop();
+  const outputPath = path.join(entryKeys.join(path.sep), fileKey + '.html');
+  // TODO: path prefixing for pages
   const fullPath = path.normalize(path.join(
     drizzleData.options.dest,
     outputPath));
@@ -36,13 +35,14 @@ function writePage (page, drizzleData, entryKey) {
  * @param {Array} writePromises All write promises so far
  * @return {Array} of Promises
  */
-function walkPages (pages, drizzleData, currentKey = null, writePromises = []) {
+function walkPages (pages, drizzleData, currentKeys = [], writePromises = []) {
   if (pages.contents) {
-    return writePage(pages, drizzleData, currentKey);
+    return writePage(pages, drizzleData, currentKeys);
   }
   for (var pageKey in pages) {
+    currentKeys.push(pageKey);
     writePromises = writePromises.concat(
-      walkPages(pages[pageKey], drizzleData, pageKey, writePromises));
+      walkPages(pages[pageKey], drizzleData, currentKeys, writePromises));
   }
   return writePromises;
 }

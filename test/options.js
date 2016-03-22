@@ -9,7 +9,6 @@ describe ('options', () => {
     'dest',
     'handlebars',
     'helpers',
-    'keys',
     'markdownFields',
     'parsers'
   ];
@@ -30,11 +29,6 @@ describe ('options', () => {
         var opts = parseOptions();
         expect(opts.parsers).to.be.an('object').and.to.contain.keys(parserKeys);
       });
-      it ('should assign keys for different resources', () => {
-        var opts = parseOptions();
-        expect(opts.keys).to.be.an('object').and.to.contain
-        .keys('patterns', 'pages');
-      });
     });
     describe('generating src globs', () => {
       var opts = parseOptions();
@@ -43,20 +37,6 @@ describe ('options', () => {
         expect(opts.src).to.include.keys(
           'data', 'pages', 'layouts', 'partials', 'patterns');
       });
-    });
-    describe('parsing keys', () => {
-      const keyOpts = {
-        keys: {
-          patterns: 'bar',
-          another: 'baz'
-        }
-      };
-      var opts = parseOptions(keyOpts);
-      expect(opts.keys).to.be.an('object').and.to.contain.keys(
-        'pages', 'patterns', 'another'
-      );
-      expect(opts.keys.pages).to.equal('pages');
-      expect(opts.keys.patterns).to.equal('bar');
     });
     describe('parsing markdownFields', () => {
       const mdOpts = {

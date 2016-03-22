@@ -49,10 +49,6 @@ const defaults = {
   dest          : 'dist',
   handlebars    : Handlebars,
   helpers       : {},
-  keys          : {
-    pages       : 'pages',
-    patterns    : 'patterns'
-  },
   markdownFields: ['notes'],
   parsers       : parsers
 };
