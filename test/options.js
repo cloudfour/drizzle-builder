@@ -6,7 +6,6 @@ var parseOptions = require('../dist/options');
 
 describe ('options', () => {
   var keys = [
-    'data',
     'dest',
     'handlebars',
     'helpers',

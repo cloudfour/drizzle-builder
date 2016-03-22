@@ -6,7 +6,7 @@ import * as parseUtils from './utils';
  */
 function parsePatterns (options) {
   const patternData = {};
-  return utils.readFiles(options.patterns, options).then(fileData => {
+  return utils.readFiles(options.src.patterns, options).then(fileData => {
     fileData.forEach(patternFile => {
       const entryKey = utils.keyname(patternFile.path, { stripNumbers: false });
       const keys     = utils.relativePathArray(patternFile.path,

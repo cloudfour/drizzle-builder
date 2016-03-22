@@ -70,7 +70,13 @@ var config = {
   prepare,
   prepareAll,
   fixtureOpts: {
-    data: fixturePath('data/**/*'),
+    src: {
+      data    : fixturePath('data/**/*'),
+      layouts : fixturePath('layouts/**/*'),
+      pages   : fixturePath('pages/**/*'),
+      partials: fixturePath('partials/**/*.hbs'),
+      patterns: fixturePath('patterns/**/*')
+    },
     dest: './test/dist',
     helpers: fixturePath('helpers/**/*.js'),
     layouts: fixturePath('layouts/**/*.html'),

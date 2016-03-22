@@ -39,7 +39,13 @@ var parsers = {
 
 /* TODO: options for path prefixes for patterns, pages */
 const defaults = {
-  data          : 'src/data/**/*.yaml',
+  src: {
+    data    : ['src/data/**/*'],
+    layouts : ['src/layouts/**/*'],
+    pages   : ['src/pages/**/*'],
+    partials: ['src/partials/**/*'],
+    patterns: ['src/patterns/**/*']
+  },
   dest          : 'dist',
   handlebars    : Handlebars,
   helpers       : {},

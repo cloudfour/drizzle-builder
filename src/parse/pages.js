@@ -4,7 +4,7 @@ import * as parseUtils from './utils';
 function parsePages (options) {
   const pageData = {};
 
-  return utils.readFiles(options.pages, options).then(fileData => {
+  return utils.readFiles(options.src.pages, options).then(fileData => {
     fileData.forEach(pageFile => {
       const entryKey   = utils.keyname(pageFile.path, { stripNumbers: false });
       const keys       = utils.relativePathArray(
