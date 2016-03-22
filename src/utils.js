@@ -261,6 +261,39 @@ function relativePathArray (filePath, fromPath) {
 }
 
 /**
+ * Generate a resourceId for a file. Use file.path and base the
+ * ID elements on the path elements between relativeRoot and file. Path
+ * elements will have special characters removed.
+ * @example resourceId(
+ *  '/foo/bar/baz/ole/01-fun-times.hbs', '/foo/bar/baz/', 'patterns'
+ * ); // -> patterns.ole.fun-times
+ * @param {Object}    Object representing file. Needs to have a `path` property
+ * @param {String} || {Array} relativeRoot path to relative root or path
+ *                            elements to same in Array
+ * @param {String} resourceCollection  Will be prepended as first element in ID
+ * @return {String} ID for this resource
+ */
+function resourceId (resourceFile, relativeRoot, resourceCollection) {
+  const pathKeys = relativePathArray(resourceFile.path, relativeRoot)
+    .map(keyname);
+  return [resourceCollection]
+    .concat(pathKeys)
+    .concat([keyname(resourceFile.path)])
+    .join ('.');
+}
+
+/**
+ * Convenience function to create proper variant of file's basename for
+ * use as a key in a data object.
+ * @example resourceKey({ path: '/foo/bar/baz/04-fun' }); // -> '04-fun'
+ * @param {Object} resourceFile Object representing a file. Needs `path` prop
+ * @return {String}
+ */
+function resourceKey (resourceFile) {
+  return keyname(resourceFile.path, { stripNumbers: false });
+}
+
+/**
  * Convert str to title case (every word will be capitalized)
  * @param {String} str
  * @return {String}
@@ -285,5 +318,7 @@ export { commonRoot,
          readFiles,
          readFilesKeyed,
          relativePathArray,
+         resourceId,
+         resourceKey,
          titleCase
        };

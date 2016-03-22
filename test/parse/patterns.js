@@ -5,12 +5,22 @@ var expect = chai.expect;
 var parsePatterns = require('../../dist/parse/patterns');
 
 describe('parse/patterns', () => {
+  var opts = config.parseOptions(config.fixtureOpts);
   it ('should correctly build data object from patterns', () => {
-    var opts = config.parseOptions(config.fixtureOpts);
     return parsePatterns(opts).then(patternData => {
       expect(patternData).to.be.an('object');
       expect(patternData).to.have.keys('items', '01-fingers', 'components');
       expect(patternData.items).to.have.keys('pink');
+    });
+  });
+  it ('should derive correct IDs for patterns', () => {
+    return parsePatterns(opts).then(patternData => {
+      expect(patternData.items.pink).to.include.key('id');
+      expect(patternData.items.pink.id).to.equal('patterns.pink');
+      expect(patternData.components.items.orange).to.include.key('id');
+      expect(patternData.components.items.orange.id).to.equal(
+        'patterns.components.orange'
+      );
     });
   });
   it ('should have more tests');
