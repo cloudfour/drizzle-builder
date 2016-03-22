@@ -14,7 +14,7 @@ function parsePatterns (options) {
         relativeRoot);
       const patternEntry = utils.deepObj(pathKeys, patternData);
 
-      const idKeys = pathKeys.map(key => utils.keyname(key));
+      const idKeys = pathKeys.map(utils.keyname);
       const pathKey = utils.keyname(patternFile.path);
       const id = idKeys.concat(pathKey).join('.');
 
