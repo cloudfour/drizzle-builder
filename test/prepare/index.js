@@ -18,6 +18,9 @@ describe ('prepare/index', () => {
       expect(preparedOpts.handlebars.helpers).to.contain.keys(
         'toFraction', 'toJSON', 'toSlug'
       );
+      expect(preparedOpts.handlebars.helpers).to.contain.keys(
+        'block', 'embed', 'content'
+      );
     });
   });
   it ('should prepare partials', () => {
@@ -25,6 +28,7 @@ describe ('prepare/index', () => {
       expect(preparedOpts.handlebars.partials).to.contain.keys(
         'header', 'menu'
       );
+      expect(preparedOpts.handlebars.partials).to.contain.keys('default');
     });
   });
 });
