@@ -8,7 +8,7 @@ var prepareLayouts = require('../../dist/prepare/layouts');
 describe ('prepare/layouts', () => {
   const opts = options(config.fixtureOpts);
   before (() => {
-    return prepareLayouts(opts.handlebars, opts.layouts);
+    return prepareLayouts(opts.handlebars, opts.src.layouts);
   });
   it ('should register layouts as partials', () => {
     expect(opts.handlebars.partials).to.contain.keys('default');
