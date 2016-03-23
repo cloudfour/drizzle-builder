@@ -7,10 +7,9 @@ function parsePages (options) {
   return utils.readFiles(options.src.pages, options).then(fileData => {
     const relativeRoot = utils.commonRoot(fileData);
     fileData.forEach(pageFile => {
-      const entryKey   = utils.keyname(pageFile.path, { stripNumbers: false });
       const keys       = utils.relativePathArray(
         pageFile.path, relativeRoot);
-      utils.deepObj(keys, pageData)[entryKey] = parseUtils
+      utils.deepObj(keys, pageData)[utils.resourceKey(pageFile)] = parseUtils
         .parseLocalData(pageFile, options);
     });
     return pageData;
