@@ -4,17 +4,10 @@ import * as renderUtils from './utils';
  *
  */
 function renderPatternCollection (patterns, drizzleData, collectionKey) {
-  patterns.contents = renderUtils.applyTemplate(`
-    {{#extend "default"}}
-      {{#content "body"}}
-        {{#each items}}
-          {{id}}
-        {{/each}}
-      {{/content}}
-    {{/extend}}`,
+  patterns.contents = renderUtils.applyTemplate(
+    drizzleData.layouts.patternCollection.contents, // TODO obviously fragile
     renderUtils.localContext(patterns, drizzleData),
     drizzleData.options);
-  // console.log(patterns.contents);
 }
 
 /**
