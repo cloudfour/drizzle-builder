@@ -7,17 +7,28 @@ var parse = require('../../dist/parse/');
 var render = require('../../dist/render/');
 var writePatterns = require('../../dist/write/patterns');
 var options = require('../../dist/options');
+var testUtils = require('../test-utils');
 
 describe ('write/patterns', () => {
   var opts = options(config.fixtureOpts);
   var allData;
   before (() => {
-    allData = prepare(opts).then(parse).then(render);
+    allData = prepare(opts).then(parse).then(render).then(writePatterns);
     return allData;
   });
   describe ('determining output paths', () => {
-    it ('should add outputPath property to pattern collections', () => {
-      return allData.then(writePatterns);
+    it ('should write out the correct files', () => {
+      return allData.then(drizzleData => {
+        const outPaths = [
+          drizzleData.patterns.collection.outputPath,
+          drizzleData.patterns.components.collection.outputPath,
+          drizzleData.patterns.components.button.collection.outputPath
+        ];
+        return testUtils.areFiles(outPaths).then(result => {
+          expect(result).to.be.true;
+        });
+      });
     });
+    it ('should prefix with patterns prefix');
   });
 });
