@@ -44,6 +44,7 @@ describe ('render/patterns', () => {
       expect(patternData.typography.headings).to.be.an('object');
       expect(patternData.typography.headings)
         .to.contain.keys('collection');
+      expect(patternData.collection.contents).to.contain('<h2>Patterns</h2>');
       // expect(drizzleData.patterns.typography.headings.contents)
       //   .to.contain('<h1>Headings</h1>');
     });

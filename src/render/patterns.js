@@ -13,14 +13,13 @@ import * as utils from '../utils';
  *                               Used to derive the collection's "name"
  */
 function renderPatternCollection (patterns, drizzleData, collectionKey) {
-  const collectionContents = renderUtils.applyTemplate(
+  patterns.collection = {
+    name: utils.titleCase(utils.keyname(collectionKey))
+  };
+  patterns.collection.contents = renderUtils.applyTemplate(
     drizzleData.layouts.patternCollection.contents, // TODO obviously fragile
     renderUtils.localContext(patterns, drizzleData),
     drizzleData.options);
-  patterns.collection = {
-    contents: collectionContents,
-    name: utils.titleCase(utils.keyname(collectionKey))
-  };
   return patterns;
 }
 
