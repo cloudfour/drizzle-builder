@@ -14,14 +14,14 @@ describe ('render/pages', () => {
     return allData;
   });
   it ('should compile templates', () => {
-    return allData.then(drizzleData => {
-      expect(drizzleData.pages['04-sandbox'].contents)
+    return allData.then(pageData => {
+      expect(pageData['04-sandbox'].contents)
         .to.have.string('<h1>Sandbox</h1>');
     });
   });
   it ('should override layouts when told to', () => {
-    return allData.then(drizzleData => {
-      const customPage = drizzleData.pages.doThis;
+    return allData.then(pageData => {
+      const customPage = pageData.doThis;
       expect(customPage.contents).to.contain('This is the Page Layout');
       expect(customPage.contents).to.contain('<h2>foobar</h2>');
     });

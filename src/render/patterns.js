@@ -44,7 +44,7 @@ function walkPatterns (patterns, drizzleData, currentKey = 'patterns') {
       walkPatterns(patterns[patternKey], drizzleData, patternKey);
     }
   }
-  return drizzleData;
+  return drizzleData.patterns;
 }
 
 function renderPatterns (drizzleData) {
