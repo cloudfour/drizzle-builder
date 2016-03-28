@@ -11,15 +11,14 @@ import { write } from './utils';
  * @param {Array} entryKeys           path components
  * @return {Promise} for file write
  */
-function writePattern (collection, drizzleData, entryKeys) {
-  const fileKey = entryKeys.pop();
-  const outputPath = path.join(entryKeys.join(path.sep), fileKey + '.html');
+function writePatternCollection (patterns, drizzleData, entryKeys) {
+  const outputPath = path.join(entryKeys.join(path.sep), 'index.html');
   const fullPath = path.normalize(path.join(
     drizzleData.options.dest,
     drizzleData.options.destPaths.patterns,
     outputPath));
-  collection.outputPath = fullPath;
-  return write(fullPath, collection.contents);
+  patterns.collection.outputPath = fullPath;
+  return write(fullPath, patterns.collection.contents);
 }
 
 /**
@@ -36,14 +35,18 @@ function writePattern (collection, drizzleData, entryKeys) {
  */
 function walkPatterns (patterns, drizzleData,
   currentKeys = [], writePromises = []) {
-  if (patterns.contents) {
-    return writePattern(patterns, drizzleData, currentKeys);
+  if (patterns.collection) {
+    writePromises.push(
+      writePatternCollection(patterns, drizzleData, currentKeys));
   }
   for (const patternKey in patterns) {
-    currentKeys.push(patternKey);
-    writePromises = writePromises.concat(
+    // TODO Better test following
+    if (patternKey !== 'items' && patternKey !== 'collection') {
+      currentKeys.push(patternKey);
       walkPatterns(patterns[patternKey],
-        drizzleData, currentKeys, writePromises));
+        drizzleData, currentKeys, writePromises);
+      currentKeys.pop();
+    }
   }
   return writePromises;
 }
@@ -53,7 +56,7 @@ function walkPatterns (patterns, drizzleData,
  */
 function writePatterns (drizzleData) {
   return Promise.all(walkPatterns(drizzleData.patterns, drizzleData))
-    .then(() => {
+    .then(writePromises => {
       return drizzleData;
     });
 }
