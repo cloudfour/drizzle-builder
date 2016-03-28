@@ -185,6 +185,28 @@ describe ('utils', () => {
       });
     });
   });
+  describe('resourceId', () => {
+    it ('should generate a prefixed resourceId', () => {
+      var pseudoFile = { path: '/foo/bar/baz/ding/dong.txt' };
+      var pseudoRoot = '/foo/bar/baz';
+      var resourceId = utils.resourceId(pseudoFile, pseudoRoot, 'pattern');
+      expect(resourceId).to.equal('pattern.ding.dong');
+    });
+    it ('should correctly remove special characters from IDs', () => {
+      var pseudoFile = { path: '/foo/bar/baz/03-ding/04-dong.txt' };
+      var pseudoRoot = '/foo/bar/baz';
+      var resourceId = utils.resourceId(pseudoFile, pseudoRoot, 'patterns');
+      expect(resourceId).to.equal('patterns.ding.dong');
+    });
+  });
+  describe('resourceKey', () => {
+    it ('should generate the right key for a file', () => {
+      var resourceKey = utils.resourceKey(
+        { path: '/foo/bar/baz/05-dingle.txt' }
+      );
+      expect(resourceKey).to.equal('05-dingle');
+    });
+  });
   describe('dirname functions', () => {
     describe('parentDirname', () => {
       it ('should derive correct parent dirname', () => {

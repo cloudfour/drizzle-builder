@@ -31,4 +31,13 @@ describe ('prepare/index', () => {
       expect(preparedOpts.handlebars.partials).to.contain.keys('default');
     });
   });
+  it ('should prepare pattern partials', () => {
+    return prepare(opts).then(preparedOpts => {
+      expect(preparedOpts.handlebars.partials).to.contain.keys(
+        'patterns.pink',
+        'patterns.components.button.base',
+        'patterns.components.button.color-variation'
+      );
+    });
+  });
 });

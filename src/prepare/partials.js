@@ -7,6 +7,7 @@ import * as utils from '../utils';
 function preparePartials (Handlebars, partials = '') {
   return utils.readFiles(partials).then(partialFiles => {
     partialFiles.forEach(partialFile => {
+      // TODO: Wow, no, need IDs
       const partialKey = utils.keyname(partialFile.path);
       Handlebars.registerPartial(partialKey, partialFile.contents);
     });
