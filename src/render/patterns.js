@@ -13,7 +13,7 @@ import * as utils from '../utils';
  *                               Used to derive the collection's "name"
  */
 function renderPatternCollection (patterns, drizzleData, collectionKey) {
-  for (var individualPatternKey in patterns.items) {
+  for (const individualPatternKey in patterns.items) {
     // We want to render only pattern-collection pages, not individual
     // patterns. Remove `contents` from individual patterns so the write
     // phase doesn't create files for them.
@@ -37,7 +37,7 @@ function renderPatternCollection (patterns, drizzleData, collectionKey) {
  * @return {Object} drizzleData All drizzleData
  */
 function walkPatterns (patterns, drizzleData, currentKey = 'patterns') {
-  for (var patternKey in patterns) {
+  for (const patternKey in patterns) {
     if (patternKey === 'items') {
       renderPatternCollection(patterns, drizzleData, currentKey);
     } else {
