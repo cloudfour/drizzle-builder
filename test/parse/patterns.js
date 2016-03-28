@@ -9,7 +9,8 @@ describe('parse/patterns', () => {
   it ('should correctly build data object from patterns', () => {
     return parsePatterns(opts).then(patternData => {
       expect(patternData).to.be.an('object');
-      expect(patternData).to.have.keys('items', '01-fingers', 'components');
+      expect(patternData).to.have.keys(
+        'items', '01-fingers', 'components', 'typography');
       expect(patternData.items).to.have.keys('pink');
     });
   });
