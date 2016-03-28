@@ -17,32 +17,25 @@ describe ('render/patterns', () => {
     return allData.then(patternData => {
       expect(patternData).to.be.an('object');
       expect(patternData).to.contain.keys(
-        'items', 'contents', 'components');
+        'items', 'collection', 'components');
     });
   });
-  it ('should remove contents from individual patterns', () => {
+  it ('should provide metadata for pattern collections', () => {
     return allData.then(patternData => {
-      expect(patternData.items).to.be.an('object');
-      expect(patternData.items.pink).to.be.an('object');
-      expect(patternData.items.pink).not.to.have.key('contents');
-      expect(patternData.items.pink).to.contain.key('id');
-    });
-  });
-  it ('should provide contents for pattern collections', () => {
-    return allData.then(patternData => {
-      expect(patternData).to.contain.keys('contents');
-      expect(patternData['01-fingers']).to.contain.keys('contents');
-      expect(patternData.components).to.contain.keys('contents');
+      expect(patternData).to.contain.keys('collection');
+      expect(patternData['01-fingers']).to.contain.keys('collection');
+      expect(patternData.components.collection).to.contain.keys('contents');
       // `typography` doesn't have any immediate-child pattern files
-      expect(patternData.typography).not.to.contain.key('contents');
+      expect(patternData.typography).not.to.contain.key('collection');
     });
   });
   it ('should add a name property for collections', () => {
     return allData.then(patternData => {
-      expect(patternData).to.contain.keys('contents');
-      expect(patternData.name).to.equal('Patterns');
-      expect(patternData['01-fingers']).to.contain.keys('name');
-      expect(patternData['01-fingers'].name).to.equal('Fingers');
+      expect(patternData).not.to.contain.keys('contents');
+      expect(patternData.collection.name).to.equal('Patterns');
+      expect(patternData['01-fingers'].collection).to.contain.keys(
+        'name', 'contents');
+      expect(patternData['01-fingers'].collection.name).to.equal('Fingers');
     });
   });
   it ('should render pattern collections with proper context', () => {
@@ -50,7 +43,7 @@ describe ('render/patterns', () => {
       expect(patternData.typography).to.be.an('object');
       expect(patternData.typography.headings).to.be.an('object');
       expect(patternData.typography.headings)
-        .to.contain.keys('contents');
+        .to.contain.keys('collection');
       // expect(drizzleData.patterns.typography.headings.contents)
       //   .to.contain('<h1>Headings</h1>');
     });
