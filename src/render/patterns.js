@@ -15,7 +15,7 @@ import * as utils from '../utils';
 function renderPatternCollection (patterns, drizzleData, collectionKey) {
   patterns.collection.contents = renderUtils.applyTemplate(
     drizzleData.layouts.patternCollection.contents, // TODO obviously fragile
-    renderUtils.localContext(patterns, drizzleData),
+    renderUtils.localContext(patterns.collection, drizzleData),
     drizzleData.options);
   return patterns;
 }
