@@ -23,7 +23,7 @@ describe ('render/patterns', () => {
   it ('should provide metadata for pattern collections', () => {
     return allData.then(patternData => {
       expect(patternData).to.contain.keys('collection');
-      expect(patternData['01-fingers']).to.contain.keys('collection');
+      expect(patternData['fingers']).to.contain.keys('collection');
       expect(patternData.components.collection).to.contain.keys('contents');
       // `typography` doesn't have any immediate-child pattern files
       expect(patternData.typography).not.to.contain.key('collection');
@@ -33,9 +33,9 @@ describe ('render/patterns', () => {
     return allData.then(patternData => {
       expect(patternData).not.to.contain.keys('contents');
       expect(patternData.collection.name).to.equal('Patterns');
-      expect(patternData['01-fingers'].collection).to.contain.keys(
+      expect(patternData['fingers'].collection).to.contain.keys(
         'name', 'contents');
-      expect(patternData['01-fingers'].collection.name).to.equal('Fingers');
+      expect(patternData['fingers'].collection.name).to.equal('Fingers');
     });
   });
   it ('should render pattern collections with proper context', () => {

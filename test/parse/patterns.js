@@ -10,7 +10,7 @@ describe ('parse/patterns', () => {
     return parsePatterns(opts).then(patternData => {
       expect(patternData).to.be.an('object');
       expect(patternData).to.have.keys(
-        'items', '01-fingers', 'components', 'typography');
+        'items', 'fingers', 'components', 'typography');
       expect(patternData.items).to.have.keys('pink');
     });
   });

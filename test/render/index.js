@@ -17,7 +17,7 @@ describe ('render/index (renderAll)', () => {
       expect(drizzleData).to.be.an('object').and.to.have
         .keys('data', 'pages', 'patterns', 'options', 'layouts');
       expect(drizzleData.pages).to.contain.keys('components', 'doThis');
-      expect(drizzleData.patterns).to.contain.keys('01-fingers', 'components');
+      expect(drizzleData.patterns).to.contain.keys('fingers', 'components');
       expect(drizzleData.data).to.contain.keys('data-as-json');
       expect(drizzleData.layouts).to.contain.keys('default', 'page');
     });
