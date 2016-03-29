@@ -43,13 +43,6 @@ function parentDirname (filepath) {
 }
 
 /**
- * TODO: see https://github.com/cloudfour/drizzle-builder/issues/8
- */
-function removeLeadingNumbers (str) {
-  return str.replace(/^[0-9|\.\-]+/, '');
-}
-
-/**
  * Given an array of file objects, take all of their paths and find
  * what the common root directory is for all of them.
  * @example commonRoot([
@@ -139,19 +132,11 @@ function isGlob (candidate) {
 }
 
 /**
- * Utility function to provide a consistent "key" for elements, materials,
- * partials, etc, based on a filepath:
- * - replace whitespace characters with `-`
- * - use only the basename, no extension
- * - unless stripNumbers option false, remove numbers from the string as well
  *
- * @param {String} str    filepath
- * @param {Object} options
- * @return {String}
+ * @TODO
  */
-function keyname (str, { stripNumbers = true } = {}) {
-  const name = basename(str).replace(/\s/g, '-');
-  return (stripNumbers) ? removeLeadingNumbers(name) : name;
+function keyname (str) {
+  return basename(str);
 }
 
 /**
@@ -290,7 +275,7 @@ function resourceId (resourceFile, relativeRoot, resourceCollection) {
  * @return {String}
  */
 function resourceKey (resourceFile) {
-  return keyname(resourceFile.path, { stripNumbers: false });
+  return keyname(resourceFile.path);
 }
 
 /**
