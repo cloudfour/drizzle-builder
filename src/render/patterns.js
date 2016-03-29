@@ -13,9 +13,6 @@ import * as utils from '../utils';
  *                               Used to derive the collection's "name"
  */
 function renderPatternCollection (patterns, drizzleData, collectionKey) {
-  patterns.collection = {
-    name: utils.titleCase(utils.keyname(collectionKey))
-  };
   patterns.collection.contents = renderUtils.applyTemplate(
     drizzleData.layouts.patternCollection.contents, // TODO obviously fragile
     renderUtils.localContext(patterns, drizzleData),
@@ -35,7 +32,7 @@ function renderPatternCollection (patterns, drizzleData, collectionKey) {
  */
 function walkPatterns (patterns, drizzleData, currentKey = 'patterns') {
   for (const patternKey in patterns) {
-    if (patternKey === 'items') {
+    if (patternKey === 'collection') {
       renderPatternCollection(patterns, drizzleData, currentKey);
     } else {
       walkPatterns(patterns[patternKey], drizzleData, patternKey);

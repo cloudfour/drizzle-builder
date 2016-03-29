@@ -16,8 +16,7 @@ describe ('render/patterns', () => {
   it ('should return patterns data', () => {
     return allData.then(patternData => {
       expect(patternData).to.be.an('object');
-      expect(patternData).to.contain.keys(
-        'items', 'collection', 'components');
+      expect(patternData).to.contain.keys('collection', 'components');
     });
   });
   it ('should provide metadata for pattern collections', () => {

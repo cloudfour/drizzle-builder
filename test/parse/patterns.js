@@ -10,25 +10,27 @@ describe ('parse/patterns', () => {
     return parsePatterns(opts).then(patternData => {
       expect(patternData).to.be.an('object');
       expect(patternData).to.have.keys(
-        'items', 'fingers', 'components', 'typography');
-      expect(patternData.items).to.have.keys('pink');
+        'collection', 'fingers', 'components', 'typography');
+      expect(patternData.collection.items).to.have.keys('pink');
     });
   });
   it ('should derive correct IDs for patterns', () => {
     return parsePatterns(opts).then(patternData => {
-      expect(patternData.items.pink).to.include.key('id');
-      expect(patternData.items.pink.id).to.equal('patterns.pink');
-      expect(patternData.components.items.orange).to.include.key('id');
-      expect(patternData.components.items.orange.id).to.equal(
+      expect(patternData.collection.items.pink).to.include.key('id');
+      expect(patternData.collection.items.pink.id).to.equal('patterns.pink');
+      expect(patternData.components.collection.items.orange)
+        .to.include.key('id');
+      expect(patternData.components.collection.items.orange.id).to.equal(
         'patterns.components.orange'
       );
     });
   });
   it ('should add relevant properties to individual pattern objects', () => {
     return parsePatterns(opts).then(patternData => {
-      expect(patternData.items.pink).to.be.an('object');
-      expect(patternData.items.pink).to.contain.keys(
+      expect(patternData.collection.items.pink).to.be.an('object');
+      expect(patternData.collection.items.pink).to.have.keys(
         'name', 'id', 'contents', 'path', 'data');
+      //config.logObj(patternData.components.button.collection);
     });
   });
 });
