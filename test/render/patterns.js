@@ -14,43 +14,37 @@ describe ('render/patterns', () => {
     return allData;
   });
   it ('should return patterns data', () => {
-    return allData.then(drizzleData => {
-      expect(drizzleData.patterns).to.be.an('object');
-      expect(drizzleData.patterns).to.contain.keys(
-        'items', 'contents', 'components');
+    return allData.then(patternData => {
+      expect(patternData).to.be.an('object');
+      expect(patternData).to.contain.keys(
+        'items', 'collection', 'components');
     });
   });
-  it ('should remove contents from individual patterns', () => {
-    return allData.then(drizzleData => {
-      expect(drizzleData.patterns.items).to.be.an('object');
-      expect(drizzleData.patterns.items.pink).to.be.an('object');
-      expect(drizzleData.patterns.items.pink).not.to.have.key('contents');
-      expect(drizzleData.patterns.items.pink).to.contain.key('id');
-    });
-  });
-  it ('should provide contents for pattern collections', () => {
-    return allData.then(drizzleData => {
-      expect(drizzleData.patterns).to.contain.keys('contents');
-      expect(drizzleData.patterns['01-fingers']).to.contain.keys('contents');
-      expect(drizzleData.patterns.components).to.contain.keys('contents');
+  it ('should provide metadata for pattern collections', () => {
+    return allData.then(patternData => {
+      expect(patternData).to.contain.keys('collection');
+      expect(patternData['01-fingers']).to.contain.keys('collection');
+      expect(patternData.components.collection).to.contain.keys('contents');
       // `typography` doesn't have any immediate-child pattern files
-      expect(drizzleData.patterns.typography).not.to.contain.key('contents');
+      expect(patternData.typography).not.to.contain.key('collection');
     });
   });
   it ('should add a name property for collections', () => {
-    return allData.then(drizzleData => {
-      expect(drizzleData.patterns).to.contain.keys('contents');
-      expect(drizzleData.patterns.name).to.equal('Patterns');
-      expect(drizzleData.patterns['01-fingers']).to.contain.keys('name');
-      expect(drizzleData.patterns['01-fingers'].name).to.equal('Fingers');
+    return allData.then(patternData => {
+      expect(patternData).not.to.contain.keys('contents');
+      expect(patternData.collection.name).to.equal('Patterns');
+      expect(patternData['01-fingers'].collection).to.contain.keys(
+        'name', 'contents');
+      expect(patternData['01-fingers'].collection.name).to.equal('Fingers');
     });
   });
   it ('should render pattern collections with proper context', () => {
-    return allData.then(drizzleData => {
-      expect(drizzleData.patterns.typography).to.be.an('object');
-      expect(drizzleData.patterns.typography.headings).to.be.an('object');
-      expect(drizzleData.patterns.typography.headings)
-        .to.contain.keys('contents');
+    return allData.then(patternData => {
+      expect(patternData.typography).to.be.an('object');
+      expect(patternData.typography.headings).to.be.an('object');
+      expect(patternData.typography.headings)
+        .to.contain.keys('collection');
+      expect(patternData.collection.contents).to.contain('<h2>Patterns</h2>');
       // expect(drizzleData.patterns.typography.headings.contents)
       //   .to.contain('<h1>Headings</h1>');
     });

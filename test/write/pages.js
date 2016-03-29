@@ -1,13 +1,13 @@
 /* global describe, it, before */
 var chai = require('chai');
 var expect = chai.expect;
-chai.use(require('chai-fs'));
 var config = require('../config');
 var prepare = require('../../dist/prepare/');
 var parse = require('../../dist/parse/');
 var render = require('../../dist/render/');
 var writePages = require('../../dist/write/pages');
 var options = require('../../dist/options');
+var testUtils = require('../test-utils');
 
 describe ('write/pages', () => {
   var opts = options(config.fixtureOpts);
@@ -17,20 +17,25 @@ describe ('write/pages', () => {
     return allData;
   });
   it ('should write page files', () => {
-    allData.then(drizzleData => {
-      //config.logObj(drizzleData.pages);
-      expect(drizzleData.pages.doThis.outputPath).to.be.a.file;
-      expect(drizzleData.pages['04-sandbox'].outputPath).to.be.a.file;
+    return allData.then(drizzleData => {
+      const paths = [
+        drizzleData.pages.doThis.outputPath,
+        drizzleData.pages['04-sandbox'].outputPath
+      ];
+      return testUtils.areFiles(paths).then(allAreFiles => {
+        expect(allAreFiles).to.be.true;
+      });
     });
   });
   it ('should write page files with compiled contents', () => {
     allData.then(drizzleData => {
-      expect(drizzleData.pages.doThis).to.have.content(
-        '<h1>This is the Page Layout</h1>');
-      expect(drizzleData.pages.doThis).to.have.content(
-        '<h2>foobar</h2>');
-      expect(drizzleData.pages.components).to.have.content(
-        '<div class="pattern">');
+      return testUtils.fileContents(drizzleData.pages.doThis.outputPath)
+      .then(contents => {
+        expect(contents).to.contain('<h2>foobar</h2>');
+        expect(contents).to.contain('<h1>This is the Page Layout</h1>');
+        expect(contents).not.to.contain('Body content should replace this.');
+      });
+
     });
   });
 });

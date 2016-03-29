@@ -1,9 +1,15 @@
-/* global describe, it */
+/* global describe, it, before */
 var chai = require('chai');
 var config = require('./config');
 var expect = chai.expect;
 var drizzle = require('../dist/');
+var Promise = require('bluebird');
+var rimraf = Promise.promisify(require('rimraf'));
 
+before (() => {
+  // Delete all output files
+  return rimraf(config.fixtureOpts.dest);
+});
 describe ('drizzle', () => {
   const options = config.fixtureOpts;
   it ('should return data',  () => {

@@ -4,7 +4,7 @@ var config = require('../config');
 var expect = chai.expect;
 var parsePatterns = require('../../dist/parse/patterns');
 
-describe('parse/patterns', () => {
+describe ('parse/patterns', () => {
   var opts = config.parseOptions(config.fixtureOpts);
   it ('should correctly build data object from patterns', () => {
     return parsePatterns(opts).then(patternData => {
@@ -24,5 +24,11 @@ describe('parse/patterns', () => {
       );
     });
   });
-  it ('should have more tests');
+  it ('should add relevant properties to individual pattern objects', () => {
+    return parsePatterns(opts).then(patternData => {
+      expect(patternData.items.pink).to.be.an('object');
+      expect(patternData.items.pink).to.contain.keys(
+        'name', 'id', 'contents', 'path', 'data');
+    });
+  });
 });

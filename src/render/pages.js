@@ -55,7 +55,7 @@ function walkPages (pages, drizzleData) {
   for (var pageKey in pages) {
     walkPages(pages[pageKey], drizzleData);
   }
-  return drizzleData;
+  return drizzleData.pages;
 }
 
 function renderPages (drizzleData) {

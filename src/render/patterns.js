@@ -13,17 +13,14 @@ import * as utils from '../utils';
  *                               Used to derive the collection's "name"
  */
 function renderPatternCollection (patterns, drizzleData, collectionKey) {
-  for (const individualPatternKey in patterns.items) {
-    // We want to render only pattern-collection pages, not individual
-    // patterns. Remove `contents` from individual patterns so the write
-    // phase doesn't create files for them.
-    delete patterns.items[individualPatternKey].contents;
-  }
-  patterns.name = utils.titleCase(utils.keyname(collectionKey));
-  patterns.contents = renderUtils.applyTemplate(
+  patterns.collection = {
+    name: utils.titleCase(utils.keyname(collectionKey))
+  };
+  patterns.collection.contents = renderUtils.applyTemplate(
     drizzleData.layouts.patternCollection.contents, // TODO obviously fragile
     renderUtils.localContext(patterns, drizzleData),
     drizzleData.options);
+  return patterns;
 }
 
 /**
@@ -44,7 +41,7 @@ function walkPatterns (patterns, drizzleData, currentKey = 'patterns') {
       walkPatterns(patterns[patternKey], drizzleData, patternKey);
     }
   }
-  return drizzleData;
+  return drizzleData.patterns;
 }
 
 function renderPatterns (drizzleData) {
