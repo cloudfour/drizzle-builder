@@ -15,6 +15,16 @@ describe ('parse/patterns', () => {
       expect(patternData.collection.items).to.have.keys('pink');
     });
   });
+  describe ('pattern object structure', () => {
+    it ('should define the appropriate properties for each pattern', () => {
+      return parsePatterns(opts).then(patternData => {
+        var aPattern = patternData.components.button.collection.items.base;
+        expect(aPattern).to.have.keys('id', 'name', 'data', 'path', 'contents');
+        expect(aPattern).not.to.have.keys('notes', 'links');
+        expect(aPattern.data).to.contain.keys('notes', 'links');
+      });
+    });
+  });
   describe('pattern IDs', () => {
     it ('should derive IDs for patterns', () => {
       return parsePatterns(opts).then(patternData => {

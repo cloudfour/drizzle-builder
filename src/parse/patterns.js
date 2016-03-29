@@ -1,5 +1,4 @@
 import * as utils from '../utils';
-import * as parseUtils from './utils';
 
 /**
  *
@@ -33,14 +32,13 @@ function parsePatterns (options) {
       // Each pattern is added to the `items` object of its parent collection
       collectionEntry
         .collection
-        .items[utils.resourceKey(patternFile)] = parseUtils.parseLocalData(
+        .items[utils.resourceKey(patternFile)] = Object.assign(
           patternFile,
-          options,
           {
             id: utils.resourceId(patternFile, relativeRoot, 'patterns'),
             name: utils.titleCase(utils.keyname(patternFile.path))
           }
-      );
+        );
     });
     return patternData;
   });
