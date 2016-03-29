@@ -14,6 +14,7 @@ function parsePatterns (options) {
         relativeRoot);
 
       // TODO `patterns` name should be an option, not hard-coded
+      // TODO All this collection munging should be broken out
       const collectionKey = (pathBits.length && pathBits.length > 0) ?
         pathBits[pathBits.length - 1] : 'patterns';
       // Retrieve the correct object reference where we should put this
