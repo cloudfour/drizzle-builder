@@ -82,7 +82,7 @@ describe ('utils', () => {
   describe('keyname', () => {
     it ('should strip leading numbers by default', () => {
       var result = utils.keyname('foo/01-bar.baz');
-      expect(result).not.to.contain('01-');
+      expect(result).to.contain('01-'); // This is a change from previous
     });
     it ('should strip parent directories and extensions', () => {
       var result = utils.keyname('foo/01-bar.baz');
@@ -192,11 +192,11 @@ describe ('utils', () => {
       var resourceId = utils.resourceId(pseudoFile, pseudoRoot, 'pattern');
       expect(resourceId).to.equal('pattern.ding.dong');
     });
-    it ('should correctly remove special characters from IDs', () => {
+    it ('should no longer remove special characters from IDs', () => {
       var pseudoFile = { path: '/foo/bar/baz/03-ding/04-dong.txt' };
       var pseudoRoot = '/foo/bar/baz';
       var resourceId = utils.resourceId(pseudoFile, pseudoRoot, 'patterns');
-      expect(resourceId).to.equal('patterns.ding.dong');
+      expect(resourceId).to.equal('patterns.03-ding.04-dong');
     });
   });
   describe('resourceKey', () => {

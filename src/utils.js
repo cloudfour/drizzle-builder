@@ -43,13 +43,6 @@ function parentDirname (filepath) {
 }
 
 /**
- * TODO: see https://github.com/cloudfour/drizzle-builder/issues/8
- */
-function removeLeadingNumbers (str) {
-  return str.replace(/^[0-9|\.\-]+/, '');
-}
-
-/**
  * Given an array of file objects, take all of their paths and find
  * what the common root directory is for all of them.
  * @example commonRoot([
@@ -75,21 +68,41 @@ function commonRoot (files) {
 }
 
 /**
- * Return (creating if necessary) a deep reference to a nested object
- * based on path elements. This will mutate `obj` by adding needed properties
- * to it. Think of it like mkdir with a multi-directory path that will create
- * directory entries if they don't exist.
+ * Return a reference to the deeply-nested object indicated by the items
+ * in `pathKeys`. If `createEntries`, entry levels will be created as needed
+ * if they don't yet exist on `obj`.
  *
  * @param {Array} pathKeys    Elements making up the "path" to the reference
  * @param {Object}            Object to add needed references to
  *
- * @example deepRef(['foo', 'bar', 'baz'], { foo: {} }); // => foo.bar.baz
+ * @example deepRef(['foo', 'bar', 'baz'], { foo: {} }, true); // => foo.bar.baz
  */
-function deepObj (pathKeys, obj) {
+function deepObj (pathKeys, obj, createEntries = true) {
   return pathKeys.reduce((prev, curr) => {
-    prev[curr] = prev[curr] || {};
+    // TODO: Possibly throw if not?
+    if (typeof prev[curr] === 'undefined' && createEntries) {
+      prev[curr] = {};
+    }
     return prev[curr];
   }, obj);
+}
+
+/**
+ * Given a nested pattern `obj` and a `patternId`, find that pattern
+ * in the object. That means inserting some properties to stick it in the
+ * proper `collection` and `items` for a given pattern hierarchy.
+ * @example deepPattern('foo.bar.baz.bong', patterns); // ->
+ *   object reference at patterns.foo.bar.baz.collection.items.bong
+ *
+ * @param {String} patternId
+ * @param {Object} obj       Object with all Patterns
+ * @return {Object}          Object reference to patterns
+ */
+function deepPattern (patternId, obj) {
+  const pathBits = patternId.split('.'); // TODO pattern separator elsewhere?
+  pathBits.shift();
+  pathBits.splice(-1, 0, 'collection', 'items');
+  return deepObj(pathBits, obj, false);
 }
 
 /**
@@ -139,19 +152,12 @@ function isGlob (candidate) {
 }
 
 /**
- * Utility function to provide a consistent "key" for elements, materials,
- * partials, etc, based on a filepath:
- * - replace whitespace characters with `-`
- * - use only the basename, no extension
- * - unless stripNumbers option false, remove numbers from the string as well
- *
- * @param {String} str    filepath
- * @param {Object} options
- * @return {String}
+ * Utility function to process strings to make them key-like (for properties).
+ * Previously this stripped prefixed numbers, etc., but for now it is
+ * dead simple.
  */
-function keyname (str, { stripNumbers = true } = {}) {
-  const name = basename(str).replace(/\s/g, '-');
-  return (stripNumbers) ? removeLeadingNumbers(name) : name;
+function keyname (str) {
+  return basename(str);
 }
 
 /**
@@ -290,7 +296,7 @@ function resourceId (resourceFile, relativeRoot, resourceCollection) {
  * @return {String}
  */
 function resourceKey (resourceFile) {
-  return keyname(resourceFile.path, { stripNumbers: false });
+  return keyname(resourceFile.path);
 }
 
 /**
@@ -307,6 +313,7 @@ function titleCase (str) {
 
 export { commonRoot,
          deepObj,
+         deepPattern,
          dirname,
          getDirs,
          getFiles,
