@@ -12,7 +12,7 @@ import * as utils from '../utils';
  * @param {String} collectionKey The key of the current set of `patterns`.
  *                               Used to derive the collection's "name"
  */
-function renderPatternCollection (patterns, drizzleData, collectionKey) {
+function renderCollection (patterns, drizzleData, collectionKey) {
   patterns.collection.contents = renderUtils.applyTemplate(
     drizzleData.layouts.patternCollection.contents, // TODO obviously fragile
     renderUtils.localContext(patterns.collection, drizzleData),
@@ -30,19 +30,19 @@ function renderPatternCollection (patterns, drizzleData, collectionKey) {
  * @param {String} currentKey   The key for the current `patterns` object.
  * @return {Object} drizzleData All drizzleData
  */
-function walkPatterns (patterns, drizzleData, currentKey = 'patterns') {
+function walkCollections (patterns, drizzleData, currentKey = 'patterns') {
   for (const patternKey in patterns) {
     if (patternKey === 'collection') {
-      renderPatternCollection(patterns, drizzleData, currentKey);
+      renderCollection(patterns, drizzleData, currentKey);
     } else {
-      walkPatterns(patterns[patternKey], drizzleData, patternKey);
+      walkCollections(patterns[patternKey], drizzleData, patternKey);
     }
   }
   return drizzleData.patterns;
 }
 
-function renderPatterns (drizzleData) {
-  return walkPatterns(drizzleData.patterns, drizzleData);
+function renderCollections (drizzleData) {
+  return walkCollections(drizzleData.patterns, drizzleData);
 }
 
-export default renderPatterns;
+export default renderCollections;

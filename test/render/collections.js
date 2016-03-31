@@ -4,9 +4,9 @@ var config = require('../config');
 var expect = chai.expect;
 var prepare = require('../../dist/prepare/');
 var parse = require('../../dist/parse/');
-var renderPatterns = require('../../dist/render/patterns');
+var renderPatterns = require('../../dist/render/collections');
 
-describe ('render/patterns', () => {
+describe ('render/collections', () => {
   var opts, allData;
   before (() => {
     opts = config.parseOptions(config.fixtureOpts);
