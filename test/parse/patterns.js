@@ -70,8 +70,10 @@ describe ('parse/patterns', () => {
   describe ('parse/collections', () => {
     it ('should extend pattern collections with file metadata', () => {
       return parsePatterns(opts).then(patternData => {
-        expect(patternData.components.button.collection.name).to
+        var collection = patternData.components.button.collection;
+        expect(collection.name).to
           .equal('Not a Button');
+        expect(collection.order).to.be.an('Array');
       });
     });
   });
