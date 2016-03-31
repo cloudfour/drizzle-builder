@@ -1,4 +1,6 @@
 import * as utils from '../utils';
+import frontMatter from 'front-matter';
+
 /**
  * Register a glob of partials.
  * @param {Object} Handlebars instance
@@ -10,7 +12,8 @@ function preparePatterns (Handlebars, patterns = '') {
     patternFiles.forEach(patternFile => {
       const partialKey = utils.resourceId(
         patternFile, relativeRoot, 'patterns');
-      Handlebars.registerPartial(partialKey, patternFile.contents);
+      const patternContents = frontMatter(patternFile.contents).body;
+      Handlebars.registerPartial(partialKey, patternContents);
     });
     return Handlebars.partials;
   });
