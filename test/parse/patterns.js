@@ -67,4 +67,12 @@ describe ('parse/patterns', () => {
       //config.logObj(patternData.components.button.collection);
     });
   });
+  describe ('parse/collections', () => {
+    it ('should extend pattern collections with file metadata', () => {
+      return parsePatterns(opts).then(patternData => {
+        expect(patternData.components.button.collection.name).to
+          .equal('Not a Button');
+      });
+    });
+  });
 });

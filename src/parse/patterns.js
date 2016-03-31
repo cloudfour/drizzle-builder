@@ -1,5 +1,6 @@
 import * as utils from '../utils';
 import path from 'path';
+import parseCollections from './collections';
 
 /**
  * Parse collection information for the pattern in `patternFile`. Resolve
@@ -59,6 +60,8 @@ function parsePatterns (options) {
       );
     });
     return patternData;
+  }).then(patternData => {
+    return parseCollections(patternData, options);
   });
 }
 
