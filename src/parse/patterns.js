@@ -1,4 +1,5 @@
 import * as utils from '../utils';
+import path from 'path';
 
 /**
  * Parse collection information for the pattern in `patternFile`. Resolve
@@ -16,7 +17,8 @@ function initCollection (patternFile, patternData, relativeRoot, options) {
 
   collectionEntry.collection = collectionEntry.collection || {
     items: {},
-    name: utils.titleCase(collectionKey) // TODO Allow override
+    name: utils.titleCase(collectionKey), // TODO Allow override
+    path: path.dirname(patternFile.path)
   };
   return collectionEntry.collection.items;
 }

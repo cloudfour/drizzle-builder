@@ -16,6 +16,11 @@ describe ('parse/patterns', () => {
       expect(patternData.collection.items).to.have.keys('pink');
     });
   });
+  describe('it should add basic collection data to patterns', () => {
+    return parsePatterns(opts).then(patternData => {
+      expect(patternData.collection).to.contain.keys('name', 'path', 'items');
+    });
+  });
   describe('it should allow override of `name` prop', () => {
     return parsePatterns(opts).then(patternData => {
       expect(patternData.components.button.collection.items.aardvark)
