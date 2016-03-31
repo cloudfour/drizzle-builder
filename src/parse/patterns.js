@@ -1,6 +1,18 @@
 import * as utils from '../utils';
 
 /**
+ * `name` is a specially-recognized key in the pattern
+ * that can override naming by filename
+ *
+ * @param {Object} patternFile
+ * @return {String}
+ */
+function patternName (patternFile) {
+  return ((patternFile.data && patternFile.data.name) ||
+    utils.titleCase(utils.keyname(patternFile.path)));
+}
+
+/**
  *
  */
 function parsePatterns (options) {
@@ -28,7 +40,6 @@ function parsePatterns (options) {
         name: utils.titleCase(collectionKey) // TODO Allow override
       };
 
-      // TODO This is the place to assert ordering
       // Each pattern is added to the `items` object of its parent collection
       collectionEntry
         .collection
@@ -36,7 +47,7 @@ function parsePatterns (options) {
           patternFile,
           {
             id: utils.resourceId(patternFile, relativeRoot, 'patterns'),
-            name: utils.titleCase(utils.keyname(patternFile.path))
+            name: patternName(patternFile)
           }
         );
     });

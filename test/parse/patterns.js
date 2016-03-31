@@ -7,12 +7,21 @@ var utils = require('../../dist/utils');
 
 describe ('parse/patterns', () => {
   var opts = config.parseOptions(config.fixtureOpts);
+
   it ('should correctly build data object from patterns', () => {
     return parsePatterns(opts).then(patternData => {
       expect(patternData).to.be.an('object');
       expect(patternData).to.have.keys(
         'collection', 'fingers', 'components', 'typography');
       expect(patternData.collection.items).to.have.keys('pink');
+    });
+  });
+  describe('it should allow override of `name` prop', () => {
+    return parsePatterns(opts).then(patternData => {
+      expect(patternData.components.button.collection.items.aardvark)
+        .to.contain.key('name');
+      expect(patternData.components.button.collection.items.aardvark.name)
+        .to.equal('Something Else');
     });
   });
   describe ('pattern object structure', () => {
