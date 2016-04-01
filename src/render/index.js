@@ -1,6 +1,12 @@
 import renderPages from './pages';
 import renderCollections from './collections';
 
+/**
+ * Render pages and pattern-collection pages.
+ *
+ * @param {Object} drizzleData  All data built so far
+ * @return {Promise} resolving to drizzleData
+ */
 function render (drizzleData) {
   return Promise.all([
     renderPages(drizzleData),
