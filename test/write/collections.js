@@ -5,11 +5,11 @@ var config = require('../config');
 var prepare = require('../../dist/prepare/');
 var parse = require('../../dist/parse/');
 var render = require('../../dist/render/');
-var writePatterns = require('../../dist/write/patterns');
+var writePatterns = require('../../dist/write/collections');
 var options = require('../../dist/options');
 var testUtils = require('../test-utils');
 
-describe ('write/patterns', () => {
+describe ('write/collections', () => {
   var opts = options(config.fixtureOpts);
   var allData;
   before (() => {
