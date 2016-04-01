@@ -1,5 +1,5 @@
 import collectionContext from './context/collection';
-import * as renderUtils from './utils';
+import { applyTemplate } from '../utils/render';
 
 /**
  * For any given `patterns` entry, render a pattern-collection page for
@@ -13,7 +13,7 @@ import * as renderUtils from './utils';
  *                               Used to derive the collection's "name"
  */
 function renderCollection (patterns, drizzleData, collectionKey) {
-  patterns.collection.contents = renderUtils.applyTemplate(
+  patterns.collection.contents = applyTemplate(
     drizzleData.layouts.patternCollection.contents, // TODO obviously fragile
     collectionContext(patterns.collection, drizzleData),
     drizzleData.options);

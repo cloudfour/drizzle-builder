@@ -1,4 +1,4 @@
-import * as utils from '../../utils';
+import { deepCollection } from '../../utils/object';
 
 /**
  * Generate a local context for a pattern before it is rendered
@@ -14,7 +14,7 @@ function patternContext (pattern, drizzleData) {
     }
     delete context.data;
   }
-  context.collection = utils.deepCollection(pattern.id, drizzleData.patterns);
+  context.collection = deepCollection(pattern.id, drizzleData.patterns);
   return context;
 }
 
