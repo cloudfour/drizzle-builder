@@ -10,6 +10,7 @@ function prepareLayouts (Handlebars, layouts = '') {
   return readFiles(layouts).then(layoutFiles => {
     layoutFiles.forEach(partialFile => {
       const partialKey = keyname(partialFile.path);
+      // TODO: These should be keyed better
       Handlebars.registerPartial(partialKey, partialFile.contents);
     });
     return Handlebars.partials;
