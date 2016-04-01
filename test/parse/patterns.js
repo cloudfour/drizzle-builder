@@ -7,12 +7,26 @@ var utils = require('../../dist/utils');
 
 describe ('parse/patterns', () => {
   var opts = config.parseOptions(config.fixtureOpts);
+
   it ('should correctly build data object from patterns', () => {
     return parsePatterns(opts).then(patternData => {
       expect(patternData).to.be.an('object');
       expect(patternData).to.have.keys(
         'collection', 'fingers', 'components', 'typography');
       expect(patternData.collection.items).to.have.keys('pink');
+    });
+  });
+  describe('it should add basic collection data to patterns', () => {
+    return parsePatterns(opts).then(patternData => {
+      expect(patternData.collection).to.contain.keys('name', 'path', 'items');
+    });
+  });
+  describe('it should allow override of `name` prop', () => {
+    return parsePatterns(opts).then(patternData => {
+      expect(patternData.components.button.collection.items.aardvark)
+        .to.contain.key('name');
+      expect(patternData.components.button.collection.items.aardvark.name)
+        .to.equal('Something Else');
     });
   });
   describe ('pattern object structure', () => {
@@ -51,6 +65,16 @@ describe ('parse/patterns', () => {
       expect(patternData.collection.items.pink).to.have.keys(
         'name', 'id', 'contents', 'path', 'data');
       //config.logObj(patternData.components.button.collection);
+    });
+  });
+  describe ('parse/collections', () => {
+    it ('should extend pattern collections with file metadata', () => {
+      return parsePatterns(opts).then(patternData => {
+        var collection = patternData.components.button.collection;
+        expect(collection.name).to
+          .equal('Not a Button');
+        expect(collection.order).to.be.an('Array');
+      });
     });
   });
 });

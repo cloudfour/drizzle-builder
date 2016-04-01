@@ -1,10 +1,10 @@
 import renderPages from './pages';
-import renderPatterns from './patterns';
+import renderCollections from './collections';
 
 function render (drizzleData) {
   return Promise.all([
     renderPages(drizzleData),
-    renderPatterns(drizzleData)
+    renderCollections(drizzleData)
   ]).then(allData => {
     return {
       data    : drizzleData.data,

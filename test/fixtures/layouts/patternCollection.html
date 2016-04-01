@@ -2,7 +2,7 @@
   {{#content "body"}}
     <h2>{{name}}</h2>
     {{#each items}}
-      {{@key}}
+      {{#pattern id @root}}{{/pattern}}
     {{/each}}
   {{/content}}
 {{/extend}}

@@ -40,4 +40,9 @@ describe ('prepare/index', () => {
       );
     });
   });
+  it ('should register the `pattern` helper', () => {
+    return prepare(opts).then(preparedOpts => {
+      expect(preparedOpts.handlebars.helpers).to.contain.key('pattern');
+    });
+  });
 });

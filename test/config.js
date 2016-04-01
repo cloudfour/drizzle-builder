@@ -75,7 +75,7 @@ var config = {
       layouts : fixturePath('layouts/**/*'),
       pages   : fixturePath('pages/**/*'),
       partials: fixturePath('partials/**/*.hbs'),
-      patterns: fixturePath('patterns/**/*')
+      patterns: fixturePath('patterns/**/*.html')
     },
     dest: './test/dist',
     helpers: fixturePath('helpers/**/*.js'),
