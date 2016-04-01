@@ -2,6 +2,11 @@ import { commonRoot, relativePathArray } from '../utils/path';
 import { parseLocalData, readFiles } from '../utils/parse';
 import { deepObj, resourceKey } from '../utils/object';
 
+/**
+ * Parse page files.
+ * @param {Object} Options
+ * @return {Promise} resolving to page data
+ */
 function parsePages (options) {
   const pageData = {};
 

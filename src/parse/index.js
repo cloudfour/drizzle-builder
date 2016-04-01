@@ -3,6 +3,11 @@ import parseLayouts from './layouts';
 import parsePages from './pages';
 import parsePatterns from './patterns';
 
+/**
+ * Parse files with data from src and build a drizzleData object
+ * @param {Object} options
+ * @return {Promise} resolving to data object
+ */
 function parseAll (options = {}) {
   return Promise.all([
     parseData(options),

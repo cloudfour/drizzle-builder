@@ -1,5 +1,5 @@
 /**
- * Default parsers, merged into options. Can be overridden by user options
+ * Default parsers, merged into options. Can be overridden by user options.
  */
 
 import yaml from 'js-yaml';
