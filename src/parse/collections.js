@@ -1,6 +1,26 @@
 import * as utils from '../utils';
 import Promise from 'bluebird';
 
+/**
+ * Create a `sortedItems` property on the collection, and sort patterns
+ * either by default or as defined by the `order` property in metadata.
+ */
+function sortPatterns (collection) {
+  let sortedKeys = collection.order || [];
+  collection.patterns = [];
+  sortedKeys = sortedKeys.concat(
+    Object.keys(collection.items).filter(itemKey => {
+      // Make sure all keys are accounted for
+      return (sortedKeys.indexOf(itemKey) < 0);
+    }));
+  sortedKeys.forEach(sortedKey => {
+    collection.patterns.push(collection.items[sortedKey]);
+  });
+}
+
+/**
+ * Walk the pattern tree and extend collections with more metatdata.
+ */
 function walkCollections (patternData, options, filePromises = []) {
   for (const patternKey in patternData) {
     if (patternKey === 'collection') {
@@ -12,9 +32,10 @@ function walkCollections (patternData, options, filePromises = []) {
           patternData.collection = Object.assign(patternData.collection,
             metadata[0].contents);
         }
+        sortPatterns(patternData.collection);
       }));
     } else {
-      return walkCollections(patternData[patternKey], options, filePromises);
+      walkCollections(patternData[patternKey], options, filePromises);
     }
   }
   return filePromises;
