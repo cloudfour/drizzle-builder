@@ -12,7 +12,9 @@ import { write } from './utils';
  * @return {Promise} for file write
  */
 function writePatternCollection (patterns, drizzleData, entryKeys) {
-  const outputPath = path.join(entryKeys.join(path.sep), 'index.html');
+  const collectionName = entryKeys.pop();
+  const outputPath = path.join(entryKeys.join(path.sep),
+    `${collectionName}.html`);
   const fullPath = path.normalize(path.join(
     drizzleData.options.dest,
     drizzleData.options.destPaths.patterns,

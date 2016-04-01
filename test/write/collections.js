@@ -29,6 +29,18 @@ describe ('write/collections', () => {
         });
       });
     });
-    it ('should prefix with patterns prefix');
+    it ('should name the output collection files correctly', () => {
+      return allData.then(drizzleData => {
+        var patterns = drizzleData.patterns;
+        expect(patterns.components.collection.outputPath)
+          .to.contain('components.html');
+        expect(patterns.components.button.collection.outputPath).to.contain(
+          'button.html'
+        );
+      });
+    });
+    it ('should prefix with patterns prefix', () => {
+
+    });
   });
 });
