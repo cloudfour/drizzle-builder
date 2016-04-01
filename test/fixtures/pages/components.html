@@ -8,10 +8,10 @@ layout: page
   {{#content 'body'}}
     <h1>{{title}}</h1>
 
-    {{#each patterns.components.button.items}}
+    {{#each drizzle.patterns.components.button.items}}
       <div class="pattern">foo</pattern>
     {{/each}}
 
-    {{#pattern patterns.components.button.collection.items.aardvark.id @root }}{{/pattern}}
+    {{#pattern drizzle.patterns.components.button.collection.items.aardvark.id @root }}{{/pattern}}
   {{/content}}
 {{/extend}}

@@ -1,4 +1,5 @@
 import * as renderUtils from './utils';
+import pageContext from './context/page';
 
 /**
  * Wrap the page's current contents with an `extend` helper
@@ -34,7 +35,7 @@ function wrapWithLayout (page, drizzleData) {
 function renderPage (page, drizzleData) {
   page.contents = renderUtils.applyTemplate(
     wrapWithLayout(page, drizzleData),
-    renderUtils.localContext(page, drizzleData),
+    pageContext(page, drizzleData),
     drizzleData.options);
   return page.contents;
 }

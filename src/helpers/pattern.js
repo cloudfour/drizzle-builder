@@ -4,12 +4,12 @@ import patternContext from '../render/context/pattern';
 function registerPatternHelper (Handlebars) {
   Handlebars.registerHelper('pattern', (id, rootContext, opts) => {
     // Retrieve pattern object from ID
-    const patternObj = utils.deepPattern(id, rootContext.patterns);
+    const patternObj = utils.deepPattern(id, rootContext.drizzle.patterns);
     if (!patternObj) { // TODO yeah: what then?
       return 'nope';
     }
     // Build a local context TODO Move this
-    const localContext = patternContext(patternObj, rootContext);
+    const localContext = patternContext(patternObj, rootContext.drizzle);
 
     // Find and work with partial template
     let template = Handlebars.partials[id];

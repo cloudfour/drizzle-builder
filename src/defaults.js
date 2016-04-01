@@ -7,7 +7,7 @@ const defaults = {
     layouts : ['src/layouts/**/*'],
     pages   : ['src/pages/**/*'],
     partials: ['src/partials/**/*'],
-    patterns: ['src/patterns/**/*']
+    patterns: ['src/patterns/**/*.html']
   },
   dest          : 'dist',
   destPaths     : {
