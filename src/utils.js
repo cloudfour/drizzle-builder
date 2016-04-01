@@ -271,17 +271,17 @@ function titleCase (str) {
     .replace(/\w\S*/g, word => word.charAt(0).toUpperCase() + word.substr(1));
 }
 
-export { commonRoot, // Path
-         deepCollection, // Object
-         deepObj, // Object
+export { commonRoot, // path
+         deepCollection, // object
+         deepObj, // object
          deepPattern, // object
-         getFiles, // file
-         isGlob, // file
+         getFiles, // glob
+         isGlob, // glob
          keyname, // object
-         matchParser, // file
-         readFiles, // file
-         readFilesKeyed, // file
-         relativePathArray, //file
+         matchParser, // parse
+         readFiles, // parse
+         readFilesKeyed, // parse
+         relativePathArray, // path
          resourceId, //object
          resourceKey, // object
          titleCase // general
