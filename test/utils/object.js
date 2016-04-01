@@ -69,17 +69,6 @@ describe ('utils/object', () => {
         utils, ('foo.bar.baz', obj, false))).to.throw;
     });
   });
-  describe('keyname', () => {
-    it ('should not strip leading numbers by default', () => {
-      var result = utils.keyname('foo/01-bar.baz');
-      expect(result).to.contain('01-'); // This is a change from previous
-    });
-    it ('should strip parent directories and extensions', () => {
-      var result = utils.keyname('foo/01-bar.baz');
-      expect(result).not.to.contain('foo');
-      expect(result).not.to.contain('baz');
-    });
-  });
 
   describe('resourceId', () => {
     it ('should generate a prefixed resourceId', () => {

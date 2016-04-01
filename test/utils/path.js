@@ -36,7 +36,4 @@ describe ('utils/path', () => {
       expect(common).to.be.a('string').and.to.be.empty;
     });
   });
-  describe('relativePathArray', () => {
-    it ('should be refactored and tested');
-  });
 });

@@ -1,5 +1,5 @@
 import path from 'path';
-import {relativePathArray } from './path'; // TODO MUST NOT HAVE THIS DEP
+import { keyname, relativePathArray } from './shared';
 
 /**
  * Return a reference to the deeply-nested object indicated by the items
@@ -53,15 +53,6 @@ function deepCollection (patternId, obj) {
   pathBits.push('collection');
   pathBits.shift();
   return deepObj(pathBits, obj, false);
-}
-
-/**
- * Utility function to process strings to make them key-like (for properties).
- * Previously this stripped prefixed numbers, etc., but for now it is
- * dead simple.
- */
-function keyname (str) {
-  return path.basename(str, path.extname(str));
 }
 
 /**

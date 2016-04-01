@@ -2,7 +2,7 @@ import globby from 'globby';
 import Promise from 'bluebird';
 import {readFile as readFileCB} from 'fs';
 var readFile = Promise.promisify(readFileCB);
-import { keyname } from './object'; // TODO FIX
+import { keyname } from './shared';
 
 /**
  * @param {glob} glob

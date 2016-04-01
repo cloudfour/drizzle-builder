@@ -1,9 +1,20 @@
 /* global describe, it */
 var chai = require('chai');
 var expect = chai.expect;
-var utils = require('../../dist/utils/');
+var utils = require('../../dist/utils/shared');
 
-describe ('utils/index', () => {
+describe ('utils/shared', () => {
+  describe('keyname', () => {
+    it ('should not strip leading numbers by default', () => {
+      var result = utils.keyname('foo/01-bar.baz');
+      expect(result).to.contain('01-'); // This is a change from previous
+    });
+    it ('should strip parent directories and extensions', () => {
+      var result = utils.keyname('foo/01-bar.baz');
+      expect(result).not.to.contain('foo');
+      expect(result).not.to.contain('baz');
+    });
+  });
   describe('titleCase', () => {
     it ('should correctly title-case a string', () => {
       // @TODO move these into fixtures?
@@ -22,5 +33,8 @@ describe ('utils/index', () => {
         expect(stringsOut[i]).to.equal(stringsExpected[i]);
       }
     });
+  });
+  describe('relativePathArray', () => {
+    it ('should be refactored and tested');
   });
 });
