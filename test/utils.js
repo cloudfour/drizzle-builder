@@ -207,20 +207,4 @@ describe ('utils', () => {
       expect(resourceKey).to.equal('05-dingle');
     });
   });
-  describe('dirname functions', () => {
-    describe('parentDirname', () => {
-      it ('should derive correct parent dirname', () => {
-        var file = config.fixturePath('helpers/toFraction.js');
-        var parent = utils.parentDirname(file);
-        expect(parent).to.equal('fixtures');
-      });
-    });
-    describe('localDirname', () => {
-      it ('should derive correct immediate dirname', () => {
-        var file = config.fixturePath('helpers/toFraction.js');
-        var parent = utils.localDirname(file);
-        expect(parent).to.equal('helpers');
-      });
-    });
-  });
 });

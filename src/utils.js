@@ -4,44 +4,6 @@ import path from 'path';
 import {readFile as readFileCB} from 'fs';
 var readFile = Promise.promisify(readFileCB);
 
-/* Helper functions */
-
-/**
- * Return extension-less basename of filepath
- * @param {String} filepath
- * @example basename('foo/bar/baz.txt'); // -> 'baz'
- */
-function basename (filepath) {
-  return path.basename(filepath, path.extname(filepath));
-}
-
-/**
- * Return normalized (no '..', '.') full dirname of filepath
- * @param {String} filepath
- * @example dirname('../ding/foo.txt'); // -> '/Users/shiela/ding/'
- */
-function dirname (filepath) {
-  return path.normalize(path.dirname(filepath));
-}
-
-/**
- * Return the name of this file's directory's immediate parent directory
- * @param {String} filepath
- * @example basename('foo/bar/baz.txt'); // -> 'bar'
- */
-function localDirname (filepath) {
-  return dirname(filepath).split(path.sep).pop();
-}
-
-/**
- * Return the name of this file's directory's immediate parent directory
- * @param {String} filepath
- * @example basename('foo/bar/baz.txt'); // -> 'foo'
- */
-function parentDirname (filepath) {
-  return dirname(filepath).split(path.sep).slice(-2, -1)[0];
-}
-
 /**
  * Given an array of file objects, take all of their paths and find
  * what the common root directory is for all of them.
@@ -165,7 +127,7 @@ function isGlob (candidate) {
  * dead simple.
  */
 function keyname (str) {
-  return basename(str);
+  return path.basename(str, path.extname(str));
 }
 
 /**
@@ -193,7 +155,6 @@ function matchParser (filepath, parsers = {}) {
   return (parsers.default && parsers.default.parseFn) ||
     ((contents, filepath) => ({ contents: contents }));
 }
-
 
 /**
  * Take a glob; read the files, optionally running a `contentFn` over
@@ -328,14 +289,11 @@ export { commonRoot,
          deepCollection,
          deepObj,
          deepPattern,
-         dirname,
          getDirs,
          getFiles,
          isGlob,
          keyname,
-         localDirname,
          matchParser,
-         parentDirname,
          readFiles,
          readFilesKeyed,
          relativePathArray,
