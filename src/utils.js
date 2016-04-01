@@ -67,6 +67,11 @@ function deepPattern (patternId, obj) {
   return deepObj(pathBits, obj, false);
 }
 
+/**
+ * Given a nested pattern `obj` and a `patternId`, find its collection
+ * in the object `obj`.
+ * @see deepPattern
+ */
 function deepCollection (patternId, obj) {
   const pathBits = patternId.split('.'); // TODO pattern separator elsewhere?
   pathBits.pop();
@@ -76,27 +81,8 @@ function deepCollection (patternId, obj) {
 }
 
 /**
- * Take a given glob and convert it to a glob that will match directories
- * (instead of files). Return Promise that resolves to matching dirs.
- *
- * @example getDirs('foo/bar/baz')
- *
- * @param {glob}    glob to convert to directory glob
- * @param {Object}  options to pass on to getFiles/globby
- * @return {Promise} resolving to glob matches
- */
-function getDirs (glob, options = {}) {
-  const opts = Object.assign({
-    nodir: false
-  }, options);
-  const dirGlob = (typeof glob === 'string') ? Array.of(glob) : glob;
-  return getFiles(dirGlob.map(dirEntry => path.dirname(dirEntry) + '/*/'),
-    opts);
-}
-
-/**
  * @param {glob} glob
- * @return {Promise} resolving to {Array} of files matching glob
+ * @return {Promise} resolving to {Array} of filepaths matching glob
  */
 function getFiles (glob, globOpts = {}) {
   const opts = Object.assign({
@@ -285,19 +271,18 @@ function titleCase (str) {
     .replace(/\w\S*/g, word => word.charAt(0).toUpperCase() + word.substr(1));
 }
 
-export { commonRoot,
-         deepCollection,
-         deepObj,
-         deepPattern,
-         getDirs,
-         getFiles,
-         isGlob,
-         keyname,
-         matchParser,
-         readFiles,
-         readFilesKeyed,
-         relativePathArray,
-         resourceId,
-         resourceKey,
-         titleCase
+export { commonRoot, // Path
+         deepCollection, // Object
+         deepObj, // Object
+         deepPattern, // object
+         getFiles, // file
+         isGlob, // file
+         keyname, // object
+         matchParser, // file
+         readFiles, // file
+         readFilesKeyed, // file
+         relativePathArray, //file
+         resourceId, //object
+         resourceKey, // object
+         titleCase // general
        };

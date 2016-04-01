@@ -48,18 +48,6 @@ describe ('utils', () => {
       });
     });
   });
-  describe('getDirs', () => {
-    it ('should only return directories', () => {
-      return utils.getDirs(config.fixturePath('helpers/**/*.js'))
-        .then(dirs => {
-          dirs.forEach(dir => {
-            expect(path.extname(dir)).to.be.empty;
-            // And should not contain immediate parent
-            expect(path.basename(dir)).not.to.equal('helpers');
-          });
-        });
-    });
-  });
   describe('isGlob', () => {
     it ('should correctly identify valid glob patterns', () => {
       var goodGlobs = [
