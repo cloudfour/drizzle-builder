@@ -21,12 +21,20 @@ describe ('parse/collections', () => {
         expect(collection).to.contain.keys('order');
       });
     });
-    it ('should include all patterns in collection in sortedItems', () => {
+    it ('should include all patterns in collection.patterns', () => {
       return parsePatterns(opts).then(patternData => {
         var collection = patternData.fingers.collection;
         expect(collection.patterns).length.to.be.at.least(4);
         var lastItem = collection.patterns.pop();
         expect(lastItem.name).to.equal('Omitted');
+      });
+    });
+    it ('should omit hidden patterns from collection.patterns', () => {
+      return parsePatterns(opts).then(patternData => {
+        var collection = patternData.fingers.collection;
+        collection.patterns.forEach(pattern => {
+          expect(pattern.name).not.to.equal('Missing');
+        });
       });
     });
   });

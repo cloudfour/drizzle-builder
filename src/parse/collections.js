@@ -2,6 +2,26 @@ import * as utils from '../utils';
 import Promise from 'bluebird';
 
 /**
+ * Remove anything in the `collection.hidden` array from
+ * `patternKeys`
+ * @param {Object} collection
+ * @param {Array} patternKeys   All patternKeys
+ * @return {Array} visible pattern keys
+ */
+function visiblePatterns (collection, patternKeys) {
+  if (!collection.hidden) {
+    return patternKeys;
+  }
+  if (!Array.isArray(collection.hidden)) {
+    collection.hidden = [collection.hidden];
+  }
+  patternKeys = patternKeys.filter(patternKey => {
+    return (collection.hidden.indexOf(patternKey) < 0);
+  });
+  return patternKeys;
+}
+
+/**
  * Create a `sortedItems` property on the collection, and sort patterns
  * either by default or as defined by the `order` property in metadata.
  */
@@ -13,6 +33,8 @@ function sortPatterns (collection) {
       // Make sure all keys are accounted for
       return (sortedKeys.indexOf(itemKey) < 0);
     }));
+  // Remove hidden patterns
+  sortedKeys = visiblePatterns(collection, sortedKeys);
   sortedKeys.forEach(sortedKey => {
     collection.patterns.push(collection.items[sortedKey]);
   });

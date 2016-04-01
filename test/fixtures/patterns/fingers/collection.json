@@ -1,3 +1,4 @@
 {
-  "order": ["pamp", "forgetful", "ideal"]
+  "order": ["pamp", "forgetful", "ideal"],
+  "hidden": ["hidden"]
 }
