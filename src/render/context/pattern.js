@@ -1,5 +1,10 @@
 import * as utils from '../../utils';
 
+/**
+ * Generate a local context for a pattern before it is rendered
+ * Merge in data from its collection and bring its `data` properties
+ * up to top level.
+ */
 function patternContext (pattern, drizzleData) {
   const context = Object.assign({}, pattern);
   context.drizzle = drizzleData;
