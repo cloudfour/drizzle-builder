@@ -1,7 +1,7 @@
 {{#extend "default"}}
   {{#content "body"}}
     <h2>{{name}}</h2>
-    {{#each items}}
+    {{#each patterns}}
       {{#pattern id @root}}{{/pattern}}
       <pre><code>{{#patternSource id @root}}{{/patternSource}}</code></pre>
       <ul>

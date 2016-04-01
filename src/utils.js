@@ -285,12 +285,17 @@ function relativePathArray (filePath, fromPath) {
  * @param {String} || {Array} relativeRoot path to relative root or path
  *                            elements to same in Array
  * @param {String} resourceCollection  Will be prepended as first element in ID
+ *                                     if provided.
  * @return {String} ID for this resource
  */
-function resourceId (resourceFile, relativeRoot, resourceCollection) {
+function resourceId (resourceFile, relativeRoot, resourceCollection = '') {
   const pathKeys = relativePathArray(resourceFile.path, relativeRoot)
     .map(keyname);
-  return [resourceCollection]
+  const resourceBits = [];
+  if (resourceCollection && resourceCollection.length) {
+    resourceBits.push(resourceCollection);
+  }
+  return resourceBits
     .concat(pathKeys)
     .concat([keyname(resourceFile.path)])
     .join ('.');

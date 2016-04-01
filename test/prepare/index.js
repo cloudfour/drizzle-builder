@@ -28,6 +28,7 @@ describe ('prepare/index', () => {
       expect(preparedOpts.handlebars.partials).to.contain.keys(
         'header', 'menu'
       );
+      expect(preparedOpts.handlebars.partials).to.contain.keys('nested.thing');
       expect(preparedOpts.handlebars.partials).to.contain.keys('default');
     });
   });
