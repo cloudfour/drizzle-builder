@@ -1,4 +1,5 @@
-import * as utils from '../utils';
+import { keyname } from '../utils/shared';
+import { getFiles, isGlob } from '../utils/parse';
 import registerPatternHelpers from '../helpers/pattern';
 
 /**
@@ -15,10 +16,10 @@ import registerPatternHelpers from '../helpers/pattern';
 function getHelpers (helperOpts = {}) {
   const helpers = {};
   return new Promise((resolve, reject) => {
-    if (utils.isGlob(helperOpts)) {
-      utils.getFiles(helperOpts).then(helperPaths => {
+    if (isGlob(helperOpts)) {
+      getFiles(helperOpts).then(helperPaths => {
         helperPaths.forEach(hPath => {
-          helpers[utils.keyname(hPath)] = require(hPath);
+          helpers[keyname(hPath)] = require(hPath);
         });
         resolve(helpers);
       });
