@@ -35,6 +35,8 @@ describe ('render/collections', () => {
       expect(patternData['fingers'].collection).to.contain.keys(
         'name', 'contents');
       expect(patternData['fingers'].collection.name).to.equal('Fingers');
+      expect(patternData.components.button.collection.name)
+        .to.equal('Not a Button');
     });
   });
   it ('should render pattern collections with proper context', () => {
@@ -44,8 +46,9 @@ describe ('render/collections', () => {
       expect(patternData.typography.headings)
         .to.contain.keys('collection');
       expect(patternData.collection.contents).to.contain('<h2>Patterns</h2>');
-      // expect(drizzleData.patterns.typography.headings.contents)
-      //   .to.contain('<h1>Headings</h1>');
+      expect(patternData.components.button.collection.contents).to.contain(
+        'class="f-Item-control"'
+      );
     });
   });
 

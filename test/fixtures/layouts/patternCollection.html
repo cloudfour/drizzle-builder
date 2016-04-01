@@ -3,6 +3,19 @@
     <h2>{{name}}</h2>
     {{#each items}}
       {{#pattern id @root}}{{/pattern}}
+      <pre><code>{{#patternSource id @root}}{{/patternSource}}</code></pre>
+      <ul>
+      {{#each data.links}}
+        <li>
+          <a href="{{this}}" class="f-Item-control">
+            <svg>
+              <use xlink:href="#f-icon-external" />
+            </svg>
+            {{@key}}
+          </a>
+        </li>
+      {{/each}}
+      </ul>
     {{/each}}
   {{/content}}
 {{/extend}}
