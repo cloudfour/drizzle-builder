@@ -5,11 +5,11 @@ var config = require('../config');
 var prepare = require('../../dist/prepare/');
 var parse = require('../../dist/parse/');
 var render = require('../../dist/render/');
-var writePatterns = require('../../dist/write/patterns');
+var writePatterns = require('../../dist/write/collections');
 var options = require('../../dist/options');
 var testUtils = require('../test-utils');
 
-describe ('write/patterns', () => {
+describe ('write/collections', () => {
   var opts = options(config.fixtureOpts);
   var allData;
   before (() => {
@@ -29,6 +29,20 @@ describe ('write/patterns', () => {
         });
       });
     });
-    it ('should prefix with patterns prefix');
+    it ('should name the output collection files correctly', () => {
+      return allData.then(drizzleData => {
+        var patterns = drizzleData.patterns;
+        expect(patterns.components.collection.outputPath)
+          .to.contain('components.html');
+        expect(patterns.components.button.collection.outputPath).to.contain(
+          'button.html'
+        );
+        expect(patterns.collection.outputPath).to.contain('patterns.html');
+        //console.log(patterns.components.button.collection);
+      });
+    });
+    it ('should prefix with patterns prefix', () => {
+
+    });
   });
 });
