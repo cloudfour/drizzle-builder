@@ -39,7 +39,6 @@ function commonRoot (files) {
  */
 function relativePathArray (filePath, fromPath) {
   const keys = path.relative(fromPath, path.dirname(filePath));
-  console.log(keys);
   if (keys && keys.length) {
     return keys.split(path.sep);
   }
