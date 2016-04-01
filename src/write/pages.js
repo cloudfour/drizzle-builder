@@ -46,9 +46,6 @@ function walkPages (pages, drizzleData, currentKeys = [], writePromises = []) {
   return writePromises;
 }
 
-/**
- * TODO: Better resolve/return value
- */
 function writePages (drizzleData) {
   return Promise.all(walkPages(drizzleData.pages, drizzleData))
     .then(() => {
