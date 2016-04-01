@@ -1,3 +1,5 @@
+import {html as prettyHTML } from 'js-beautify';
+
 function applyTemplate (template, context, options) {
   if (typeof template !== 'function') {
     template = compileTemplate(template, options);
