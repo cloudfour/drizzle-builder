@@ -1,4 +1,5 @@
 import * as utils from '../utils';
+import patternContext from '../render/context/pattern';
 
 function registerPatternHelper (Handlebars) {
   Handlebars.registerHelper('pattern', (id, rootContext, opts) => {
@@ -8,8 +9,7 @@ function registerPatternHelper (Handlebars) {
       return 'nope';
     }
     // Build a local context TODO Move this
-    const localContext = Object.assign({},
-      rootContext, patternObj, patternObj.data);
+    const localContext = patternContext(patternObj, rootContext);
 
     // Find and work with partial template
     let template = Handlebars.partials[id];

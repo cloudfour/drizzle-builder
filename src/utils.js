@@ -105,6 +105,14 @@ function deepPattern (patternId, obj) {
   return deepObj(pathBits, obj, false);
 }
 
+function deepCollection (patternId, obj) {
+  const pathBits = patternId.split('.'); // TODO pattern separator elsewhere?
+  pathBits.pop();
+  pathBits.push('collection');
+  pathBits.shift();
+  return deepObj(pathBits, obj, false);
+}
+
 /**
  * Take a given glob and convert it to a glob that will match directories
  * (instead of files). Return Promise that resolves to matching dirs.
@@ -312,6 +320,7 @@ function titleCase (str) {
 }
 
 export { commonRoot,
+         deepCollection,
          deepObj,
          deepPattern,
          dirname,
