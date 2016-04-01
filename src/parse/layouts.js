@@ -1,7 +1,7 @@
-import * as utils from '../utils';
+import { readFilesKeyed } from '../utils/parse';
 
 function parseLayouts (options) {
-  return utils.readFilesKeyed(options.src.layouts, options);
+  return readFilesKeyed(options.src.layouts, options);
 }
 
 export default parseLayouts;

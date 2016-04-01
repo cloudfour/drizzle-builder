@@ -1,4 +1,4 @@
-import * as utils from '../utils';
+import { readFiles } from '../utils/parse';
 import Promise from 'bluebird';
 
 /**
@@ -48,7 +48,7 @@ function walkCollections (patternData, options, filePromises = []) {
     if (patternKey === 'collection') {
       // TODO Should this be some sort of option?
       const glob = patternData.collection.path + '/collection.+(yaml|yml|json)';
-      filePromises.push(utils.readFiles(glob, options).then(metadata => {
+      filePromises.push(readFiles(glob, options).then(metadata => {
         if (metadata && metadata.length) {
           // Extend collection data with data from file (first match)
           patternData.collection = Object.assign(patternData.collection,

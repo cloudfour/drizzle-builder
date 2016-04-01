@@ -1,6 +1,9 @@
-import * as utils from '../utils';
 import path from 'path';
 import parseCollections from './collections';
+import { keyname, titleCase } from '../utils/shared';
+import { deepObj, resourceId, resourceKey } from '../utils/object';
+import { commonRoot, relativePathArray } from '../utils/path';
+import { readFiles } from '../utils/parse';
 
 /**
  * Parse collection information for the pattern in `patternFile`. Resolve
@@ -8,17 +11,17 @@ import parseCollections from './collections';
  * may be inserted there.
  */
 function initCollection (patternFile, patternData, relativeRoot, options) {
-  const pathBits = utils.relativePathArray(
+  const pathBits = relativePathArray(
     patternFile.path,
     relativeRoot);
 
-  const collectionEntry = utils.deepObj(pathBits, patternData);
+  const collectionEntry = deepObj(pathBits, patternData);
   const collectionKey = (pathBits.length && pathBits.length > 0) ?
     pathBits[pathBits.length - 1] : 'patterns';
 
   collectionEntry.collection = collectionEntry.collection || {
     items: {},
-    name: utils.titleCase(collectionKey), // TODO Allow override
+    name: titleCase(collectionKey),
     path: path.dirname(patternFile.path)
   };
   return collectionEntry.collection.items;
@@ -33,7 +36,7 @@ function initCollection (patternFile, patternData, relativeRoot, options) {
  */
 function patternName (patternFile) {
   return ((patternFile.data && patternFile.data.name) ||
-    utils.titleCase(utils.keyname(patternFile.path)));
+    titleCase(keyname(patternFile.path)));
 }
 
 /**
@@ -44,17 +47,17 @@ function patternName (patternFile) {
 function parsePatterns (options) {
   const patternData = {};
   // First, read pattern files...
-  return utils.readFiles(options.src.patterns, options).then(fileData => {
-    const relativeRoot = utils.commonRoot(fileData);
+  return readFiles(options.src.patterns, options).then(fileData => {
+    const relativeRoot = commonRoot(fileData);
 
     fileData.forEach(patternFile => {
       const collectionItemEntry = initCollection(
         patternFile, patternData, relativeRoot, options);
 
-      collectionItemEntry[utils.resourceKey(patternFile)] = Object.assign(
+      collectionItemEntry[resourceKey(patternFile)] = Object.assign(
         patternFile,
         {
-          id: utils.resourceId(patternFile, relativeRoot, 'patterns'),
+          id: resourceId(patternFile, relativeRoot, 'patterns'),
           name: patternName(patternFile)
         }
       );

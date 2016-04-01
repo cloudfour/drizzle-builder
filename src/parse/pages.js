@@ -1,16 +1,17 @@
-import * as utils from '../utils';
-import * as parseUtils from './utils';
+import { commonRoot, relativePathArray } from '../utils/path';
+import { parseLocalData, readFiles } from '../utils/parse';
+import { deepObj, resourceKey } from '../utils/object';
 
 function parsePages (options) {
   const pageData = {};
 
-  return utils.readFiles(options.src.pages, options).then(fileData => {
-    const relativeRoot = utils.commonRoot(fileData);
+  return readFiles(options.src.pages, options).then(fileData => {
+    const relativeRoot = commonRoot(fileData);
     fileData.forEach(pageFile => {
-      const keys       = utils.relativePathArray(
+      const keys       = relativePathArray(
         pageFile.path, relativeRoot);
-      utils.deepObj(keys, pageData)[utils.resourceKey(pageFile)] = parseUtils
-        .parseLocalData(pageFile, options);
+      deepObj(keys, pageData)[resourceKey(pageFile)] = parseLocalData(
+        pageFile, options);
     });
     return pageData;
   });

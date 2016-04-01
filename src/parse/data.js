@@ -1,7 +1,7 @@
-import * as utils from '../utils';
+import { readFilesKeyed } from '../utils/parse';
 
 function parseData (options) {
-  return utils.readFilesKeyed(options.src.data, options);
+  return readFilesKeyed(options.src.data, options);
 }
 
 export default parseData;
