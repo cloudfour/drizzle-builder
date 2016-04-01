@@ -9,6 +9,11 @@ const defaults = {
     partials: ['src/partials/**/*'],
     patterns: ['src/patterns/**/*.html']
   },
+  beautifier: {
+    indent_size: 1,
+    indent_char: '	',
+    indent_with_tabs: true
+  },
   dest          : 'dist',
   destPaths     : {
     pages   : '',

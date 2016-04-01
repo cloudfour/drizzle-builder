@@ -1,27 +1,35 @@
 import * as utils from '../utils';
 import patternContext from '../render/context/pattern';
 
-function registerPatternHelper (Handlebars) {
-  Handlebars.registerHelper('pattern', (id, rootContext, opts) => {
-    // Retrieve pattern object from ID
-    const patternObj = utils.deepPattern(id, rootContext.drizzle.patterns);
-    if (!patternObj) { // TODO yeah: what then?
-      return 'nope';
+/**
+ * Retrieve correct pattern object data, find the right partial and
+ * compile with correct local context.
+ */
+function renderPatternPartial (patternId, drizzleData, Handlebars) {
+  const patternObj = utils.deepPattern(patternId, drizzleData.patterns);
+  const localContext = patternContext(patternObj, drizzleData);
+  let template = Handlebars.partials[patternId];
+  if (template) {
+    if (typeof template !== 'function') {
+      template = Handlebars.compile(template);
     }
-    // Build a local context TODO Move this
-    const localContext = patternContext(patternObj, rootContext.drizzle);
+    // Render and return
+    return template(localContext);
+  }
+}
 
-    // Find and work with partial template
-    let template = Handlebars.partials[id];
-    if (template) {
-      if (typeof template !== 'function') {
-        template = Handlebars.compile(template);
-      }
-      // Render and return
-      return template(localContext);
-    }
+function registerPatternHelpers (Handlebars) {
+  Handlebars.registerHelper('pattern', (id, rootContext, opts) => {
+    const renderedTemplate = renderPatternPartial(
+      id, rootContext.drizzle, Handlebars);
+    return renderedTemplate;
+  });
+  Handlebars.registerHelper('patternSource', (id, rootContext, opts) => {
+    const renderedTemplate = renderPatternPartial(
+      id, rootContext.drizzle, Handlebars);
+    return Handlebars.Utils.escapeExpression(renderedTemplate);
   });
   return Handlebars;
 }
 
-export default registerPatternHelper;
+export default registerPatternHelpers;

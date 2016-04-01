@@ -1,5 +1,5 @@
 import * as utils from '../utils';
-import registerPatternHelper from '../helpers/pattern';
+import registerPatternHelpers from '../helpers/pattern';
 
 /**
  * Register helpers on Handlebars. Helpers (helperOpts) can be provided as
@@ -42,10 +42,10 @@ function getHelpers (helperOpts = {}) {
 function prepareHelpers (Handlebars, helperOpts = {}) {
   return getHelpers(helperOpts)
     .then(helpers => {
+      Handlebars = registerPatternHelpers(Handlebars);
       for (var helper in helpers) {
         Handlebars.registerHelper(helper, helpers[helper]);
       }
-      registerPatternHelper(Handlebars);
 
     });
 }
