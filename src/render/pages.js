@@ -1,4 +1,4 @@
-import * as renderUtils from './utils';
+import { applyTemplate } from '../utils/render';
 import pageContext from './context/page';
 
 /**
@@ -33,7 +33,7 @@ function wrapWithLayout (page, drizzleData) {
  * @return {String} compiled/rendered page contents.
  */
 function renderPage (page, drizzleData) {
-  page.contents = renderUtils.applyTemplate(
+  page.contents = applyTemplate(
     wrapWithLayout(page, drizzleData),
     pageContext(page, drizzleData),
     drizzleData.options);

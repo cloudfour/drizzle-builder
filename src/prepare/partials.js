@@ -1,14 +1,17 @@
-import * as utils from '../utils';
+import { resourceId } from '../utils/object';
+import { readFiles } from '../utils/parse';
+import { commonRoot } from '../utils/path';
+
 /**
  * Register a glob of partials.
  * @param {Object} Handlebars instance
  * @param {String || Array} glob
  */
 function preparePartials (Handlebars, partials = '') {
-  return utils.readFiles(partials).then(partialFiles => {
-    const relativeRoot = utils.commonRoot(partialFiles);
+  return readFiles(partials).then(partialFiles => {
+    const relativeRoot = commonRoot(partialFiles);
     partialFiles.forEach(partialFile => {
-      const partialKey = utils.resourceId(partialFile, relativeRoot);
+      const partialKey = resourceId(partialFile, relativeRoot);
       Handlebars.registerPartial(partialKey, partialFile.contents);
     });
     return Handlebars.partials;

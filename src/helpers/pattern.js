@@ -1,4 +1,4 @@
-import * as utils from '../utils';
+import { deepPattern } from '../utils/object';
 import patternContext from '../render/context/pattern';
 
 /**
@@ -6,7 +6,7 @@ import patternContext from '../render/context/pattern';
  * compile with correct local context.
  */
 function renderPatternPartial (patternId, drizzleData, Handlebars) {
-  const patternObj = utils.deepPattern(patternId, drizzleData.patterns);
+  const patternObj = deepPattern(patternId, drizzleData.patterns);
   const localContext = patternContext(patternObj, drizzleData);
   let template = Handlebars.partials[patternId];
   if (template) {
@@ -18,12 +18,23 @@ function renderPatternPartial (patternId, drizzleData, Handlebars) {
   }
 }
 
+/**
+ * Register some drizzle-specific pattern helpers
+ */
 function registerPatternHelpers (Handlebars) {
+  /**
+   * The `pattern` helper allows the embedding of patterns anywhere
+   * and they can get their correct local context.
+   */
   Handlebars.registerHelper('pattern', (id, rootContext, opts) => {
     const renderedTemplate = renderPatternPartial(
       id, rootContext.drizzle, Handlebars);
     return renderedTemplate;
   });
+  /**
+   * Similar to `pattern` but the returned string is HTML-escaped.
+   * Can be used for rendering source in `<pre>` tags.
+   */
   Handlebars.registerHelper('patternSource', (id, rootContext, opts) => {
     const renderedTemplate = renderPatternPartial(
       id, rootContext.drizzle, Handlebars);

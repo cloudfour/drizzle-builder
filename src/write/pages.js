@@ -1,6 +1,5 @@
 import path from 'path';
-import { write } from './utils';
-import * as utils from '../utils';
+import { write } from '../utils/write';
 
 /**
  * Figure out the output path for `page` and write it to the filesystem.
@@ -47,9 +46,6 @@ function walkPages (pages, drizzleData, currentKeys = [], writePromises = []) {
   return writePromises;
 }
 
-/**
- * TODO: Better resolve/return value
- */
 function writePages (drizzleData) {
   return Promise.all(walkPages(drizzleData.pages, drizzleData))
     .then(() => {

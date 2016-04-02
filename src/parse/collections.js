@@ -1,4 +1,4 @@
-import * as utils from '../utils';
+import { readFiles } from '../utils/parse';
 import Promise from 'bluebird';
 
 /**
@@ -24,6 +24,10 @@ function visiblePatterns (collection, patternKeys) {
 /**
  * Create a `sortedItems` property on the collection, and sort patterns
  * either by default or as defined by the `order` property in metadata.
+ *
+ * @param {Object} collection     The collection object with patterns that need
+ *                                sorting.
+ * @return {Object} collection    `collection` will be mutated, also.
  */
 function sortPatterns (collection) {
   let sortedKeys = collection.order || [];
@@ -38,6 +42,7 @@ function sortPatterns (collection) {
   sortedKeys.forEach(sortedKey => {
     collection.patterns.push(collection.items[sortedKey]);
   });
+  return collection;
 }
 
 /**
@@ -48,7 +53,7 @@ function walkCollections (patternData, options, filePromises = []) {
     if (patternKey === 'collection') {
       // TODO Should this be some sort of option?
       const glob = patternData.collection.path + '/collection.+(yaml|yml|json)';
-      filePromises.push(utils.readFiles(glob, options).then(metadata => {
+      filePromises.push(readFiles(glob, options).then(metadata => {
         if (metadata && metadata.length) {
           // Extend collection data with data from file (first match)
           patternData.collection = Object.assign(patternData.collection,

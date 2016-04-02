@@ -1,30 +1,11 @@
 /* global describe, it */
 var chai = require('chai');
 var expect = chai.expect;
-var config = require('./config');
+var config = require('../config');
 var path = require('path');
-var utils = require('../dist/utils');
+var utils = require('../../dist/utils/parse');
 
-describe ('utils', () => {
-  describe('titleCase', () => {
-    it ('should correctly title-case a string', () => {
-      // @TODO move these into fixtures?
-      var stringsIn = ['a-doctor and a horse',
-        '4 horsemen of the apocalypse!',
-        '52-and a half   with extra spaces',
-        'YOU do not kNow w8t you r talking ab0oooot'
-      ];
-      var stringsExpected = ['A Doctor And A Horse',
-        '4 Horsemen Of The Apocalypse!',
-        '52 And A Half   With Extra Spaces',
-        'You Do Not Know W8t You R Talking Ab0oooot'
-      ];
-      var stringsOut = stringsIn.map(outStr => utils.titleCase(outStr));
-      for (var i = 0; i < stringsOut.length; i++) {
-        expect(stringsOut[i]).to.equal(stringsExpected[i]);
-      }
-    });
-  });
+describe ('utils/parse', () => {
   describe('getFiles', () => {
     it ('should retrieve a file list from a glob', () => {
       var glob = config.fixturePath('helpers/**/*');
@@ -48,18 +29,6 @@ describe ('utils', () => {
       });
     });
   });
-  describe('getDirs', () => {
-    it ('should only return directories', () => {
-      return utils.getDirs(config.fixturePath('helpers/**/*.js'))
-        .then(dirs => {
-          dirs.forEach(dir => {
-            expect(path.extname(dir)).to.be.empty;
-            // And should not contain immediate parent
-            expect(path.basename(dir)).not.to.equal('helpers');
-          });
-        });
-    });
-  });
   describe('isGlob', () => {
     it ('should correctly identify valid glob patterns', () => {
       var goodGlobs = [
@@ -77,21 +46,6 @@ describe ('utils', () => {
       ];
       expect(goodGlobs.every(glob => utils.isGlob(glob))).to.be.true;
       expect(badGlobs.every(glob => utils.isGlob(glob))).to.be.false;
-    });
-  });
-  describe('keyname', () => {
-    it ('should strip leading numbers by default', () => {
-      var result = utils.keyname('foo/01-bar.baz');
-      expect(result).to.contain('01-'); // This is a change from previous
-    });
-    it ('should strip parent directories and extensions', () => {
-      var result = utils.keyname('foo/01-bar.baz');
-      expect(result).not.to.contain('foo');
-      expect(result).not.to.contain('baz');
-    });
-    it ('should accept option to retain leading numbers', () => {
-      var result = utils.keyname('foo/01-bar.baz', { stripNumbers: false });
-      expect(result).to.contain('01-');
     });
   });
   describe('matchParser', () => {
@@ -182,44 +136,6 @@ describe ('utils', () => {
           expect(fileKey).to.contain('foo');
           expect(allFileData[fileKey].contents).to.equal('foo');
         }
-      });
-    });
-  });
-  describe('resourceId', () => {
-    it ('should generate a prefixed resourceId', () => {
-      var pseudoFile = { path: '/foo/bar/baz/ding/dong.txt' };
-      var pseudoRoot = '/foo/bar/baz';
-      var resourceId = utils.resourceId(pseudoFile, pseudoRoot, 'pattern');
-      expect(resourceId).to.equal('pattern.ding.dong');
-    });
-    it ('should no longer remove special characters from IDs', () => {
-      var pseudoFile = { path: '/foo/bar/baz/03-ding/04-dong.txt' };
-      var pseudoRoot = '/foo/bar/baz';
-      var resourceId = utils.resourceId(pseudoFile, pseudoRoot, 'patterns');
-      expect(resourceId).to.equal('patterns.03-ding.04-dong');
-    });
-  });
-  describe('resourceKey', () => {
-    it ('should generate the right key for a file', () => {
-      var resourceKey = utils.resourceKey(
-        { path: '/foo/bar/baz/05-dingle.txt' }
-      );
-      expect(resourceKey).to.equal('05-dingle');
-    });
-  });
-  describe('dirname functions', () => {
-    describe('parentDirname', () => {
-      it ('should derive correct parent dirname', () => {
-        var file = config.fixturePath('helpers/toFraction.js');
-        var parent = utils.parentDirname(file);
-        expect(parent).to.equal('fixtures');
-      });
-    });
-    describe('localDirname', () => {
-      it ('should derive correct immediate dirname', () => {
-        var file = config.fixturePath('helpers/toFraction.js');
-        var parent = utils.localDirname(file);
-        expect(parent).to.equal('helpers');
       });
     });
   });

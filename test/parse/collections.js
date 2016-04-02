@@ -3,7 +3,6 @@ var chai = require('chai');
 var config = require('../config');
 var expect = chai.expect;
 var parsePatterns = require('../../dist/parse/patterns');
-var utils = require('../../dist/utils');
 
 describe ('parse/collections', () => {
   var opts = config.parseOptions(config.fixtureOpts);

@@ -2,13 +2,6 @@ import Handlebars from 'handlebars';
 import parsers from './parse/parsers';
 
 const defaults = {
-  src: {
-    data    : ['src/data/**/*'],
-    layouts : ['src/layouts/**/*'],
-    pages   : ['src/pages/**/*'],
-    partials: ['src/partials/**/*'],
-    patterns: ['src/patterns/**/*.html']
-  },
   beautifier: {
     indent_size: 1,
     indent_char: '	',
@@ -22,7 +15,14 @@ const defaults = {
   handlebars    : Handlebars,
   helpers       : {},
   markdownFields: ['notes'],
-  parsers       : parsers
+  parsers       : parsers,
+  src: {
+    data    : ['src/data/**/*'],
+    layouts : ['src/layouts/**/*'],
+    pages   : ['src/pages/**/*'],
+    partials: ['src/partials/**/*'],
+    patterns: ['src/patterns/**/*.html']
+  }
 };
 
 export default defaults;

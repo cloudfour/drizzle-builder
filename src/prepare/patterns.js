@@ -1,17 +1,20 @@
-import * as utils from '../utils';
 import frontMatter from 'front-matter';
+import { resourceId } from '../utils/object';
+import { readFiles } from '../utils/parse';
+import { commonRoot } from '../utils/path';
 
 /**
- * Register a glob of partials.
+ * Parse patterns and register them as partials.
  * @param {Object} Handlebars instance
  * @param {String || Array} glob
  */
 function preparePatterns (Handlebars, patterns = '') {
-  return utils.readFiles(patterns).then(patternFiles => {
-    const relativeRoot = utils.commonRoot(patternFiles);
+  return readFiles(patterns).then(patternFiles => {
+    const relativeRoot = commonRoot(patternFiles);
     patternFiles.forEach(patternFile => {
-      const partialKey = utils.resourceId(
+      const partialKey = resourceId(
         patternFile, relativeRoot, 'patterns');
+      // Pull out front matter
       const patternContents = frontMatter(patternFile.contents).body;
       Handlebars.registerPartial(partialKey, patternContents);
     });
