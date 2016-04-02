@@ -47,7 +47,6 @@ function prepareHelpers (Handlebars, helperOpts = {}) {
       for (var helper in helpers) {
         Handlebars.registerHelper(helper, helpers[helper]);
       }
-
     });
 }
 
