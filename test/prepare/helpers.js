@@ -8,22 +8,22 @@ var prepareHelpers = require('../../dist/prepare/helpers');
 describe ('prepare/helpers', () => {
   const opts = options(config.fixtureOpts);
   it ('should register pattern helpers', () => {
-    return prepareHelpers(opts.handlebars). then(() => {
+    return prepareHelpers(opts). then(() => {
       expect(opts.handlebars.helpers).to.contain.keys(
         'pattern', 'patternSource');
     });
   });
   it ('should register passed helper', () => {
-    return prepareHelpers(opts.handlebars, {
+    opts.helpers = {
       foo: function () { return 'foo'; }
-    }).then(() => {
+    };
+    return prepareHelpers(opts).then(() => {
       expect(opts.handlebars.helpers).to.contain.keys('foo');
     });
   });
   it ('should register helper files', () => {
-    var helperPath = config.fixturePath('helpers/**/*.js');
-    return prepareHelpers(opts.handlebars, [helperPath]
-    ).then(() => {
+    opts.helpers = config.fixturePath('helpers/**/*.js');
+    return prepareHelpers(opts).then(() => {
       expect(opts.handlebars.helpers).to.contain.keys('toFraction',
         'toJSON',
         'toSlug',
