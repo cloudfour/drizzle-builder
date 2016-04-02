@@ -8,17 +8,17 @@ import { commonRoot } from '../utils/path';
  * @param {Object} Handlebars instance
  * @param {String || Array} glob
  */
-function preparePatterns (Handlebars, patterns = '') {
-  return readFiles(patterns).then(patternFiles => {
+function preparePatterns (options) {
+  return readFiles(options.src.patterns).then(patternFiles => {
     const relativeRoot = commonRoot(patternFiles);
     patternFiles.forEach(patternFile => {
       const partialKey = resourceId(
         patternFile, relativeRoot, 'patterns');
       // Pull out front matter
       const patternContents = frontMatter(patternFile.contents).body;
-      Handlebars.registerPartial(partialKey, patternContents);
+      options.handlebars.registerPartial(partialKey, patternContents);
     });
-    return Handlebars.partials;
+    return options;
   });
 }
 

@@ -1,13 +1,21 @@
-import prepareTemplates from './templates';
+import preparePartials from './partials';
+import prepareHelpers from './helpers';
+import prepareLayouts from './layouts';
+import preparePatterns from './patterns';
 
 /**
- * Parse resource files and prepare templates and handlebars.
+ * Register partials and helpers per opts
  *
- * @param {Object} options
- * @return {Promise}
+ * @param {Object} opts Drizzle options
+ * @return {Promise} resolves to {Object} options
  */
 function prepare (options) {
-  return prepareTemplates(options);
+  return Promise.all([
+    prepareHelpers(options),
+    prepareLayouts(options),
+    preparePartials(options),
+    preparePatterns(options)
+  ]).then(optsArray => options);
 }
 
 export default prepare;

@@ -13,18 +13,18 @@ import registerPatternHelpers from '../helpers/pattern';
  * @param {glob | object} helperOpts
  * @return Promise resolving to the helpers that have been registered
  */
-function getHelpers (helperOpts = {}) {
+function getHelpers (options) {
   const helpers = {};
   return new Promise((resolve, reject) => {
-    if (isGlob(helperOpts)) {
-      getFiles(helperOpts).then(helperPaths => {
+    if (isGlob(options.helpers)) {
+      getFiles(options.helpers).then(helperPaths => {
         helperPaths.forEach(hPath => {
           helpers[keyname(hPath)] = require(hPath);
         });
         resolve(helpers);
       });
     } else {
-      resolve(helperOpts);
+      resolve(options.helpers);
     }
   });
 }
@@ -40,13 +40,14 @@ function getHelpers (helperOpts = {}) {
  * @param {glob | Object} helperOpts @see getHelpers
  * @return {Promise} that resolves to all helpers registered on Handlebars
  */
-function prepareHelpers (Handlebars, helperOpts = {}) {
-  return getHelpers(helperOpts)
+function prepareHelpers (options) {
+  return getHelpers(options)
     .then(helpers => {
-      Handlebars = registerPatternHelpers(Handlebars);
+      options.handlebars = registerPatternHelpers(options.handlebars);
       for (var helper in helpers) {
-        Handlebars.registerHelper(helper, helpers[helper]);
+        options.handlebars.registerHelper(helper, helpers[helper]);
       }
+
     });
 }
 

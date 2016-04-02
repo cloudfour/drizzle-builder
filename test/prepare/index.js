@@ -7,7 +7,7 @@ var prepare = require('../../dist/prepare/');
 
 describe ('prepare/index', () => {
   const opts = options(config.fixtureOpts);
-  it ('should prepare all templates', () => {
+  it ('should resolve to an options object', () => {
     return prepare(opts).then(preparedOpts => {
       expect(preparedOpts).to.be.an('object');
       expect(preparedOpts).to.contain.keys('handlebars');

@@ -7,14 +7,14 @@ import { commonRoot } from '../utils/path';
  * @param {Object} Handlebars instance
  * @param {String || Array} glob
  */
-function preparePartials (Handlebars, partials = '') {
-  return readFiles(partials).then(partialFiles => {
+function preparePartials (options) {
+  return readFiles(options.src.partials).then(partialFiles => {
     const relativeRoot = commonRoot(partialFiles);
     partialFiles.forEach(partialFile => {
       const partialKey = resourceId(partialFile, relativeRoot);
-      Handlebars.registerPartial(partialKey, partialFile.contents);
+      options.handlebars.registerPartial(partialKey, partialFile.contents);
     });
-    return Handlebars.partials;
+    return options;
   });
 }
 

@@ -8,7 +8,7 @@ var preparePatterns = require('../../dist/prepare/patterns');
 describe ('prepare/patterns', () => {
   const opts = options(config.fixtureOpts);
   before (() => {
-    return preparePatterns(opts.handlebars, opts.src.patterns);
+    return preparePatterns(opts);
   });
   it ('should register patterns as partials', () => {
     expect(opts.handlebars.partials).to.contain.keys(

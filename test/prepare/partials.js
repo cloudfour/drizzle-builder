@@ -8,7 +8,7 @@ var preparePartials = require('../../dist/prepare/partials');
 describe ('prepare/partials', () => {
   const opts = options(config.fixtureOpts);
   it ('should register partials from opts', () => {
-    return preparePartials(opts.handlebars, opts.src.partials). then(() => {
+    return preparePartials(opts). then(() => {
       expect(opts.handlebars.partials).to.contain.keys('header', 'menu');
       expect(opts.handlebars.partials).to.contain.keys('nested.thing');
     });

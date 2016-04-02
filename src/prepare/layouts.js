@@ -2,18 +2,18 @@ import handlebarsLayouts from 'handlebars-layouts';
 import { keyname } from '../utils/shared';
 import { readFiles } from '../utils/parse';
 
-function prepareLayouts (Handlebars, layouts = '') {
+function prepareLayouts (options) {
   // Register helper for layouts, from the module
-  Handlebars.registerHelper(handlebarsLayouts(Handlebars));
+  options.handlebars.registerHelper(handlebarsLayouts(options.handlebars));
 
   // Add layouts as partials
-  return readFiles(layouts).then(layoutFiles => {
+  return readFiles(options.src.layouts).then(layoutFiles => {
     layoutFiles.forEach(partialFile => {
       const partialKey = keyname(partialFile.path);
       // TODO: These should be keyed better
-      Handlebars.registerPartial(partialKey, partialFile.contents);
+      options.handlebars.registerPartial(partialKey, partialFile.contents);
     });
-    return Handlebars.partials;
+    return options;
   });
 }
 
