@@ -1,7 +1,7 @@
 import parseData from './data';
 import parseLayouts from './layouts';
 import parsePages from './pages';
-import parsePatterns from './patterns';
+import parsePatterns from './patterns/';
 
 /**
  * Parse files with data from src and build a drizzleData object

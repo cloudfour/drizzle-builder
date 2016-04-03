@@ -1,5 +1,5 @@
-import { readFiles } from '../utils/parse';
-import Promise from 'bluebird';
+import { titleCase } from '../../utils/shared';
+import * as path from 'path';
 
 /**
  * Remove anything in the `collection.hidden` array from
@@ -46,37 +46,30 @@ function sortPatterns (collection) {
 }
 
 /**
- * Walk the pattern tree and extend collections with more metatdata.
+ * Glom together an object representing a single collection, based on
+ * any found `collection` YAML/JSON file and pre-existing stub data,
+ * as well as defaults.
+ *
+ * @param {Array} collectionFiles  Any files returned by readFiles for the
+ *                                 `collection` YAML/JSON glob. May be an
+ *                                 empty Array if no files matched.
+ * @param {patternData}            Pattern data at (and below) the level
+ *                                 corresponding to this collection.
+ * @return undefined               patternData is mutated in place.
  */
-function walkCollections (patternData, options, filePromises = []) {
-  for (const patternKey in patternData) {
-    if (patternKey === 'collection') {
-      // TODO Should this be some sort of option?
-      const glob = patternData.collection.path + '/collection.+(yaml|yml|json)';
-      filePromises.push(readFiles(glob, options).then(metadata => {
-        if (metadata && metadata.length) {
-          // Extend collection data with data from file (first match)
-          patternData.collection = Object.assign(patternData.collection,
-            metadata[0].contents);
-        }
-        sortPatterns(patternData.collection);
-      }));
-    } else {
-      walkCollections(patternData[patternKey], options, filePromises);
-    }
+function parseCollection (collectionFiles, patternData) {
+  // Default naming for collections uses the immediate parent dirname
+  const collectionKey = patternData.collection.path.split(path.sep).pop() ||
+    'patterns';
+  patternData.collection = Object.assign(patternData.collection, {
+    name: titleCase(collectionKey)
+  });
+  // If there is a collection YAML/JSON file...
+  if (collectionFiles && collectionFiles.length) {
+    patternData.collection = Object.assign(patternData.collection,
+      collectionFiles[0].contents);
   }
-  return filePromises;
+  patternData.collection = sortPatterns(patternData.collection);
 }
 
-/**
- * Extend the `collection` objects in `drizzleData.patterns` with (optional)
- * metadata from `collection` files.
- */
-function parseCollections (patternData, options) {
-  return Promise.all(walkCollections(patternData, options))
-    .then(() => {
-      return patternData;
-    });
-}
-
-export default parseCollections;
+export default parseCollection;

@@ -1,9 +1,9 @@
 /* global describe, it */
 var chai = require('chai');
-var config = require('../config');
+var config = require('../../config');
 var expect = chai.expect;
-var parsePatterns = require('../../dist/parse/patterns');
-var utils = require('../../dist/utils');
+var parsePatterns = require('../../../dist/parse/patterns/patterns');
+var utils = require('../../../dist/utils');
 
 describe ('parse/patterns', () => {
   var opts = config.parseOptions(config.fixtureOpts);
@@ -68,12 +68,11 @@ describe ('parse/patterns', () => {
     });
   });
   describe ('parse/collections', () => {
-    it ('should extend pattern collections with file metadata', () => {
+    it ('should create basic stub objects for collections', () => {
       return parsePatterns(opts).then(patternData => {
         var collection = patternData.components.button.collection;
-        expect(collection.name).to
-          .equal('Not a Button');
-        expect(collection.order).to.be.an('Array');
+        expect(collection.name).not.to.be;
+        expect(collection).to.contain.keys('items', 'path');
       });
     });
   });
