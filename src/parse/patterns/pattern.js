@@ -1,5 +1,6 @@
 import { resourceId } from '../../utils/object';
 import { keyname, titleCase } from '../../utils/shared';
+import { parseField } from '../../utils/parse';
 
 /**
  * If any of the pattern's data fields are objects containing a 'parser'
@@ -13,19 +14,8 @@ import { keyname, titleCase } from '../../utils/shared';
 function parseDataFields (pattern, options) {
   pattern.data = pattern.data || {};
   for (const dataKey in pattern.data) {
-    const field = pattern.data[dataKey];
-    if (typeof field === 'object' &&
-      field.hasOwnProperty('parser')) {
-      if (!options.parsers.hasOwnProperty(field.parser)) {
-        // TODO Here's a hook for error handling
-      } else if (!field.hasOwnProperty('contents')) {
-        // TODO again
-      } else {
-        // Replace the data field with the contents run through the parser.
-        pattern.data[dataKey] = options.parsers[field.parser]
-          .parseFn(field.contents).contents;
-      }
-    }
+    const parsedField = parseField(dataKey, pattern.data[dataKey], options);
+    pattern.data[dataKey] = parsedField.contents;
   }
   return pattern;
 }

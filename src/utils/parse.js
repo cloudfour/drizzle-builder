@@ -59,6 +59,38 @@ function matchParser (filepath, parsers = {}) {
 }
 
 /**
+ * Evaluate a single field of data and see if it should be run through a parser.
+ * @param {String} fieldKey
+ * @param {Object|String} fieldData
+ * @param {Object} options
+ * @return {Object} parsed data; contains `contents` property.
+ * @see parse/parsers
+ */
+function parseField (fieldKey, fieldData, options) {
+  let parseFn = contents => ({ contents: contents });
+  let contents = fieldData;
+  // Check to see if options.fieldParsers contains this key
+  if (options.fieldParsers.hasOwnProperty(fieldKey)) {
+    const parserKey = options.fieldParsers[fieldKey];
+    parseFn = options.parsers[parserKey].parseFn;
+    contents = (typeof fieldData === 'string') ? fieldData : fieldData.contents;
+  }
+  // Check to see if there is a manually-added parser in the data
+  if (typeof fieldData === 'object' && fieldData.hasOwnProperty('parser')) {
+    if (options.parsers.hasOwnProperty(fieldData.parser)) {
+      parseFn = options.parsers[fieldData.parser].parseFn;
+    }
+    else { // TODO Handle error
+    }
+    contents = fieldData.contents;
+    if (!fieldData.hasOwnProperty('contents')) {
+      // TODO again
+    }
+  }
+  return parseFn(contents);
+}
+
+/**
  * Given an object representing a page or pattern or other file:
  * If that object has a `data` property, use that to
  * create the right kind of context for the object. Process relevant fields
@@ -144,6 +176,7 @@ function readFilesKeyed (glob, options = {}) {
 export { getFiles,
          isGlob,
          matchParser,
+         parseField,
          parseLocalData,
          readFiles,
          readFilesKeyed

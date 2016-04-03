@@ -65,6 +65,28 @@ describe ('utils/parse', () => {
       expect(parser('ding')).to.equal('foo');
     });
   });
+  describe('parseField', () => {
+    var opts = config.parseOptions(config.fixtureOpts);
+    it ('should run fields through fieldParsers from options', () => {
+      // `notes` defaults to markdown parsing (see default opts)
+      var parsedField = utils.parseField(
+        'notes', 'these are some notes', opts);
+      expect(parsedField).to.be.an('object');
+      expect(parsedField).to.contain.keys('contents', 'data');
+      expect(parsedField.contents).to.be.a('string').and.to.contain('<p>');
+    });
+    it ('should heed `parser` property in passed object', () => {
+      var fieldData = {
+        parser: 'markdown',
+        contents: 'A nobler thing tis'
+      };
+      var parsedField = utils.parseField(
+        'ding', fieldData, opts);
+      expect(parsedField).to.be.an('object');
+      expect(parsedField).to.contain.keys('contents', 'data');
+      expect(parsedField.contents).to.be.a('string').and.to.contain('<p>');
+    });
+  });
   describe('readFiles', () => {
     var parsers = {
       default: {
