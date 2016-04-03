@@ -29,6 +29,17 @@ describe ('parse/patterns', () => {
         .to.equal('Something Else');
     });
   });
+  describe ('data field parsing', () => {
+    it ('should run data fields through parsers', () => {
+      return parsePatterns(opts).then(patternData => {
+        var ideal = patternData.fingers.collection.items.ideal;
+        expect(ideal).to.contain.keys('data');
+        expect(ideal.data).to.contain.keys('ancillary');
+        expect(ideal.data.ancillary).to.be.a('string');
+        expect(ideal.data.ancillary).to.contain('<ul>');
+      });
+    });
+  });
   describe ('pattern object structure', () => {
     it ('should define the appropriate properties for each pattern', () => {
       return parsePatterns(opts).then(patternData => {
