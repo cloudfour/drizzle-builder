@@ -9,7 +9,7 @@ import { commonRoot } from '../utils/path';
  * @param {String} or {Array} glob
  */
 function preparePatterns (options) {
-  return readFiles(options.src.patterns).then(patternFiles => {
+  return readFiles(options.src.patterns.glob).then(patternFiles => {
     const relativeRoot = commonRoot(patternFiles);
     patternFiles.forEach(patternFile => {
       const partialKey = resourceId(

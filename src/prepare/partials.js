@@ -8,7 +8,7 @@ import { commonRoot } from '../utils/path';
  * @param {String} or {Array} glob
  */
 function preparePartials (options) {
-  return readFiles(options.src.partials).then(partialFiles => {
+  return readFiles(options.src.partials.glob).then(partialFiles => {
     const relativeRoot = commonRoot(partialFiles);
     partialFiles.forEach(partialFile => {
       const partialKey = resourceId(partialFile, relativeRoot);

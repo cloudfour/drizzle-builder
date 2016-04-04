@@ -11,7 +11,7 @@ import { commonRoot, relativePathArray } from '../../utils/path';
  */
 function parsePatterns (options) {
   const patternData = {};
-  return readFiles(options.src.patterns, options).then(patternFileData => {
+  return readFiles(options.src.patterns.glob, options).then(patternFileData => {
     const relativeRoot = commonRoot(patternFileData);
 
     patternFileData.forEach(patternFile => {

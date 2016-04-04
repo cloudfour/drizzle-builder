@@ -7,7 +7,7 @@ function prepareLayouts (options) {
   options.handlebars.registerHelper(handlebarsLayouts(options.handlebars));
 
   // Add layouts as partials
-  return readFiles(options.src.layouts).then(layoutFiles => {
+  return readFiles(options.src.layouts.glob).then(layoutFiles => {
     layoutFiles.forEach(partialFile => {
       const partialKey = keyname(partialFile.path);
       // TODO: These should be keyed better

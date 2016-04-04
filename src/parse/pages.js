@@ -10,7 +10,7 @@ import { deepObj, resourceKey } from '../utils/object';
 function parsePages (options) {
   const pageData = {};
 
-  return readFiles(options.src.pages, options).then(fileData => {
+  return readFiles(options.src.pages.glob, options).then(fileData => {
     const relativeRoot = commonRoot(fileData);
     fileData.forEach(pageFile => {
       const keys       = relativePathArray(
