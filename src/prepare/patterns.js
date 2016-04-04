@@ -6,7 +6,7 @@ import { commonRoot } from '../utils/path';
 /**
  * Parse patterns and register them as partials.
  * @param {Object} Handlebars instance
- * @param {String || Array} glob
+ * @param {String} or {Array} glob
  */
 function preparePatterns (options) {
   return readFiles(options.src.patterns).then(patternFiles => {
