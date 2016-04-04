@@ -78,7 +78,8 @@ var config = {
       patterns: fixturePath('patterns/**/*.html')
     },
     dest: {
-      base: './test/dist'
+      pages: './test/dist',
+      patterns: './test/dist/patterns'
     },
     helpers: fixturePath('helpers/**/*.js'),
     markdownFields: ['notes'],

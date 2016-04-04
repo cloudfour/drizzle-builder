@@ -16,7 +16,6 @@ function writePatternCollection (patterns, drizzleData, entryKeys) {
   const outputPath = path.join(entryKeys.join(path.sep),
     `${collectionName}.html`);
   const fullPath = path.normalize(path.join(
-    drizzleData.options.dest.base,
     drizzleData.options.dest.patterns,
     outputPath));
   patterns.collection.outputPath = fullPath;

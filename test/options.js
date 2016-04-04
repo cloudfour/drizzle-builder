@@ -42,18 +42,17 @@ describe ('options', () => {
   describe('generating destination paths', () => {
     var opts = mergeOptions();
     it('should provide default destination entries', () => {
-      expect(opts.dest).to.have.keys('base', 'pages', 'patterns');
-      expect(opts.dest.patterns).to.equal('patterns/');
+      expect(opts.dest).to.have.keys('pages', 'patterns');
+      expect(opts.dest.patterns).to.equal('./dist/patterns');
     });
     it('should allow override of distPaths', () => {
       var opts = mergeOptions({ dest: {
-        base: 'foo/',
         patterns: 'bar/',
         something: 'baz/'
       }});
       expect(opts.dest).to.contain.keys(
-        'base', 'pages', 'patterns', 'something');
-      expect(opts.dest.base).to.equal('foo/');
+        'pages', 'patterns', 'something');
+      expect(opts.dest.something).to.equal('baz/');
       expect(opts.dest.patterns).to.equal('bar/');
     });
   });
