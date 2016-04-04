@@ -9,9 +9,9 @@ describe ('options', () => {
     'beautifier',
     'dest',
     'destPaths',
+    'fieldParsers',
     'handlebars',
     'helpers',
-    'markdownFields',
     'parsers',
     'src'
   ];

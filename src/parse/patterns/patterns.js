@@ -24,7 +24,7 @@ function parsePatterns (options) {
         path: path.dirname(patternFile.path)
       };
       parentObj.collection.items[patternKey] = parsePattern(
-        patternFile, patternData, relativeRoot);
+        patternFile, patternData, relativeRoot, options);
     });
     return patternData;
   });
