@@ -5,7 +5,7 @@ import { commonRoot } from '../utils/path';
 /**
  * Register a glob of partials.
  * @param {Object} Handlebars instance
- * @param {String || Array} glob
+ * @param {String} or {Array} glob
  */
 function preparePartials (options) {
   return readFiles(options.src.partials).then(partialFiles => {

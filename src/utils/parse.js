@@ -21,7 +21,7 @@ function getFiles (glob, globOpts = {}) {
  * an Array of strings counts. Just because this returns true, however,
  * doesn't mean it is a glob that makes sense, just that it looks like one.
  *
- * @param {String || Array} candidate
+ * @param {String} or {Array} candidate
  * @return Boolean
  */
 function isGlob (candidate) {

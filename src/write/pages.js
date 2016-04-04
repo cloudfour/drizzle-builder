@@ -15,8 +15,7 @@ function writePage (page, drizzleData, entryKeys) {
   const fileKey = entryKeys.pop();
   const outputPath = path.join(entryKeys.join(path.sep), fileKey + '.html');
   const fullPath = path.normalize(path.join(
-    drizzleData.options.dest,
-    drizzleData.options.destPaths.pages,
+    drizzleData.options.dest.pages,
     outputPath));
   page.outputPath = fullPath;
   return write(fullPath, page.contents);

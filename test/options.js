@@ -1,6 +1,6 @@
 /* global describe, it */
 var chai = require('chai');
-var config = require('./config');
+//var config = require('./config');
 var expect = chai.expect;
 var mergeOptions = require('../dist/options');
 
@@ -8,10 +8,10 @@ describe ('options', () => {
   var keys = [
     'beautifier',
     'dest',
-    'destPaths',
     'fieldParsers',
     'handlebars',
     'helpers',
+    'layouts',
     'parsers',
     'src'
   ];
@@ -40,22 +40,38 @@ describe ('options', () => {
         'data', 'pages', 'layouts', 'partials', 'patterns');
     });
   });
-  describe('generating dist paths', () => {
+  describe('generating destination paths', () => {
     var opts = mergeOptions();
-    it('should provide default distPaths', () => {
-      expect(opts.destPaths).to.have.keys('pages', 'patterns');
-      expect(opts.destPaths.patterns).to.equal('patterns/');
+    it('should provide default destination entries', () => {
+      expect(opts.dest).to.have.keys('pages', 'patterns');
+      expect(opts.dest.patterns).to.equal('./dist/patterns');
     });
     it('should allow override of distPaths', () => {
-      var opts = mergeOptions({ destPaths: {
-        pages: 'foo/',
+      var opts = mergeOptions({ dest: {
         patterns: 'bar/',
         something: 'baz/'
       }});
-      expect(opts.destPaths).to.contain.keys(
+      expect(opts.dest).to.contain.keys(
         'pages', 'patterns', 'something');
-      expect(opts.destPaths.pages).to.equal('foo/');
-      expect(opts.destPaths.patterns).to.equal('bar/');
+      expect(opts.dest.something).to.equal('baz/');
+      expect(opts.dest.patterns).to.equal('bar/');
+    });
+  });
+  describe('defining default layouts', () => {
+    it ('should set up default layouts for page and collection output', () => {
+      var opts = mergeOptions();
+      expect(opts.layouts).to.contain.keys('page', 'collection');
+      expect(opts.layouts.collection).to.equal('collection');
+    });
+    it ('should allow the overriding of default layouts', () => {
+      var opts = mergeOptions({
+        layouts: {
+          page: 'page',
+          entity: 'random'
+        }
+      });
+      expect(opts.layouts).to.contain.keys('page', 'collection', 'entity');
+      expect(opts.layouts.page).to.equal('page');
     });
   });
   describe('parsing markdownFields', () => {

@@ -8,7 +8,7 @@ var rimraf = Promise.promisify(require('rimraf'));
 
 before (() => {
   // Delete all output files
-  return rimraf(config.fixtureOpts.dest);
+  return rimraf('./test/dist');
 });
 describe('drizzle', () => {
   const options = config.fixtureOpts;
