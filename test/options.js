@@ -11,6 +11,7 @@ describe ('options', () => {
     'fieldParsers',
     'handlebars',
     'helpers',
+    'layouts',
     'parsers',
     'src'
   ];
@@ -54,6 +55,23 @@ describe ('options', () => {
         'pages', 'patterns', 'something');
       expect(opts.dest.something).to.equal('baz/');
       expect(opts.dest.patterns).to.equal('bar/');
+    });
+  });
+  describe('defining default layouts', () => {
+    it ('should set up default layouts for page and collection output', () => {
+      var opts = mergeOptions();
+      expect(opts.layouts).to.contain.keys('page', 'collection');
+      expect(opts.layouts.collection).to.equal('collection');
+    });
+    it ('should allow the overriding of default layouts', () => {
+      var opts = mergeOptions({
+        layouts: {
+          page: 'page',
+          entity: 'random'
+        }
+      });
+      expect(opts.layouts).to.contain.keys('page', 'collection', 'entity');
+      expect(opts.layouts.page).to.equal('page');
     });
   });
   describe('parsing markdownFields', () => {

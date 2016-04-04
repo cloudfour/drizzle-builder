@@ -13,8 +13,9 @@ import { applyTemplate } from '../utils/render';
  *                               Used to derive the collection's "name"
  */
 function renderCollection (patterns, drizzleData, collectionKey) {
+  const layoutKey = drizzleData.options.layouts.collection;
   patterns.collection.contents = applyTemplate(
-    drizzleData.layouts.patternCollection.contents, // TODO obviously fragile
+    drizzleData.layouts[layoutKey].contents, // TODO error-checking
     collectionContext(patterns.collection, drizzleData),
     drizzleData.options);
   return patterns;

@@ -8,7 +8,7 @@ describe('parse/layouts', () => {
   var opts = config.parseOptions(config.fixtureOpts);
   it ('should parse and organize layouts', () => {
     return parseLayouts(opts).then(layoutsData => {
-      expect(layoutsData).to.contain.keys('patternCollection', 'default');
+      expect(layoutsData).to.contain.keys('collection', 'default', 'page');
     });
   });
 });

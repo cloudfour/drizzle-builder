@@ -14,6 +14,10 @@ const defaults = {
   fieldParsers  : { },
   handlebars    : Handlebars,
   helpers       : {},
+  layouts: {
+    page      : 'default',
+    collection: 'collection'
+  },
   parsers       : parsers,
   src: {
     data    : ['src/data/**/*'],
