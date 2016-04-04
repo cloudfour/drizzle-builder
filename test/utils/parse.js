@@ -66,7 +66,9 @@ describe ('utils/parse', () => {
     });
   });
   describe('parseField', () => {
-    var opts = config.parseOptions(config.fixtureOpts);
+    var opts = config.parseOptions({ fieldParsers: {
+      'notes': 'markdown'
+    }});
     it ('should run fields through fieldParsers from options', () => {
       // `notes` defaults to markdown parsing (see default opts)
       var parsedField = utils.parseField(

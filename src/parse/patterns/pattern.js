@@ -37,15 +37,13 @@ function patternName (patternFile) {
  * with a few things.
  */
 function parsePattern (patternFile, patternData, relativeRoot, options) {
-  let parsedPattern = Object.assign(
+  return parseDataFields(Object.assign(
     patternFile,
     {
       id: resourceId(patternFile, relativeRoot, 'patterns'),
       name: patternName(patternFile)
     }
-  );
-  parsedPattern = parseDataFields(parsedPattern, options);
-  return parsedPattern;
+  ), options);
 }
 
 export default parsePattern;

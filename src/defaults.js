@@ -12,9 +12,7 @@ const defaults = {
     pages   : '',
     patterns: 'patterns/'
   },
-  fieldParsers  : {
-    'notes'     : 'markdown'
-  },
+  fieldParsers  : { },
   handlebars    : Handlebars,
   helpers       : {},
   parsers       : parsers,
