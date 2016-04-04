@@ -25,11 +25,11 @@ drizzle(options).then(drizzleData => {
 * `options {Object}`
 * return: `Promise` resolving to `{Object}` of build data
 
-### options
+## options
 
 All `options` are optional.
 
-#### `beautifier`
+### `beautifier`
 
 `{Object}` of options to pass to `js-beautify`, which is used to pretty-fy source code.
 
@@ -42,7 +42,7 @@ beautifier: {
 }
 ```
 
-#### `dest`
+### `dest`
 
 `{Object}` of `{String}` paths for outputting drizzle `pages` and pattern `collection` HTML files.
 
@@ -57,13 +57,13 @@ dest: {
 }
 ```
 
-#### `handlebars`
+### `handlebars`
 
 You may provide a `handlebars` reference to use, or, by default, `drizzle-builder` will instantiate one for itself. Providing your own is useful if you have external things registered on the instance (partials, helpers, etc.) that you want `drizzle-builder` to be able to use.
 
 You can also pass resources graunularly using the `helpers`, `src.layouts` and `src.partials` options.
 
-#### `helpers`
+### `helpers`
 
 An `{Object}` or a `glob` of Handlebars helpers.
 
@@ -78,7 +78,7 @@ helpers       : {}
 
 *Note*: `drizzle-builder` will register a `pattern` helper on the `handlebars` instance for its own use. It's possible to override the `pattern` helper by passing a different function in the `helpers` option object or glob. I don't recommend it, though.
 
-#### `layouts`
+### `layouts`
 
 An `{Object}` associating different drizzle output page types with their _default_ layout (template). Currently relevant for `page` and `collection`. String values correspond to the filename (minus extension) of the layout under the `src.layouts` directory/glob.
 
@@ -90,15 +90,17 @@ layouts: {
 }
 ```
 
-#### `parsers`
+### `parsers`
 
-An `{Object}` of `parser` objects...
+An `{Object}` of `parser` objects for parsing different kinds of source files. Any passed here will extend the default [`parsers`](src/parse/parsers.js).
+
+@TODO: More docs here
 
 ```
 parsers       : parsers
 ```
 
-#### `src`
+### `src`
 
 `{Object}` source globs for different types of drizzle resources.
 
@@ -118,11 +120,11 @@ src: {
 }
 ```
 
-### drizzleData
+## drizzleData
 
 `drizzle()` returns a `Promise` resolving to an `Object` (`drizzleData`) representing the data about the build.
 
-#### Properties
+### Properties
 
 * `options`: The `options` the build was ultimately created with.
 * `data`: Parsed data from data source files.
