@@ -7,12 +7,6 @@ var prepare = require('../../dist/prepare/');
 
 describe ('prepare/index', () => {
   const opts = options(config.fixtureOpts);
-  // it ('should throw', () => {
-  //   const badOpts = options({ src: { layouts: '!' }});
-  //   return prepare(badOpts).then(badResult => {
-  //     console.log('it did not throw');
-  //   });
-  // });
   it ('should resolve to an options object', () => {
     return prepare(opts).then(preparedOpts => {
       expect(preparedOpts).to.be.an('object');

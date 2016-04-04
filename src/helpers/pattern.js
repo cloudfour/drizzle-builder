@@ -1,3 +1,4 @@
+import { handleError, ERROR_LEVELS } from '../utils/error';
 import { deepPattern } from '../utils/object';
 import patternContext from '../render/context/pattern';
 
@@ -22,6 +23,10 @@ function renderPatternPartial (patternId, drizzleData, Handlebars) {
  * Register some drizzle-specific pattern helpers
  */
 function registerPatternHelpers (Handlebars) {
+  if (Handlebars.partials.pattern) {
+    const msg = 'namespace collision on `Handlbars.partials.pattern`';
+    handleError(msg, ERROR_LEVELS.WARN);
+  }
   /**
    * The `pattern` helper allows the embedding of patterns anywhere
    * and they can get their correct local context.
