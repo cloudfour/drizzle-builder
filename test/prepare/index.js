@@ -7,6 +7,12 @@ var prepare = require('../../dist/prepare/');
 
 describe ('prepare/index', () => {
   const opts = options(config.fixtureOpts);
+  // it ('should throw', () => {
+  //   const badOpts = options({ src: { layouts: '!' }});
+  //   return prepare(badOpts).then(badResult => {
+  //     console.log('it did not throw');
+  //   });
+  // });
   it ('should resolve to an options object', () => {
     return prepare(opts).then(preparedOpts => {
       expect(preparedOpts).to.be.an('object');
@@ -20,6 +26,13 @@ describe ('prepare/index', () => {
       );
       expect(preparedOpts.handlebars.helpers).to.contain.keys(
         'block', 'embed', 'content'
+      );
+    });
+  });
+  it ('should register layouts as partials', () => {
+    return prepare(opts).then(preparedOpts => {
+      expect(preparedOpts.handlebars.partials).to.contain.keys(
+        'default', 'page', 'collection'
       );
     });
   });

@@ -1,10 +1,12 @@
-import preparePartials from './partials';
 import prepareHelpers from './helpers';
 import prepareLayouts from './layouts';
+import preparePartials from './partials';
 import preparePatterns from './patterns';
 
 /**
- * Register partials and helpers per opts
+ * Set up templating (Handlebars).
+ * Register helpers, layouts, partials, patterns.
+ * Layouts are registered as partials.
  *
  * @param {Object} opts Drizzle options
  * @return {Promise} resolves to {Object} options
@@ -15,7 +17,7 @@ function prepare (options) {
     prepareLayouts(options),
     preparePartials(options),
     preparePatterns(options)
-  ]).then(optsArray => options);
+  ]).then(() => options);
 }
 
 export default prepare;
