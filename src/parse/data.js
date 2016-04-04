@@ -6,7 +6,7 @@ import { readFilesKeyed } from '../utils/parse';
  * @return {Promise} resolving to parsed file data
  */
 function parseData (options) {
-  return readFilesKeyed(options.src.data, options);
+  return readFilesKeyed(options.src.data.glob, options);
 }
 
 export default parseData;

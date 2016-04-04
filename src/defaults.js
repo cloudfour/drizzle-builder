@@ -20,11 +20,26 @@ const defaults = {
   },
   parsers       : parsers,
   src: {
-    data    : ['src/data/**/*'],
-    layouts : ['src/layouts/**/*'],
-    pages   : ['src/pages/**/*'],
-    partials: ['src/partials/**/*'],
-    patterns: ['src/patterns/**/*.html']
+    data    : {
+      basedir: 'data',
+      glob: 'src/data/**/*'
+    },
+    layouts : {
+      basedir: 'layouts',
+      glob: 'src/layouts/**/*'
+    },
+    pages   : {
+      basedir: 'pages',
+      glob: 'src/pages/**/*'
+    },
+    partials: {
+      basedir: 'partials',
+      glob: 'src/partials/**/*'
+    },
+    patterns: {
+      basedir: 'patterns',
+      glob: 'src/patterns/**/*.html'
+    }
   }
 };
 
