@@ -36,11 +36,11 @@ function patternName (patternFile) {
  * Generate a pattern entry (object) by extending the patternFile
  * with a few things.
  */
-function parsePattern (patternFile, patternData, relativeRoot, options) {
+function parsePattern (patternFile, patternData, options) {
   return parseDataFields(Object.assign(
     patternFile,
     {
-      id: resourceId(patternFile, relativeRoot, 'patterns'),
+      id: resourceId(patternFile, options.src.patterns.basedir, 'patterns'),
       name: patternName(patternFile)
     }
   ), options);

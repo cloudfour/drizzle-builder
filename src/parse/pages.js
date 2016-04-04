@@ -11,10 +11,9 @@ function parsePages (options) {
   const pageData = {};
 
   return readFiles(options.src.pages.glob, options).then(fileData => {
-    const relativeRoot = commonRoot(fileData);
     fileData.forEach(pageFile => {
       const keys       = relativePathArray(
-        pageFile.path, relativeRoot);
+        pageFile.path, options.src.pages.basedir);
       deepObj(keys, pageData)[resourceKey(pageFile)] = parseLocalData(
         pageFile, options);
     });

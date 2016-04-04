@@ -73,23 +73,23 @@ var config = {
     src: {
       data    : {
         glob: fixturePath('data/**/*'),
-        basedir: 'data'
+        basedir: fixturePath('data')
       },
       layouts : {
         glob: fixturePath('layouts/**/*'),
-        basedir: 'layouts'
+        basedir: fixturePath('layouts')
       },
       pages   : {
         glob: fixturePath('pages/**/*'),
-        basedir: 'pages'
+        basedir: fixturePath('pages')
       },
       partials: {
         glob: fixturePath('partials/**/*.hbs'),
-        basedir: 'partials'
+        basedir: fixturePath('partials')
       },
       patterns: {
         glob: fixturePath('patterns/**/*.html'),
-        basedir: 'patterns'
+        basedir: fixturePath('patterns')
       }
     },
     dest: {

@@ -4,36 +4,27 @@ var expect = chai.expect;
 var utils = require('../../dist/utils/path');
 
 describe ('utils/path', () => {
-  describe('commonRoot', () => {
-    it ('should derive a common root path for an Array of filepaths', () => {
-      var paths = [
-        '/one/two/foo/bar/baz/oof.txt',
-        '/one/two/foo/bong/diff.txt',
-        '/one/two/bar/ding/dang.txt',
-        '/one/two/diff.txt'
-      ];
-      var common = utils.commonRoot(paths);
-      expect(common).to.be.a('string').and.to.contain('/one/two');
+  describe('relativePathArray', () => {
+    it ('should return an array starting at the common root', () => {
+      var relative = utils.relativePathArray(
+        'foo/bar/baz/ding/dong.txt',
+        'foo/bar'
+      );
+      expect(relative).to.be.an('array').and.to.contain('baz', 'ding');
     });
-    it ('should derive a common root path for an Array of file objects', () => {
-      var paths = [
-        { path: '/one/two/foo/bar/baz/oof.txt' },
-        { path: '/one/two/foo/bong/diff.txt' },
-        { path: '/one/two/bar/ding/dang.txt' },
-        { path: '/one/two/diff.txt' }
-      ];
-      var common = utils.commonRoot(paths);
-      expect(common).to.be.a('string').and.to.contain('/one/two');
+    it ('should return an empty array if it cannot find common root', () => {
+      var relative = utils.relativePathArray(
+        'foo/bar/baz/ding/dong.txt',
+        'something/else'
+      );
+      expect(relative).to.be.an('array').and.to.be.empty;
     });
-    it ('should return empty string if no common ancestor', () => {
-      var paths = [
-        { path: '/zing/one/alpha/foo/bar/baz/oof.txt' },
-        { path: '/almighty/one/two/foo/bong/diff.txt' },
-        { path: '/ancillary/two/bar/ding/dang.txt' },
-        { path: '/forensic/two/diff.txt' }
-      ];
-      var common = utils.commonRoot(paths);
-      expect(common).to.be.a('string').and.to.be.empty;
+    it ('should work with an absolute path', () => {
+      var relative = utils.relativePathArray(
+        '/foo/bar/baz/ding/dong.txt',
+        '/foo/bar'
+      );
+      expect(relative).to.be.an('array').and.to.contain('baz', 'ding');
     });
   });
 });

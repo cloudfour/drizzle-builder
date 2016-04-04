@@ -21,23 +21,23 @@ const defaults = {
   parsers       : parsers,
   src: {
     data    : {
-      basedir: 'data',
+      basedir: 'src/data',
       glob: 'src/data/**/*'
     },
     layouts : {
-      basedir: 'layouts',
+      basedir: 'src/layouts',
       glob: 'src/layouts/**/*'
     },
     pages   : {
-      basedir: 'pages',
+      basedir: 'src/pages',
       glob: 'src/pages/**/*'
     },
     partials: {
-      basedir: 'partials',
+      basedir: 'src/partials',
       glob: 'src/partials/**/*'
     },
     patterns: {
-      basedir: 'patterns',
+      basedir: 'src/patterns',
       glob: 'src/patterns/**/*.html'
     }
   }

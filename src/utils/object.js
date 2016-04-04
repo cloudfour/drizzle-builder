@@ -1,4 +1,3 @@
-import path from 'path';
 import { keyname, relativePathArray } from './shared';
 
 /**
@@ -57,20 +56,20 @@ function deepCollection (patternId, obj) {
 
 /**
  * Generate a resourceId for a file. Use file.path and base the
- * ID elements on the path elements between relativeRoot and file. Path
+ * ID elements on the path elements between relativeTo and file. Path
  * elements will have special characters removed.
  * @example resourceId(
  *  '/foo/bar/baz/ole/01-fun-times.hbs', '/foo/bar/baz/', 'patterns'
  * ); // -> patterns.ole.fun-times
  * @param {Object}    Object representing file. Needs to have a `path` property
- * @param {String} || {Array} relativeRoot path to relative root or path
+ * @param {String} || {Array} relativeTo path to relative root or path
  *                            elements to same in Array
  * @param {String} resourceCollection  Will be prepended as first element in ID
  *                                     if provided.
  * @return {String} ID for this resource
  */
-function resourceId (resourceFile, relativeRoot, resourceCollection = '') {
-  const pathKeys = relativePathArray(resourceFile.path, relativeRoot)
+function resourceId (resourceFile, relativeTo, resourceCollection = '') {
+  const pathKeys = relativePathArray(resourceFile.path, relativeTo)
     .map(keyname);
   const resourceBits = [];
   if (resourceCollection && resourceCollection.length) {

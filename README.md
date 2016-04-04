@@ -105,7 +105,7 @@ parsers       : parsers
 `{Object}` source globs and "basedirs" for different types of drizzle resources.
 
 The `glob` property is probably more straightforward: that's a glob to match files of that type of resource.
-The `basedir` property is directory level to start keying the associated object from. It should be a `{string}` that matches one of the directories in the `glob` expression.
+The `basedir` property is directory level to start keying the associated object from—sort of like a "relative path" to use as a root for keying the resources. It should be a `{string}` that matches one of the directories in the `glob` expression.
 
 The default value of the `src.patterns` property, e.g.:
 ```

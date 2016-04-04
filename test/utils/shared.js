@@ -34,7 +34,4 @@ describe ('utils/shared', () => {
       }
     });
   });
-  describe('relativePathArray', () => {
-    it ('should be refactored and tested');
-  });
 });
