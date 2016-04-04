@@ -77,7 +77,9 @@ var config = {
       partials: fixturePath('partials/**/*.hbs'),
       patterns: fixturePath('patterns/**/*.html')
     },
-    dest: './test/dist',
+    dest: {
+      base: './test/dist'
+    },
     helpers: fixturePath('helpers/**/*.js'),
     markdownFields: ['notes'],
     parsers: parsers

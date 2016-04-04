@@ -1,6 +1,6 @@
 /* global describe, it */
 var chai = require('chai');
-var config = require('./config');
+//var config = require('./config');
 var expect = chai.expect;
 var mergeOptions = require('../dist/options');
 
@@ -8,7 +8,6 @@ describe ('options', () => {
   var keys = [
     'beautifier',
     'dest',
-    'destPaths',
     'fieldParsers',
     'handlebars',
     'helpers',
@@ -40,22 +39,22 @@ describe ('options', () => {
         'data', 'pages', 'layouts', 'partials', 'patterns');
     });
   });
-  describe('generating dist paths', () => {
+  describe('generating destination paths', () => {
     var opts = mergeOptions();
-    it('should provide default distPaths', () => {
-      expect(opts.destPaths).to.have.keys('pages', 'patterns');
-      expect(opts.destPaths.patterns).to.equal('patterns/');
+    it('should provide default destination entries', () => {
+      expect(opts.dest).to.have.keys('base', 'pages', 'patterns');
+      expect(opts.dest.patterns).to.equal('patterns/');
     });
     it('should allow override of distPaths', () => {
-      var opts = mergeOptions({ destPaths: {
-        pages: 'foo/',
+      var opts = mergeOptions({ dest: {
+        base: 'foo/',
         patterns: 'bar/',
         something: 'baz/'
       }});
-      expect(opts.destPaths).to.contain.keys(
-        'pages', 'patterns', 'something');
-      expect(opts.destPaths.pages).to.equal('foo/');
-      expect(opts.destPaths.patterns).to.equal('bar/');
+      expect(opts.dest).to.contain.keys(
+        'base', 'pages', 'patterns', 'something');
+      expect(opts.dest.base).to.equal('foo/');
+      expect(opts.dest.patterns).to.equal('bar/');
     });
   });
   describe('parsing markdownFields', () => {

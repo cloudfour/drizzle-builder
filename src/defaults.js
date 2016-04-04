@@ -7,10 +7,9 @@ const defaults = {
     indent_char: '	',
     indent_with_tabs: true
   },
-  dest          : 'dist',
-  destPaths     : {
-    pages   : '',
-    patterns: 'patterns/'
+  dest          : {
+    pages   : './dist/pages',
+    patterns: './dist/patterns'
   },
   fieldParsers  : { },
   handlebars    : Handlebars,
