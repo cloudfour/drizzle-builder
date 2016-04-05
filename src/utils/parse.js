@@ -184,39 +184,11 @@ function readFileTree (src, options) {
   });
 }
 
-/**
- * Read the files from a glob, but then instead of resolving the
- * Promise with an Array of objects (@see readFiles), resolve with a
- * single object; each file's contents is keyed by its filename run
- * through optional `keyFn(filePath, options)`` (default: keyname).
- * Will pass other options on to readFiles and keyFn
- *
- * @param {glob}
- * @param {Object} options (all optional):
- *  - keyFn
- *  - contentFn
- *  - stripNumbers
- * @return {Promise} resolving to {Object} of keyed file contents
- */
-function readFilesKeyed (glob, options = {}) {
-  const {
-    keyFn = (path, options) => keyname(path, options)
-  } = options;
-  return readFiles(glob, options).then(allFileData => {
-    const keyedFileData = new Object();
-    for (var aFile of allFileData) {
-      keyedFileData[keyFn(aFile.path, options)] = aFile;
-    }
-    return keyedFileData;
-  });
-}
-
 export { getFiles,
          isGlob,
          matchParser,
          parseField,
          parseLocalData,
          readFiles,
-         readFileTree,
-         readFilesKeyed
+         readFileTree
        };

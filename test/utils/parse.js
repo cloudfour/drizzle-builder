@@ -147,45 +147,4 @@ describe ('utils/parse', () => {
       });
     });
   });
-  describe('readFilesKeyed', () => {
-    var parsers = {
-      default: {
-        parseFn: (contents, filepath) => 'foo'
-      }
-    };
-    it ('should be able to key files by keyname', () => {
-      var glob = config.fixturePath('helpers/*.js');
-      return utils.readFilesKeyed(glob).then(allFileData => {
-        expect(allFileData).to.be.an('object');
-        expect(allFileData).to.contain.keys('toFraction', 'toJSON', 'toSlug');
-      });
-    });
-    it ('should accept an option to preserve leading numbers', () => {
-      var glob = config.fixturePath('data/*.yaml');
-      return utils.readFilesKeyed(glob, { stripNumbers: false })
-        .then(allFileData => {
-          expect(allFileData).to.be.an('object');
-        });
-    });
-    it ('should accept a function to derive keys', () => {
-      var glob = config.fixturePath('data/*.yaml');
-      return utils.readFilesKeyed(glob,
-        { keyFn: (path, options) => 'foo' + path })
-          .then(allFileData => {
-            expect(Object.keys(allFileData)[0]).to.contain('foo');
-          });
-    });
-    it ('should pass contentFn through to readFiles', () => {
-      var glob = config.fixturePath('data/*.yaml');
-      return utils.readFilesKeyed(glob, {
-        keyFn: (path, options) => 'foo' + path,
-        parsers: parsers
-      }).then(allFileData => {
-        for (var fileKey in allFileData) {
-          expect(fileKey).to.contain('foo');
-          expect(allFileData[fileKey].contents).to.equal('foo');
-        }
-      });
-    });
-  });
 });
