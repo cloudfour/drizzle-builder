@@ -38,13 +38,15 @@ describe ('prepare/helpers', () => {
   describe ('namespace conflicts', () => {
     var opts, logStub;
     before (() => {
-      opts = options(config.fixtureOpts);
+      opts = Object.assign({}, options(config.fixtureOpts));
       logStub = sinon.stub(console, 'log');
     });
     it ('should report namespace conflicts', () => {
       opts.handlebars.registerPartial('pattern', 'empty');
+
       return prepareHelpers(opts).then(() => {
         console.log.restore();
+        opts.handlebars.unregisterPartial('pattern');
         expect(logStub).to.have.been.calledOnce;
       });
     });
