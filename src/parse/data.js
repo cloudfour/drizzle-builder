@@ -1,3 +1,6 @@
+/**
+ * @module parse/data
+ */
 import { readFileTree } from '../utils/parse';
 
 /**

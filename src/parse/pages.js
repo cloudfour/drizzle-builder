@@ -1,3 +1,6 @@
+/**
+ * @module parse/pages
+ */
 import { readFileTree } from '../utils/parse';
 
 /**
