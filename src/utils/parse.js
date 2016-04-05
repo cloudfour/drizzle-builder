@@ -167,18 +167,16 @@ function readFiles (glob, {
  *     subpage: { [file data]}
  * }
  *
- * @param {glob}
- * @param {Object} options (all optional):
- *  - keyFn
- *  - contentFn
- *  - stripNumbers
+ * @param {Object} src    Object with properties `glob` and `basedir`
+ *                        @see defaults
+ * @param {Object} options
  * @return {Promise} resolving to {Object} of keyed file contents
  */
-function readFileTree (glob, basedir, options) {
+function readFileTree (src, options) {
   const fileTree = {};
-  return readFiles(glob, options).then(fileData => {
+  return readFiles(src.glob, options).then(fileData => {
     fileData.forEach(itemFile => {
-      const fileKeys = relativePathArray(itemFile.path, basedir);
+      const fileKeys = relativePathArray(itemFile.path, src.basedir);
       deepObj(fileKeys, fileTree)[resourceKey(itemFile)] = parseLocalData(
         itemFile, options);
     });

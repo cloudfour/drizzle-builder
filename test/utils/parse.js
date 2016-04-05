@@ -129,8 +129,11 @@ describe ('utils/parse', () => {
       }
     };
     it ('should be able to build a tree object of arbitrary files', () => {
-      var glob = config.fixturePath('helpers/**/*.js');
-      return utils.readFileTree(glob, config.fixturePath('helpers'), {
+      var src = {
+        glob: config.fixturePath('helpers/**/*.js'),
+        basedir: config.fixturePath('helpers')
+      };
+      return utils.readFileTree(src, {
         parsers: parsers
       }).then(fileTree => {
         expect(fileTree).to.be.an('object').and.to.contain.keys('moar-helpers',
