@@ -3,8 +3,7 @@ import marked from 'marked';
 import Promise from 'bluebird';
 import {readFile as readFileCB} from 'fs';
 var readFile = Promise.promisify(readFileCB);
-import { keyname } from './shared';
-import { relativePathArray } from './path'; // TODO NO NO NO
+import { relativePathArray } from './shared';
 import { deepObj, resourceKey } from './object'; // TODO NO NO NO NO NO
 
 /**

@@ -2,7 +2,7 @@ import parsePattern from './pattern';
 import * as path from 'path';
 import { deepObj, resourceKey } from '../../utils/object';
 import { readFiles } from '../../utils/parse';
-import { relativePathArray } from '../../utils/path';
+import { relativePathArray } from '../../utils/shared';
 
 /**
  * Read each pattern file. Retrieve a reference to where it goes in the

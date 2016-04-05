@@ -21,6 +21,10 @@ function keyname (str) {
  * @return {Array}
  */
 function relativePathArray (filePath, fromPath) {
+  if (filePath.indexOf(fromPath) === -1) {
+    // TODO Error handling: this should cause a warn
+    return [];
+  }
   const keys = path.relative(fromPath, path.dirname(filePath));
   if (keys && keys.length) {
     return keys.split(path.sep);
@@ -40,7 +44,7 @@ function titleCase (str) {
     .replace(/\w\S*/g, word => word.charAt(0).toUpperCase() + word.substr(1));
 }
 
-export { keyname, // object
-         relativePathArray, // path
-         titleCase // general
+export { keyname,
+         relativePathArray,
+         titleCase
        };
