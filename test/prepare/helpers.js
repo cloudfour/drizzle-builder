@@ -10,6 +10,12 @@ chai.use(sinonChai);
 
 describe ('prepare/helpers', () => {
   const opts = options(config.fixtureOpts);
+  it ('should register handlebars-layouts helpers', () => {
+    return prepareHelpers(opts).then(() => {
+      expect(opts.handlebars.helpers).to.contain.keys(
+        'embed', 'block', 'content');
+    });
+  });
   it ('should register pattern helpers', () => {
     return prepareHelpers(opts).then(() => {
       expect(opts.handlebars.helpers).to.contain.keys(

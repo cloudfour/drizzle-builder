@@ -1,6 +1,7 @@
 import { keyname } from '../utils/shared';
 import { getFiles, isGlob } from '../utils/parse';
 import registerPatternHelpers from '../helpers/pattern';
+import handlebarsLayouts from 'handlebars-layouts';
 
 /**
  * Register helpers on Handlebars. Helpers (helperOpts) can be provided as
@@ -41,6 +42,8 @@ function getHelpers (options) {
  * @return {Promise} that resolves to all helpers registered on Handlebars
  */
 function prepareHelpers (options) {
+  // Register helper for layouts, from the module
+  options.handlebars.registerHelper(handlebarsLayouts(options.handlebars));
   return getHelpers(options)
     .then(helpers => {
       options.handlebars = registerPatternHelpers(options);
