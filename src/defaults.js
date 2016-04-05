@@ -7,6 +7,9 @@ const defaults = {
     indent_char: '	',
     indent_with_tabs: true
   },
+  debug: {
+    logFn: console.log
+  },
   dest          : {
     pages   : './dist/pages',
     patterns: './dist/patterns'

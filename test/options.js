@@ -7,6 +7,7 @@ var mergeOptions = require('../dist/options');
 describe ('options', () => {
   var keys = [
     'beautifier',
+    'debug',
     'dest',
     'fieldParsers',
     'handlebars',
@@ -30,6 +31,13 @@ describe ('options', () => {
     it ('should generate default parsers when none passed', () => {
       var opts = mergeOptions();
       expect(opts.parsers).to.be.an('object').and.to.contain.keys(parserKeys);
+    });
+  });
+  describe ('debug options', () => {
+    it ('should define a default loggin function', () => {
+      var opts = mergeOptions();
+      expect(opts.debug).to.be.an('object').and.to.contain.keys('logFn');
+      expect(opts.debug.logFn).to.equal(console.log);
     });
   });
   describe('generating srces', () => {

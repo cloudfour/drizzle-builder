@@ -42,6 +42,20 @@ beautifier: {
 }
 ```
 
+### `debug`
+
+`{Object}`
+
+Default:
+
+```
+debug: {
+  logFn: console.log
+}
+```
+
+* `logFn` `{Function}` that takes a `msg` argument. Defaults to `console.log`. You could change this if you wanted messages and errors to go somewhere else.
+
 ### `dest`
 
 `{Object}` of `{String}` paths for outputting drizzle `pages` and pattern `collection` HTML files.
