@@ -39,13 +39,13 @@ describe ('prepare/helpers', () => {
     var opts, logStub;
     before (() => {
       opts = Object.assign({}, options(config.fixtureOpts));
-      logStub = sinon.stub(console, 'log');
+      logStub = sinon.stub(opts.debug, 'logFn');
     });
     it ('should report namespace conflicts', () => {
       opts.handlebars.registerPartial('pattern', 'empty');
 
       return prepareHelpers(opts).then(() => {
-        console.log.restore();
+        logStub.restore();
         opts.handlebars.unregisterPartial('pattern');
         expect(logStub).to.have.been.calledOnce;
       });

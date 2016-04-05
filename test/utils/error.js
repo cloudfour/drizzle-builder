@@ -5,8 +5,7 @@ chai.use(expect);
 var DrizzleError = require('../../dist/utils/error');
 //chai.use(sinonChai);
 
-
-describe.only ('utils/error', () => {
+describe ('utils/error', () => {
   describe ('instantiation and class', () => {
     it ('should instantiate a subclassed Error', () => {
       const error = new DrizzleError('random error',

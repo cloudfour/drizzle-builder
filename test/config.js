@@ -70,6 +70,9 @@ var config = {
   prepare,
   prepareAll,
   fixtureOpts: {
+    debug: {
+      logFn: msg => msg
+    },
     src: {
       data    : {
         glob: fixturePath('data/**/*'),

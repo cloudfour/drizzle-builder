@@ -1,4 +1,4 @@
-import { handleError, ERROR_LEVELS } from '../utils/error';
+import DrizzleError from '../utils/error';
 import { deepPattern } from '../utils/object';
 import patternContext from '../render/context/pattern';
 
@@ -18,18 +18,19 @@ function renderPatternPartial (patternId, drizzleData, Handlebars) {
     // Render and return
     return template(localContext);
   } else {
-    handleError(`Partial for pattern ${patternId} not found`,
-      ERROR_LEVELS.ERROR);
+    new DrizzleError(`Partial for pattern ${patternId} not found`,
+      DrizzleError.LEVELS.ERROR).handle(drizzleData.options.debug);
   }
 }
 
 /**
  * Register some drizzle-specific pattern helpers
  */
-function registerPatternHelpers (Handlebars) {
+function registerPatternHelpers (options) {
+  const Handlebars = options.handlebars;
   if (Handlebars.partials.pattern) {
-    handleError('`Handlebars.partials.pattern` already registered',
-      ERROR_LEVELS.WARN);
+    new DrizzleError('`Handlebars.partials.pattern` already registered',
+      DrizzleError.LEVELS.WARN).handle(options.debug);
   }
   /**
    * The `pattern` helper allows the embedding of patterns anywhere
@@ -42,8 +43,8 @@ function registerPatternHelpers (Handlebars) {
   });
 
   if (Handlebars.partials.patternSource) {
-    handleError('`Handlebars.partials.patternSource` already registered',
-      ERROR_LEVELS.WARN);
+    new DrizzleError('`Handlebars.partials.patternSource` already registered',
+      DrizzleError.LEVELS.WARN).handle(options.debug);
   }
   /**
    * Similar to `pattern` but the returned string is HTML-escaped.

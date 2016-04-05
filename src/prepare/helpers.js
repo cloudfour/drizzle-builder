@@ -43,7 +43,7 @@ function getHelpers (options) {
 function prepareHelpers (options) {
   return getHelpers(options)
     .then(helpers => {
-      options.handlebars = registerPatternHelpers(options.handlebars);
+      options.handlebars = registerPatternHelpers(options);
       for (var helper in helpers) {
         options.handlebars.registerHelper(helper, helpers[helper]);
       }
