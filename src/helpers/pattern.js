@@ -5,6 +5,7 @@ import patternContext from '../render/context/pattern';
 /**
  * Retrieve correct pattern object data, find the right partial and
  * compile with correct local context.
+ * TODO: How do we test this?
  */
 function renderPatternPartial (patternId, drizzleData, Handlebars) {
   const patternObj = deepPattern(patternId, drizzleData.patterns);
@@ -16,6 +17,9 @@ function renderPatternPartial (patternId, drizzleData, Handlebars) {
     }
     // Render and return
     return template(localContext);
+  } else {
+    handleError(`Partial for pattern ${patternId} not found`,
+      ERROR_LEVELS.ERROR);
   }
 }
 
@@ -24,8 +28,8 @@ function renderPatternPartial (patternId, drizzleData, Handlebars) {
  */
 function registerPatternHelpers (Handlebars) {
   if (Handlebars.partials.pattern) {
-    const msg = 'namespace collision on `Handlbars.partials.pattern`';
-    handleError(msg, ERROR_LEVELS.WARN);
+    handleError('`Handlebars.partials.pattern` already registered',
+      ERROR_LEVELS.WARN);
   }
   /**
    * The `pattern` helper allows the embedding of patterns anywhere
@@ -36,6 +40,11 @@ function registerPatternHelpers (Handlebars) {
       id, rootContext.drizzle, Handlebars);
     return renderedTemplate;
   });
+
+  if (Handlebars.partials.patternSource) {
+    handleError('`Handlebars.partials.patternSource` already registered',
+      ERROR_LEVELS.WARN);
+  }
   /**
    * Similar to `pattern` but the returned string is HTML-escaped.
    * Can be used for rendering source in `<pre>` tags.

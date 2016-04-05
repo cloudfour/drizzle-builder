@@ -13,7 +13,7 @@ describe ('utils/error', () => {
       var errorUtils = testUtils.stubbedError(logStub);
       errorUtils.handleError('Note this', errorUtils.ERROR_LEVELS.WARN);
       expect(logStub).to.have.been.calledOnce;
-      expect(logStub).to.have.been.calledWith('WARN: Note this', false);
+      expect(logStub).to.have.been.calledWith('WARN: Note this');
     });
   });
 });

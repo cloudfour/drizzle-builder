@@ -1,4 +1,4 @@
-import { commonRoot, relativePathArray } from '../utils/path';
+import { relativePathArray } from '../utils/path';
 import { parseLocalData, readFiles } from '../utils/parse';
 import { deepObj, resourceKey } from '../utils/object';
 

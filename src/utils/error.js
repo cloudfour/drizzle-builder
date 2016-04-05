@@ -10,20 +10,18 @@ const ERROR_LEVELS = {
 function handleError (error, level) {
   switch (level) {
     case ERROR_LEVELS.NOTICE:
-      log(`NOTICE: ${error}`, false);
+      log(`NOTICE: ${error}`);
       break;
     case ERROR_LEVELS.WARN:
-      log(`WARN: ${error}`, false);
+      log(`WARN: ${error}`);
       break;
     case ERROR_LEVELS.ERROR:
-      log(`ERROR: ${error}`, true);
+    default:
+      log(`ERROR: ${error}`);
       break;
     case ERROR_LEVELS.FATAL:
-      log(`FATAL: ${error}`, true);
+      log(`FATAL: ${error}`);
       process.exit(1);
-      break;
-    default:
-      log(error, false);
       break;
   }
 }
