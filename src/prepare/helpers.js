@@ -1,18 +1,23 @@
+/**
+ * Prepare/helpers module.
+ * @module prepare/helpers
+ */
+
 import { keyname } from '../utils/shared';
 import { getFiles, isGlob } from '../utils/parse';
 import registerPatternHelpers from '../helpers/pattern';
 import handlebarsLayouts from 'handlebars-layouts';
 
 /**
- * Register helpers on Handlebars. Helpers (helperOpts) can be provided as
+ * Register helpers on Handlebars. Helpers (options.helpers) can be provided as
  * either:
  * - a glob. Files matching glob will each be require'd and registered on
  *   Handlebars (one helper per module)
  * - an object. Properties are helper names/keys, values should be helper
  *   functions.
  *
- * @param {glob | object} helperOpts
- * @return Promise resolving to the helpers that have been registered
+ * @param {Object} options with `helpers` property
+ * @return {Promise} resolving to the helpers that have been registered
  */
 function getHelpers (options) {
   const helpers = {};
@@ -37,8 +42,7 @@ function getHelpers (options) {
  * register. In the latter case, the filename w/o extension
  * will be used as the helper key.
  *
- * @param {Object} Handlebars handlebars instance
- * @param {glob | Object} helperOpts @see getHelpers
+ * @param {Object} options
  * @return {Promise} that resolves to all helpers registered on Handlebars
  */
 function prepareHelpers (options) {
@@ -50,7 +54,6 @@ function prepareHelpers (options) {
       for (var helper in helpers) {
         options.handlebars.registerHelper(helper, helpers[helper]);
       }
-
     });
 }
 
