@@ -122,6 +122,28 @@ describe ('utils/parse', () => {
         });
     });
   });
+  describe ('readFileTree', () => {
+    var parsers = {
+      default: {
+        parseFn: (contents, filepath) => 'foo'
+      }
+    };
+    it ('should be able to build a tree object of arbitrary files', () => {
+      var glob = config.fixturePath('helpers/**/*.js');
+      return utils.readFileTree(glob, config.fixturePath('helpers'), {
+        parsers: parsers
+      }).then(fileTree => {
+        expect(fileTree).to.be.an('object').and.to.contain.keys('moar-helpers',
+          'toFraction', 'toJSON');
+        expect(fileTree['moar-helpers']).to.be.an('object').and.to.contain.keys(
+          'random', 'toFixed'
+        );
+        expect(fileTree.toFraction).to.be.an('object').and.to.contain.keys(
+          'contents', 'path');
+        expect(fileTree.toFraction.contents).to.equal('foo');
+      });
+    });
+  });
   describe('readFilesKeyed', () => {
     var parsers = {
       default: {

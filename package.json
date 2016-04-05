@@ -10,7 +10,7 @@
     "build": "babel src --out-dir dist",
     "coverage": "istanbul cover _mocha -- --recursive",
     "prepublish": "npm run test",
-    "test": "npm run build; npm run coverage"
+    "test": "npm run build; mocha --recursive"
   },
   "keywords": [
     "fabricator"
