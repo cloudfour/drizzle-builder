@@ -4,7 +4,7 @@
 import parseData from './data';
 import parseLayouts from './layouts';
 import parsePages from './pages';
-import parsePatterns from './patterns/';
+import parsePatterns from './patterns';
 
 import DrizzleError from '../utils/error';
 /**

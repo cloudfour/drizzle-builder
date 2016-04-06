@@ -6,7 +6,7 @@ var parsePatterns = require('../../../dist/parse/patterns/patterns');
 var parseCollections = require('../../../dist/parse/patterns/collections');
 //var utils = require('../../../dist/utils');
 
-describe ('parse/collections', () => {
+describe.skip ('parse/collections', () => {
   var opts = config.parseOptions(config.fixtureOpts);
   var patternPromise;
   before (() => {

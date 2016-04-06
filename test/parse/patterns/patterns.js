@@ -5,7 +5,7 @@ var expect = chai.expect;
 var parsePatterns = require('../../../dist/parse/patterns/patterns');
 var utils = require('../../../dist/utils');
 
-describe ('parse/patterns', () => {
+describe.skip ('parse/patterns', () => {
   var opts = config.parseOptions(config.fixtureOpts);
 
   it ('should correctly build data object from patterns', () => {

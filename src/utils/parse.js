@@ -94,25 +94,19 @@ function parseField (fieldKey, fieldData, options) {
 /**
  * Given an object representing a page or pattern or other file:
  * If that object has a `data` property, use that to
- * create the right kind of context for the object. Process relevant fields
- * with markdown.
+ * create the right kind of context for the object. Parse field data with
+ * any indicated parsers.
+ * @TODO is `extendedData` used by any callers?
  */
 function parseLocalData (fileObj, options, extendedData = {}) {
-  const mdFields = options.markdownFields || [];
-  const localData = Object.assign({}, fileObj.data);
-  // First, clean up data object by running markdown over relevant fields
-  // TODO: This feels awkward here
-  // Move to render?
-  mdFields.forEach(mdField => {
-    if (localData[mdField]) {
-      localData[mdField] = marked(localData[mdField]);
-    }
-  });
-  fileObj = Object.assign(localData, fileObj, extendedData);
+  fileObj.data = fileObj.data || {};
+  for (const dataKey in fileObj.data) {
+    const parsedField = parseField(dataKey, fileObj.data[dataKey], options);
+    fileObj.data[dataKey] = parsedField.contents;
+  }
+  Object.assign(fileObj, extendedData);
   return fileObj;
 }
-
-export { parseLocalData };
 
 /**
  * Take a glob; read the files, optionally running a `contentFn` over
