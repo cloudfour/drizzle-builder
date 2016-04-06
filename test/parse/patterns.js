@@ -95,5 +95,27 @@ describe ('parse/patterns', () => {
         expect(collection).to.contain.keys('items', 'patterns');
       });
     });
+    describe ('hidden patterns', () => {
+      it ('should hide patterns that have front matter to that effect', () => {
+        return parsePatterns(opts).then(patternData => {
+          var collection = patternData.components.button.collection;
+          expect(collection.patterns).not.to.contain(collection.items.hello);
+          expect(collection.patterns).to.contain(collection.items.base);
+        });
+      });
+    });
+    describe ('pattern ordering', () => {
+      it ('should order patterns per front matter', () => {
+        return parsePatterns(opts).then(patternData => {
+          var collection = patternData.components.button.collection;
+          expect(collection.patterns[0]).to.equal(collection.items.disabled);
+          expect(collection.patterns[1]).to
+            .equal(collection.items['color-variation']);
+          expect(collection.patterns[2]).to.equal(collection.items.aardvark);
+          expect(collection.patterns[3]).to.equal(collection.items.base);
+        });
+      });
+    });
   });
+
 });
