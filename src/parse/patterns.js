@@ -1,3 +1,6 @@
+/**
+ * @module parse/patterns
+ */
 import { resourceId, resourceKey } from '../utils/object';
 import { readFiles, readFileTree } from '../utils/parse';
 import { titleCase } from '../utils/shared';
