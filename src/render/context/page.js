@@ -6,6 +6,11 @@
  */
 function pageContext (page, drizzleData) {
   const context = Object.assign({}, page);
+  if (typeof page.data === 'object') {
+    for (const dataKey in page.data) {
+      context[dataKey] = page.data[dataKey];
+    }
+  }
   context.drizzle = drizzleData;
   return context;
 }

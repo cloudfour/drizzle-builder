@@ -14,7 +14,7 @@ const hasPatternOrdering = itms => {
 };
 
 function isHidden (collection, pattern, patternKey) {
-  return ((collection.order && collection.order.indexOf(patternKey) !== -1) ||
+  return ((collection.hidden && collection.hidden.indexOf(patternKey) !== -1) ||
     (pattern.data && pattern.data.hidden));
 }
 
