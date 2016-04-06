@@ -70,12 +70,30 @@ var config = {
   prepare,
   prepareAll,
   fixtureOpts: {
+    debug: {
+      logFn: msg => msg
+    },
     src: {
-      data    : fixturePath('data/**/*'),
-      layouts : fixturePath('layouts/**/*'),
-      pages   : fixturePath('pages/**/*'),
-      partials: fixturePath('partials/**/*.hbs'),
-      patterns: fixturePath('patterns/**/*.html')
+      data    : {
+        glob: fixturePath('data/**/*'),
+        basedir: fixturePath('data')
+      },
+      layouts : {
+        glob: fixturePath('layouts/**/*'),
+        basedir: fixturePath('layouts')
+      },
+      pages   : {
+        glob: fixturePath('pages/**/*'),
+        basedir: fixturePath('pages')
+      },
+      partials: {
+        glob: fixturePath('partials/**/*.hbs'),
+        basedir: fixturePath('partials')
+      },
+      patterns: {
+        glob: fixturePath('patterns/**/*.html'),
+        basedir: fixturePath('patterns')
+      }
     },
     dest: {
       pages: './test/dist',

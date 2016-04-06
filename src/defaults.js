@@ -7,6 +7,9 @@ const defaults = {
     indent_char: '	',
     indent_with_tabs: true
   },
+  debug: {
+    logFn: console.log
+  },
   dest          : {
     pages   : './dist/pages',
     patterns: './dist/patterns'
@@ -20,11 +23,26 @@ const defaults = {
   },
   parsers       : parsers,
   src: {
-    data    : ['src/data/**/*'],
-    layouts : ['src/layouts/**/*'],
-    pages   : ['src/pages/**/*'],
-    partials: ['src/partials/**/*'],
-    patterns: ['src/patterns/**/*.html']
+    data    : {
+      basedir: 'src/data',
+      glob: 'src/data/**/*'
+    },
+    layouts : {
+      basedir: 'src/layouts',
+      glob: 'src/layouts/**/*'
+    },
+    pages   : {
+      basedir: 'src/pages',
+      glob: 'src/pages/**/*'
+    },
+    partials: {
+      basedir: 'src/partials',
+      glob: 'src/partials/**/*'
+    },
+    patterns: {
+      basedir: 'src/patterns',
+      glob: 'src/patterns/**/*.html'
+    }
   }
 };
 

@@ -2,7 +2,7 @@ import parsePattern from './pattern';
 import * as path from 'path';
 import { deepObj, resourceKey } from '../../utils/object';
 import { readFiles } from '../../utils/parse';
-import { commonRoot, relativePathArray } from '../../utils/path';
+import { relativePathArray } from '../../utils/shared';
 
 /**
  * Read each pattern file. Retrieve a reference to where it goes in the
@@ -11,11 +11,11 @@ import { commonRoot, relativePathArray } from '../../utils/path';
  */
 function parsePatterns (options) {
   const patternData = {};
-  return readFiles(options.src.patterns, options).then(patternFileData => {
-    const relativeRoot = commonRoot(patternFileData);
+  return readFiles(options.src.patterns.glob, options).then(patternFileData => {
 
     patternFileData.forEach(patternFile => {
-      const pathElements = relativePathArray(patternFile.path, relativeRoot);
+      const pathElements = relativePathArray(patternFile.path,
+        options.src.patterns.basedir);
       const parentObj    = deepObj(pathElements, patternData);
       const patternKey   = resourceKey(patternFile);
       // Need a stubbed collection to stick this pattern in
@@ -24,7 +24,7 @@ function parsePatterns (options) {
         path: path.dirname(patternFile.path)
       };
       parentObj.collection.items[patternKey] = parsePattern(
-        patternFile, patternData, relativeRoot, options);
+        patternFile, patternData, options);
     });
     return patternData;
   });

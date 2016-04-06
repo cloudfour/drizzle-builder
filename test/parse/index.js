@@ -4,7 +4,7 @@ var config = require('../config');
 var expect = chai.expect;
 var parseAll = require('../../dist/parse/');
 
-describe('parse/index (parseAll)', () => {
+describe ('parse/index (parseAll)', () => {
   it ('should correctly build composite data object', () => {
     var opts = config.parseOptions(config.fixtureOpts);
     return parseAll(opts).then(allData => {

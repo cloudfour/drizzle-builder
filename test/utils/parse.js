@@ -122,44 +122,28 @@ describe ('utils/parse', () => {
         });
     });
   });
-  describe('readFilesKeyed', () => {
+  describe ('readFileTree', () => {
     var parsers = {
       default: {
         parseFn: (contents, filepath) => 'foo'
       }
     };
-    it ('should be able to key files by keyname', () => {
-      var glob = config.fixturePath('helpers/*.js');
-      return utils.readFilesKeyed(glob).then(allFileData => {
-        expect(allFileData).to.be.an('object');
-        expect(allFileData).to.contain.keys('toFraction', 'toJSON', 'toSlug');
-      });
-    });
-    it ('should accept an option to preserve leading numbers', () => {
-      var glob = config.fixturePath('data/*.yaml');
-      return utils.readFilesKeyed(glob, { stripNumbers: false })
-        .then(allFileData => {
-          expect(allFileData).to.be.an('object');
-        });
-    });
-    it ('should accept a function to derive keys', () => {
-      var glob = config.fixturePath('data/*.yaml');
-      return utils.readFilesKeyed(glob,
-        { keyFn: (path, options) => 'foo' + path })
-          .then(allFileData => {
-            expect(Object.keys(allFileData)[0]).to.contain('foo');
-          });
-    });
-    it ('should pass contentFn through to readFiles', () => {
-      var glob = config.fixturePath('data/*.yaml');
-      return utils.readFilesKeyed(glob, {
-        keyFn: (path, options) => 'foo' + path,
+    it ('should be able to build a tree object of arbitrary files', () => {
+      var src = {
+        glob: config.fixturePath('helpers/**/*.js'),
+        basedir: config.fixturePath('helpers')
+      };
+      return utils.readFileTree(src, {
         parsers: parsers
-      }).then(allFileData => {
-        for (var fileKey in allFileData) {
-          expect(fileKey).to.contain('foo');
-          expect(allFileData[fileKey].contents).to.equal('foo');
-        }
+      }).then(fileTree => {
+        expect(fileTree).to.be.an('object').and.to.contain.keys('moar-helpers',
+          'toFraction', 'toJSON');
+        expect(fileTree['moar-helpers']).to.be.an('object').and.to.contain.keys(
+          'random', 'toFixed'
+        );
+        expect(fileTree.toFraction).to.be.an('object').and.to.contain.keys(
+          'contents', 'path');
+        expect(fileTree.toFraction.contents).to.equal('foo');
       });
     });
   });

@@ -1,4 +1,7 @@
-import { readFilesKeyed } from '../utils/parse';
+/**
+ * @module parse/data
+ */
+import { readFileTree } from '../utils/parse';
 
 /**
  * Parse data from data files
@@ -6,7 +9,7 @@ import { readFilesKeyed } from '../utils/parse';
  * @return {Promise} resolving to parsed file data
  */
 function parseData (options) {
-  return readFilesKeyed(options.src.data, options);
+  return readFileTree(options.src.data, options);
 }
 
 export default parseData;

@@ -15,6 +15,29 @@ describe ('utils/shared', () => {
       expect(result).not.to.contain('baz');
     });
   });
+  describe('relativePathArray', () => {
+    it ('should return an array starting at the common root', () => {
+      var relative = utils.relativePathArray(
+        'foo/bar/baz/ding/dong.txt',
+        'foo/bar'
+      );
+      expect(relative).to.be.an('array').and.to.contain('baz', 'ding');
+    });
+    it ('should return an empty array if it cannot find common root', () => {
+      var relative = utils.relativePathArray(
+        'foo/bar/baz/ding/dong.txt',
+        'something/else'
+      );
+      expect(relative).to.be.an('array').and.to.be.empty;
+    });
+    it ('should work with an absolute path', () => {
+      var relative = utils.relativePathArray(
+        '/foo/bar/baz/ding/dong.txt',
+        '/foo/bar'
+      );
+      expect(relative).to.be.an('array').and.to.contain('baz', 'ding');
+    });
+  });
   describe('titleCase', () => {
     it ('should correctly title-case a string', () => {
       // @TODO move these into fixtures?
@@ -33,8 +56,5 @@ describe ('utils/shared', () => {
         expect(stringsOut[i]).to.equal(stringsExpected[i]);
       }
     });
-  });
-  describe('relativePathArray', () => {
-    it ('should be refactored and tested');
   });
 });

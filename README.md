@@ -42,6 +42,20 @@ beautifier: {
 }
 ```
 
+### `debug`
+
+`{Object}`
+
+Default:
+
+```
+debug: {
+  logFn: console.log
+}
+```
+
+* `logFn` `{Function}` that takes a `msg` argument. Defaults to `console.log`. You could change this if you wanted messages and errors to go somewhere else.
+
 ### `dest`
 
 `{Object}` of `{String}` paths for outputting drizzle `pages` and pattern `collection` HTML files.
@@ -102,21 +116,53 @@ parsers       : parsers
 
 ### `src`
 
-`{Object}` source globs for different types of drizzle resources.
+`{Object}` source globs and "basedirs" for different types of drizzle resources.
 
-* `data`: glob for data files that contain (typically) YAML or JSON data to make available on drizzleData global context.
-* `layouts`: glob for layouts to register as partials on `handlebars`
-* `pages`: glob for source page files (typically Handlebars with YAML frontmatter) to transform into HTML pages.
-* `partials`: glob to match files to register as partials on `handlebars`.
-* `patterns`: glob to match patterns.
+The `glob` property is probably more straightforward: that's a glob to match files of that type of resource.
+The `basedir` property is directory level to start keying the associated object from—sort of like a "relative path" to use as a root for keying the resources. It should be a `{string}` that matches one of the directories in the `glob` expression.
+
+The default value of the `src.patterns` property, e.g.:
+```
+patterns: {
+  glob: 'src/patterns/**/*.html',
+  basedir: 'patterns'
+}
+```
+
+indicates, e.g., that we should consider all pattern resources "relative" to the directory "patterns" and start the keying of the `patterns` object from there. *Note*: You can leave `basedir` alone unless you make significant changes to `glob`s from default.
+
+`src` properties include:
+
+* `data`: data files that contain (typically) YAML or JSON data to make available on drizzleData global context.
+* `layouts`: layouts to register as partials on `handlebars`
+* `pages`: source page files (typically Handlebars with YAML frontmatter) to transform into HTML pages.
+* `partials`: files to register as partials on `handlebars`.
+* `patterns`: patterns.
+
+Default:
 
 ```
 src: {
-  data    : ['src/data/**/*'],
-  layouts : ['src/layouts/**/*'],
-  pages   : ['src/pages/**/*'],
-  partials: ['src/partials/**/*'],
-  patterns: ['src/patterns/**/*.html']
+  data    : {
+    basedir: 'data',
+    glob: 'src/data/**/*'
+  },
+  layouts : {
+    basedir: 'layouts',
+    glob: 'src/layouts/**/*'
+  },
+  pages   : {
+    basedir: 'pages',
+    glob: 'src/pages/**/*'
+  },
+  partials: {
+    basedir: 'partials',
+    glob: 'src/partials/**/*'
+  },
+  patterns: {
+    basedir: 'patterns',
+    glob: 'src/patterns/**/*.html'
+  }
 }
 ```
 

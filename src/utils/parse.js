@@ -3,7 +3,8 @@ import marked from 'marked';
 import Promise from 'bluebird';
 import {readFile as readFileCB} from 'fs';
 var readFile = Promise.promisify(readFileCB);
-import { keyname } from './shared';
+import { relativePathArray } from './shared';
+import { deepObj, resourceKey } from './object'; // TODO NO NO NO NO NO
 
 /**
  * @param {glob} glob
@@ -149,27 +150,36 @@ function readFiles (glob, {
 /**
  * Read the files from a glob, but then instead of resolving the
  * Promise with an Array of objects (@see readFiles), resolve with a
- * single object; each file's contents is keyed by its filename run
- * through optional `keyFn(filePath, options)`` (default: keyname).
- * Will pass other options on to readFiles and keyFn
+ * single tree object. Keys are filenames without extensions.
+ * @example readFileTree(glob, 'pages', {...}) where the following
+ *          file structure matches:
+ * pages
+ *  ├── components.html
+ *  ├── index.html
+ *  └── subfolder
+ *    └── subpage.md
  *
- * @param {glob}
- * @param {Object} options (all optional):
- *  - keyFn
- *  - contentFn
- *  - stripNumbers
+ * Would result in an object structured:
+ * { components: { [file data]},
+ *   index: { [file data]}
+ *   subfolder: {
+ *     subpage: { [file data]}
+ * }
+ *
+ * @param {Object} src    Object with properties `glob` and `basedir`
+ *                        @see defaults
+ * @param {Object} options
  * @return {Promise} resolving to {Object} of keyed file contents
  */
-function readFilesKeyed (glob, options = {}) {
-  const {
-    keyFn = (path, options) => keyname(path, options)
-  } = options;
-  return readFiles(glob, options).then(allFileData => {
-    const keyedFileData = new Object();
-    for (var aFile of allFileData) {
-      keyedFileData[keyFn(aFile.path, options)] = aFile;
-    }
-    return keyedFileData;
+function readFileTree (src, options) {
+  const fileTree = {};
+  return readFiles(src.glob, options).then(fileData => {
+    fileData.forEach(itemFile => {
+      const fileKeys = relativePathArray(itemFile.path, src.basedir);
+      deepObj(fileKeys, fileTree)[resourceKey(itemFile)] = parseLocalData(
+        itemFile, options);
+    });
+    return fileTree;
   });
 }
 
@@ -179,5 +189,5 @@ export { getFiles,
          parseField,
          parseLocalData,
          readFiles,
-         readFilesKeyed
+         readFileTree
        };

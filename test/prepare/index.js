@@ -23,6 +23,13 @@ describe ('prepare/index', () => {
       );
     });
   });
+  it ('should register layouts as partials', () => {
+    return prepare(opts).then(preparedOpts => {
+      expect(preparedOpts.handlebars.partials).to.contain.keys(
+        'default', 'page', 'collection'
+      );
+    });
+  });
   it ('should prepare partials', () => {
     return prepare(opts).then(preparedOpts => {
       expect(preparedOpts.handlebars.partials).to.contain.keys(

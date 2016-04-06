@@ -2,6 +2,7 @@ const fs = require('fs');
 const Promise = require('bluebird');
 const readFile = Promise.promisify(fs.readFile);
 const stat     = Promise.promisify(fs.stat);
+const sinon    = require('sinon');
 
 function areFiles (paths) {
   return Promise.all(paths.map(isFile)).then(results => {

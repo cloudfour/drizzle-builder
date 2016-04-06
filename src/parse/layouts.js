@@ -1,4 +1,4 @@
-import { readFilesKeyed } from '../utils/parse';
+import { readFileTree } from '../utils/parse';
 
 /**
  * Parse layout files.
@@ -6,7 +6,7 @@ import { readFilesKeyed } from '../utils/parse';
  * @return {Promise} resolving to layout data
  */
 function parseLayouts (options) {
-  return readFilesKeyed(options.src.layouts, options);
+  return readFileTree(options.src.layouts, options);
 }
 
 export default parseLayouts;

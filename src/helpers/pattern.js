@@ -1,9 +1,11 @@
+import DrizzleError from '../utils/error';
 import { deepPattern } from '../utils/object';
 import patternContext from '../render/context/pattern';
 
 /**
  * Retrieve correct pattern object data, find the right partial and
  * compile with correct local context.
+ * TODO: How do we test this?
  */
 function renderPatternPartial (patternId, drizzleData, Handlebars) {
   const patternObj = deepPattern(patternId, drizzleData.patterns);
@@ -15,13 +17,21 @@ function renderPatternPartial (patternId, drizzleData, Handlebars) {
     }
     // Render and return
     return template(localContext);
+  } else {
+    new DrizzleError(`Partial for pattern ${patternId} not found`,
+      DrizzleError.LEVELS.ERROR).handle(drizzleData.options.debug);
   }
 }
 
 /**
  * Register some drizzle-specific pattern helpers
  */
-function registerPatternHelpers (Handlebars) {
+function registerPatternHelpers (options) {
+  const Handlebars = options.handlebars;
+  if (Handlebars.partials.pattern) {
+    new DrizzleError('`Handlebars.partials.pattern` already registered',
+      DrizzleError.LEVELS.WARN).handle(options.debug);
+  }
   /**
    * The `pattern` helper allows the embedding of patterns anywhere
    * and they can get their correct local context.
@@ -31,6 +41,11 @@ function registerPatternHelpers (Handlebars) {
       id, rootContext.drizzle, Handlebars);
     return renderedTemplate;
   });
+
+  if (Handlebars.partials.patternSource) {
+    new DrizzleError('`Handlebars.partials.patternSource` already registered',
+      DrizzleError.LEVELS.WARN).handle(options.debug);
+  }
   /**
    * Similar to `pattern` but the returned string is HTML-escaped.
    * Can be used for rendering source in `<pre>` tags.

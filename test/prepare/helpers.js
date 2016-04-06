@@ -4,11 +4,20 @@ var config = require('../config');
 var expect = chai.expect;
 var options = require('../../dist/options');
 var prepareHelpers = require('../../dist/prepare/helpers');
+var sinon = require('sinon');
+var sinonChai = require('sinon-chai');
+chai.use(sinonChai);
 
 describe ('prepare/helpers', () => {
   const opts = options(config.fixtureOpts);
+  it ('should register handlebars-layouts helpers', () => {
+    return prepareHelpers(opts).then(() => {
+      expect(opts.handlebars.helpers).to.contain.keys(
+        'embed', 'block', 'content');
+    });
+  });
   it ('should register pattern helpers', () => {
-    return prepareHelpers(opts). then(() => {
+    return prepareHelpers(opts).then(() => {
       expect(opts.handlebars.helpers).to.contain.keys(
         'pattern', 'patternSource');
     });
@@ -31,6 +40,24 @@ describe ('prepare/helpers', () => {
         'toFixed',
         'toTitle');
     });
+  });
+  describe ('namespace conflicts', () => {
+    var opts, logStub;
+    before (() => {
+      opts = Object.assign({}, options(config.fixtureOpts));
+      logStub = sinon.stub(opts.debug, 'logFn');
+    });
+    it ('should report namespace conflicts', () => {
+      opts.handlebars.registerPartial('pattern', 'empty');
+
+      return prepareHelpers(opts).then(() => {
+        logStub.restore();
+        opts.handlebars.unregisterPartial('pattern');
+        expect(logStub).to.have.been.calledOnce;
+      });
+    });
+    it ('should have this test expanded when error-handling done');
+
   });
 
 });
