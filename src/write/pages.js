@@ -1,25 +1,6 @@
-import path from 'path';
-import { write } from '../utils/write';
+import { writeResource } from '../utils/write';
 
-/**
- * Figure out the output path for `page` and write it to the filesystem.
- * @TODO options.keys is still dumb
- * @TODO hard-coded `.html` OK?
- *
- * @param {Object} page         Will be mutated
- * @param {Object} drizzleData
- * @param {String} entryKey     The keyname (filename) of the file
- * @return {Promise} for file write
- */
-function writePage (page, drizzleData, entryKeys) {
-  const fileKey = entryKeys.pop();
-  const outputPath = path.join(entryKeys.join(path.sep), fileKey + '.html');
-  const fullPath = path.normalize(path.join(
-    drizzleData.options.dest.pages,
-    outputPath));
-  page.outputPath = fullPath;
-  return write(fullPath, page.contents);
-}
+const isPage = page => page.hasOwnProperty('contents');
 
 /**
  * Traverse pages object and write out any page objects to files. An object
@@ -34,22 +15,27 @@ function writePage (page, drizzleData, entryKeys) {
  * @return {Array} of Promises
  */
 function walkPages (pages, drizzleData, currentKeys = [], writePromises = []) {
-  if (pages.contents) {
-    return writePage(pages, drizzleData, currentKeys);
+  if (isPage(pages)) {
+    return writeResource(currentKeys, pages, drizzleData.options.dest.pages);
   }
   for (var pageKey in pages) {
     currentKeys.push(pageKey);
     writePromises = writePromises.concat(
       walkPages(pages[pageKey], drizzleData, currentKeys, writePromises));
+    currentKeys.pop();
   }
   return writePromises;
 }
 
+/**
+ * Write out HTML pages for pages data.
+ *
+ * @param {Object} drizzleData
+ * @return {Promise} resolving to drizzleData
+ */
 function writePages (drizzleData) {
   return Promise.all(walkPages(drizzleData.pages, drizzleData))
-    .then(() => {
-      return drizzleData;
-    });
+    .then(() => drizzleData);
 }
 
 export default writePages;
