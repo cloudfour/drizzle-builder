@@ -1,5 +1,7 @@
 import { writeResource } from '../utils/write';
 
+const isPage = page => page.hasOwnProperty('contents');
+
 /**
  * Traverse pages object and write out any page objects to files. An object
  * is considered a page if it has a `contents` property.
@@ -13,7 +15,7 @@ import { writeResource } from '../utils/write';
  * @return {Array} of Promises
  */
 function walkPages (pages, drizzleData, currentKeys = [], writePromises = []) {
-  if (pages.contents) {
+  if (isPage(pages)) {
     return writeResource(currentKeys, pages, drizzleData.options.dest.pages);
   }
   for (var pageKey in pages) {

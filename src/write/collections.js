@@ -1,5 +1,8 @@
 import { writeResource } from '../utils/write';
 
+const hasCollection = patterns => patterns.hasOwnProperty('collection');
+const isCollection = patterns => patterns.hasOwnProperty('items');
+
 /**
  * Traverse patterns object and write out any collection objects to files.
  *
@@ -11,14 +14,13 @@ import { writeResource } from '../utils/write';
  */
 function walkCollections (patterns, drizzleData,
   entryKeys = [], writePromises = []) {
-  if (patterns.collection) {
+  if (hasCollection(patterns)) {
     writePromises.push(
       writeResource(entryKeys, patterns.collection,
         drizzleData.options.dest.patterns));
   }
   for (const patternKey in patterns) {
-    // TODO Better test following
-    if (patternKey !== 'items' && patternKey !== 'collection') {
+    if (!isCollection(patterns[patternKey])) {
       entryKeys.push(patternKey);
       walkCollections(patterns[patternKey],
         drizzleData, entryKeys, writePromises);
