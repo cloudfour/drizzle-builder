@@ -100,7 +100,6 @@ var config = {
       patterns: './test/dist/patterns'
     },
     helpers: fixturePath('helpers/**/*.js'),
-    markdownFields: ['notes'],
     parsers: parsers
   },
   logObj: obj => {

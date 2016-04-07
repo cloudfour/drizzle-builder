@@ -1,13 +1,17 @@
 /* global describe, it */
 var chai = require('chai');
-var config = require('../../config');
+var config = require('../config');
 var expect = chai.expect;
-var parsePatterns = require('../../../dist/parse/patterns/patterns');
-var utils = require('../../../dist/utils');
+var parsePatterns = require('../../dist/parse/patterns');
+var utils = require('../../dist/utils/object');
 
 describe ('parse/patterns', () => {
   var opts = config.parseOptions(config.fixtureOpts);
-
+  it ('should parse patterns from files', () => {
+    return parsePatterns(opts).then(allData => {
+      //config.logObj(allData);
+    });
+  });
   it ('should correctly build data object from patterns', () => {
     return parsePatterns(opts).then(patternData => {
       expect(patternData).to.be.an('object');
@@ -16,17 +20,22 @@ describe ('parse/patterns', () => {
       expect(patternData.collection.items).to.have.keys('pink');
     });
   });
-  describe('it should add basic collection data to patterns', () => {
-    return parsePatterns(opts).then(patternData => {
-      expect(patternData.collection).to.contain.keys('name', 'path', 'items');
+  describe('basic collection data on patterns', () => {
+    it ('should add basic collection data', () => {
+      return parsePatterns(opts).then(patternData => {
+        expect(patternData.collection).to.contain.keys(
+          'name', 'items', 'patterns');
+      });
     });
   });
-  describe('it should allow override of `name` prop', () => {
-    return parsePatterns(opts).then(patternData => {
-      expect(patternData.components.button.collection.items.aardvark)
-        .to.contain.key('name');
-      expect(patternData.components.button.collection.items.aardvark.name)
-        .to.equal('Something Else');
+  describe('`name` prop override', () => {
+    it ('should allow override of name property', () => {
+      return parsePatterns(opts).then(patternData => {
+        expect(patternData.components.button.collection.items.aardvark)
+          .to.contain.key('name');
+        expect(patternData.components.button.collection.items.aardvark.name)
+          .to.equal('Something Else');
+      });
     });
   });
   describe ('data field parsing', () => {
@@ -83,8 +92,30 @@ describe ('parse/patterns', () => {
       return parsePatterns(opts).then(patternData => {
         var collection = patternData.components.button.collection;
         expect(collection.name).not.to.be;
-        expect(collection).to.contain.keys('items', 'path');
+        expect(collection).to.contain.keys('items', 'patterns');
+      });
+    });
+    describe ('hidden patterns', () => {
+      it ('should hide patterns that have front matter to that effect', () => {
+        return parsePatterns(opts).then(patternData => {
+          var collection = patternData.components.button.collection;
+          expect(collection.patterns).not.to.contain(collection.items.hello);
+          expect(collection.patterns).to.contain(collection.items.base);
+        });
+      });
+    });
+    describe ('pattern ordering', () => {
+      it ('should order patterns per front matter', () => {
+        return parsePatterns(opts).then(patternData => {
+          var collection = patternData.components.button.collection;
+          expect(collection.patterns[0]).to.equal(collection.items.disabled);
+          expect(collection.patterns[1]).to
+            .equal(collection.items['color-variation']);
+          expect(collection.patterns[2]).to.equal(collection.items.aardvark);
+          expect(collection.patterns[3]).to.equal(collection.items.base);
+        });
       });
     });
   });
+
 });

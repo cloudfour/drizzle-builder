@@ -14,7 +14,8 @@ import pageContext from './context/page';
  * already in it.
  */
 function wrapWithLayout (page, drizzleData) {
-  const layout = page.layout || drizzleData.options.layouts.page;
+  const layout = page.data.layout || drizzleData.options.layouts.page;
+
   const alreadyWrapped = new RegExp(
     `{{\\s*#extend\\s*[\'\"]${layout}[\'\"].*}}`)
     .test(page.contents);
