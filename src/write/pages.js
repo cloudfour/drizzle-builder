@@ -22,10 +22,17 @@ function walkPages (pages, drizzleData, currentKeys = [], writePromises = []) {
     currentKeys.push(pageKey);
     writePromises = writePromises.concat(
       walkPages(pages[pageKey], drizzleData, currentKeys, writePromises));
+    currentKeys.pop();
   }
   return writePromises;
 }
 
+/**
+ * Write out HTML pages for pages data.
+ *
+ * @param {Object} drizzleData
+ * @return {Promise} resolving to drizzleData
+ */
 function writePages (drizzleData) {
   return Promise.all(walkPages(drizzleData.pages, drizzleData))
     .then(() => drizzleData);

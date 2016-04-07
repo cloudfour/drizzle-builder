@@ -31,7 +31,7 @@ function walkCollections (patterns, drizzleData,
 }
 
 /**
- * Traverse the patterns object and write out collections.
+ * Traverse the patterns object and write out collections HTML pages.
  *
  * @param {Object} drizzleData
  * @return {Promise} resolving to {Object} drizzleData
