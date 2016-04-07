@@ -3,7 +3,6 @@ import { write } from '../utils/write';
 
 /**
  * Figure out the output path for `page` and write it to the filesystem.
- * @TODO options.keys is still dumb
  * @TODO hard-coded `.html` OK?
  *
  * @param {Object} collection         Will be mutated
@@ -11,8 +10,8 @@ import { write } from '../utils/write';
  * @param {Array} entryKeys           path components
  * @return {Promise} for file write
  */
-function writePatternCollection (patterns, drizzleData, entryKeys) {
-  const collectionName = entryKeys.pop() || 'patterns';
+function writeCollection (patterns, drizzleData, entryKeys) {
+  const collectionName = entryKeys.pop() || 'patterns'; // TODO: Hay
   const outputPath = path.join(entryKeys.join(path.sep),
     `${collectionName}.html`);
   const fullPath = path.normalize(path.join(
@@ -34,17 +33,17 @@ function writePatternCollection (patterns, drizzleData, entryKeys) {
  * @param {Array} writePromises All write promises so far
  * @return {Array} of Promises
  */
-function walkPatterns (patterns, drizzleData,
+function walkCollections (patterns, drizzleData,
   currentKeys = [], writePromises = []) {
   if (patterns.collection) {
     writePromises.push(
-      writePatternCollection(patterns, drizzleData, currentKeys));
+      writeCollection(patterns, drizzleData, currentKeys));
   }
   for (const patternKey in patterns) {
     // TODO Better test following
     if (patternKey !== 'items' && patternKey !== 'collection') {
       currentKeys.push(patternKey);
-      walkPatterns(patterns[patternKey],
+      walkCollections(patterns[patternKey],
         drizzleData, currentKeys, writePromises);
       currentKeys.pop();
     }
@@ -55,11 +54,11 @@ function walkPatterns (patterns, drizzleData,
 /**
  * TODO: Comment, etc.
  */
-function writePatterns (drizzleData) {
-  return Promise.all(walkPatterns(drizzleData.patterns, drizzleData))
+function writeCollections (drizzleData) {
+  return Promise.all(walkCollections(drizzleData.patterns, drizzleData))
     .then(writePromises => {
       return drizzleData;
     });
 }
 
-export default writePatterns;
+export default writeCollections;

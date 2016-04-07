@@ -3,8 +3,6 @@ import { write } from '../utils/write';
 
 /**
  * Figure out the output path for `page` and write it to the filesystem.
- * @TODO options.keys is still dumb
- * @TODO hard-coded `.html` OK?
  *
  * @param {Object} page         Will be mutated
  * @param {Object} drizzleData
@@ -47,9 +45,7 @@ function walkPages (pages, drizzleData, currentKeys = [], writePromises = []) {
 
 function writePages (drizzleData) {
   return Promise.all(walkPages(drizzleData.pages, drizzleData))
-    .then(() => {
-      return drizzleData;
-    });
+    .then(() => drizzleData);
 }
 
 export default writePages;
