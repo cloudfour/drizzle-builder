@@ -1,6 +1,6 @@
 import DrizzleError from '../utils/error';
 import { deepPattern } from '../utils/object';
-import patternContext from '../render/context/pattern';
+import { patternContext } from '../utils/context';
 
 /**
  * Retrieve correct pattern object data, find the right partial and

@@ -1,4 +1,4 @@
-import collectionContext from './context/collection';
+import { resourceContext } from '../utils/context';
 import { applyTemplate } from '../utils/render';
 
 /**
@@ -17,7 +17,7 @@ function renderCollection (patterns, drizzleData, collectionKey) {
   const layoutKey = drizzleData.options.layouts.collection;
   patterns.collection.contents = applyTemplate(
     drizzleData.layouts[layoutKey].contents, // TODO error-checking
-    collectionContext(patterns.collection, drizzleData),
+    resourceContext(patterns.collection, drizzleData),
     drizzleData.options);
   return patterns;
 }
