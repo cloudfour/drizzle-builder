@@ -38,7 +38,6 @@ describe ('write/collections', () => {
           'button.html'
         );
         expect(patterns.collection.outputPath).to.contain('patterns.html');
-        //console.log(patterns.components.button.collection);
       });
     });
     it ('should prefix with patterns prefix', () => {
