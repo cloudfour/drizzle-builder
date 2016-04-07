@@ -12,6 +12,10 @@ import pageContext from './context/page';
  * to `foo` in frontMatter, it will not double-wrap it. This is to prevent
  * errors if a designer/developer creates a page file with the `{{#extend}}`
  * already in it.
+ *
+ * @param {Object} page
+ * @param {Object} drizzleData
+ * @return {String} wrapped contents
  */
 function wrapWithLayout (page, drizzleData) {
   const layout = page.data.layout || drizzleData.options.layouts.page;
@@ -60,6 +64,12 @@ function walkPages (pages, drizzleData) {
   return drizzleData.pages;
 }
 
+/**
+ * Walk the pages object and render its contents
+ *
+ * @param {Object} drizzleData
+ * @return {Object} pageData
+ */
 function renderPages (drizzleData) {
   return walkPages(drizzleData.pages, drizzleData);
 }

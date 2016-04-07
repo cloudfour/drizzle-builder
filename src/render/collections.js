@@ -11,6 +11,7 @@ import { applyTemplate } from '../utils/render';
  * @param {Object} drizzleData   All the data we have, including `options`
  * @param {String} collectionKey The key of the current set of `patterns`.
  *                               Used to derive the collection's "name"
+ * @return {Object}              patterns data at this level.
  */
 function renderCollection (patterns, drizzleData, collectionKey) {
   const layoutKey = drizzleData.options.layouts.collection;
@@ -42,6 +43,11 @@ function walkCollections (patterns, drizzleData, currentKey = 'patterns') {
   return drizzleData.patterns;
 }
 
+/**
+ * Render pattern collections.
+ * @param {Object} drizzleData
+ * @return {Object} patterns data
+ */
 function renderCollections (drizzleData) {
   return walkCollections(drizzleData.patterns, drizzleData);
 }
