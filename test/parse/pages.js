@@ -1,4 +1,3 @@
-/* global describe, it, before */
 var chai = require('chai');
 var config = require('../config');
 var expect = chai.expect;
