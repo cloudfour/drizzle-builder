@@ -3,7 +3,7 @@ var chai = require('chai');
 var expect = chai.expect;
 var mergeOptions = require('../dist/options');
 
-describe.only ('options', () => {
+describe ('options', () => {
   var keys = [
     'beautifier',
     'debug',

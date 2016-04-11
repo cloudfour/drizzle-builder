@@ -9,7 +9,7 @@ var writePages = require('../../dist/write/pages');
 var options = require('../../dist/options');
 var testUtils = require('../test-utils');
 
-describe.skip ('write/pages', () => {
+describe ('write/pages', () => {
   var opts = options(config.fixtureOpts);
   var allData;
   describe ('write out page files', () => {

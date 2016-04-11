@@ -4,7 +4,7 @@ var expect = chai.expect;
 var options = require('../../dist/options');
 var prepare = require('../../dist/prepare/');
 
-describe.skip ('prepare/index', () => {
+describe ('prepare/index', () => {
   var opts;
   beforeEach(() => {
     opts = options(config.fixtureOpts);

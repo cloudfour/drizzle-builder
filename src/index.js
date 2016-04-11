@@ -17,8 +17,6 @@ import write from './write/';
  */
 function drizzle (options) {
   const opts = mergeOptions(options);
-  // @TODO: Ultra temporary
-  opts.handlebars = require('handlebars');
   return prepare(opts).then(parse).then(render).then(write);
 }
 

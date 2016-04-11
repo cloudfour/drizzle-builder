@@ -1,4 +1,3 @@
-/* global describe, it, before */
 var chai = require('chai');
 var config = require('../config');
 var expect = chai.expect;
@@ -9,7 +8,10 @@ var sinonChai = require('sinon-chai');
 chai.use(sinonChai);
 
 describe ('prepare/helpers', () => {
-  const opts = options(config.fixtureOpts);
+  var opts;
+  before(() => {
+    opts = options(config.fixtureOpts);
+  });
   it ('should register handlebars-layouts helpers', () => {
     return prepareHelpers(opts).then(() => {
       expect(opts.handlebars.helpers).to.contain.keys(

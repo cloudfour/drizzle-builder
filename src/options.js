@@ -7,6 +7,8 @@ import defaults from './defaults';
  * @return {Object} merged options
  */
 function mergeOptions (options = {}) {
+  // @TODO: Ultra temporary
+  options.handlebars = require('handlebars');
   return merge(defaults, options);
 }
 
