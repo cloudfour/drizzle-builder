@@ -15,7 +15,6 @@ const defaults = {
     patterns: './dist/patterns'
   },
   fieldParsers  : { },
-  handlebars    : Handlebars,
   helpers       : {},
   layouts: {
     page      : 'default',
