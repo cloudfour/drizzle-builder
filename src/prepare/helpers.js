@@ -54,6 +54,7 @@ function prepareHelpers (options) {
       for (var helper in helpers) {
         options.handlebars.registerHelper(helper, helpers[helper]);
       }
+      return options;
     });
 }
 

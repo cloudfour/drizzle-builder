@@ -4,7 +4,7 @@ var frontMatter = require('front-matter');
 var marked = require('marked');
 
 var prepareDrizzle = require('../dist/prepare');
-var parseDrizzleOptions = require('../dist/options');
+var parseDrizzleOptions = require('../dist/init');
 
 const fixtures = path.join(__dirname, 'fixtures/');
 const parsers = {

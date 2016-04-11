@@ -6,7 +6,7 @@ import write from './write/';
 
 /**
  * Build the drizzle! This will:
- * - Parse and merge passed options with defaults
+ * - Init: Parse and merge passed options with defaults
  * - Prepare templating—partials, templates, helpers
  * - Parse files—data, patterns, pages, layouts—and organize a data object
  * - Render templates, collections, pages

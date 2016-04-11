@@ -6,7 +6,7 @@ var prepare = require('../../dist/prepare/');
 var parse = require('../../dist/parse/');
 var render = require('../../dist/render/');
 var writePages = require('../../dist/write/pages');
-var options = require('../../dist/options');
+var options = require('../../dist/init');
 var testUtils = require('../test-utils');
 
 describe ('write/pages', () => {
