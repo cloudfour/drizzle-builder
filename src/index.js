@@ -1,4 +1,4 @@
-import mergeOptions from './options';
+import init from './init';
 import prepare from './prepare/';
 import render from './render/';
 import parse from './parse/';
@@ -16,8 +16,7 @@ import write from './write/';
  * @return {Promise} resolving to {Object} of all data generated and used
  */
 function drizzle (options) {
-  const opts = mergeOptions(options);
-  return prepare(opts).then(parse).then(render).then(write);
+  return init(options).then(prepare).then(parse).then(render).then(write);
 }
 
 export default drizzle;
