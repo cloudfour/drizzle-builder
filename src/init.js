@@ -5,6 +5,8 @@ import Promise from 'bluebird';
 /**
  * Merge defaults into passed options.
  * @param {Object} options
+ * @param {Object} handlebars   Handlebars instance—it can be passed explicitly,
+ *                              primarily for testing purposes.
  * @return {Object} merged options
  */
 function init (options = {}, handlebars) {

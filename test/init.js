@@ -79,6 +79,11 @@ describe ('init', () => {
       return init(opts, hbs).then(options => {
         expect(options.handlebars.partials).to.contain.key('fourthBanana');
         expect(options.handlebars.partials).not.to.contain.key('nopeNotMe');
+        // Because prepare hasn't been run yet, `pattern` shouldn't be
+        // a partial yet. If we HADN'T refreshed the HBS instance, it's possible
+        // that `pattern` partials would "bleed over" from other async tests
+        // using the same shared Handlebars instance.
+        expect(options.handlebars.partials).not.to.contain.key('pattern');
       });
     });
 
