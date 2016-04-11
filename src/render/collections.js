@@ -16,7 +16,7 @@ import { applyTemplate } from '../utils/render';
 function renderCollection (patterns, drizzleData, collectionKey) {
   const layoutKey = drizzleData.options.layouts.collection;
   patterns.collection.contents = applyTemplate(
-    drizzleData.layouts[layoutKey].contents, // TODO error-checking
+    drizzleData.templates[layoutKey].contents, // @TODO deep object!
     resourceContext(patterns.collection, drizzleData),
     drizzleData.options);
   return patterns;

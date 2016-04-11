@@ -16,7 +16,7 @@ describe('drizzle', () => {
       expect(drizzleData.pages).to.be.an('object');
       expect(drizzleData.patterns).to.be.an('object');
       expect(drizzleData.options).to.be.an('object');
-      expect(drizzleData.layouts).to.be.an('object');
+      expect(drizzleData.templates).to.be.an('object');
       expect(drizzleData.data).to.be.an('object');
     });
   });
