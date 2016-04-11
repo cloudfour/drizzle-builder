@@ -1,4 +1,3 @@
-import Handlebars from 'handlebars';
 import parsers from './parse/parsers';
 
 const defaults = {
@@ -26,21 +25,17 @@ const defaults = {
       basedir: 'src/data',
       glob: 'src/data/**/*'
     },
-    layouts : {
-      basedir: 'src/layouts',
-      glob: 'src/layouts/**/*'
-    },
     pages   : {
       basedir: 'src/pages',
       glob: 'src/pages/**/*'
     },
-    partials: {
-      basedir: 'src/partials',
-      glob: 'src/partials/**/*'
-    },
     patterns: {
       basedir: 'src/patterns',
       glob: 'src/patterns/**/*.html'
+    },
+    templates: {
+      basedir: 'src/templates',
+      glob: 'src/templates/**/*'
     }
   }
 };
