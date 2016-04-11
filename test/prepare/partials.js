@@ -1,13 +1,12 @@
 var chai = require('chai');
 var config = require('../config');
 var expect = chai.expect;
-var init = require('../../dist/init');
 var preparePartials = require('../../dist/prepare/partials');
 
 describe ('prepare/partials', () => {
   var options;
-  before(() => {
-    return init(config.fixtureOpts).then(preparePartials).then(pOpts => {
+  beforeEach(() => {
+    return config.init(config.fixtureOpts).then(preparePartials).then(pOpts => {
       options = pOpts;
     });
   });

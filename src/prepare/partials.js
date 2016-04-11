@@ -20,6 +20,10 @@ function registerPartials (src, options, prefix = '') {
   return readFiles(src.glob, options).then(partialFiles => {
     partialFiles.forEach(partialFile => {
       const partialKey = resourceId(partialFile, src.basedir, prefix);
+      if (options.handlebars.partials.hasOwnProperty(partialKey)) {
+        new DrizzleError(`Duplicate partial key: ${partialKey}`,
+          DrizzleError.LEVELS.WARN).handle(options.debug);
+      }
       options.handlebars.registerPartial(partialKey, partialFile.contents);
     });
   });
