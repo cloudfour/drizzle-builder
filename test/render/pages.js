@@ -7,23 +7,20 @@ var parse = require('../../dist/parse/');
 var renderPages = require('../../dist/render/pages');
 
 describe ('render/pages', () => {
-  var opts, allData;
+  var opts, pageData;
   before (() => {
-    opts = config.parseOptions(config.fixtureOpts);
-    allData =  prepare(opts).then(parse).then(renderPages);
-    return allData;
+    opts = config.init(config.fixtureOpts);
+    return opts.then(prepare).then(parse).then(renderPages).then(pData => {
+      pageData = pData;
+    });
   });
   it ('should compile templates', () => {
-    return allData.then(pageData => {
-      expect(pageData['04-sandbox'].contents)
-        .to.have.string('<h1>Sandbox</h1>');
-    });
+    expect(pageData['04-sandbox'].contents)
+      .to.have.string('<h1>Sandbox</h1>');
   });
   it ('should override layouts when told to', () => {
-    return allData.then(pageData => {
-      const customPage = pageData.doThis;
-      expect(customPage.contents).to.contain('This is the Page Layout');
-      expect(customPage.contents).to.contain('<h2>foobar</h2>');
-    });
+    const customPage = pageData.doThis;
+    expect(customPage.contents).to.contain('This is the Page Layout');
+    expect(customPage.contents).to.contain('<h2>foobar</h2>');
   });
 });

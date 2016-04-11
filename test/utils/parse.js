@@ -1,4 +1,3 @@
-/* global describe, it */
 var chai = require('chai');
 var expect = chai.expect;
 var config = require('../config');
@@ -66,11 +65,14 @@ describe ('utils/parse', () => {
     });
   });
   describe('parseField', () => {
-    var opts = config.parseOptions({ fieldParsers: {
-      'notes': 'markdown'
-    }});
+    var opts;
+    before (() => {
+      return config.init(config.fixtureOpts).then(options => {
+        opts = options;
+      });
+    });
     it ('should run fields through fieldParsers from options', () => {
-      // `notes` defaults to markdown parsing (see default opts)
+      opts.fieldParsers.notes = 'markdown';
       var parsedField = utils.parseField(
         'notes', 'these are some notes', opts);
       expect(parsedField).to.be.an('object');

@@ -1,4 +1,3 @@
-/* global describe, it, before */
 var chai = require('chai');
 var config = require('../config');
 var expect = chai.expect;
@@ -7,8 +6,8 @@ var parsePages = require('../../dist/parse/pages');
 describe ('parse/pages', () => {
   var pageData, opts;
   before (() => {
-    opts = config.parseOptions(config.fixtureOpts);
-    return parsePages(opts).then(pData => {
+    opts = config.init(config.fixtureOpts);
+    return opts.then(parsePages).then(pData => {
       pageData = pData;
     });
   });
