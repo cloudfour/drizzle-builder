@@ -15,7 +15,7 @@ describe ('parse/pages', () => {
     expect(pageData).to.be.an('object');
     expect(pageData).not.to.contain.keys('items');
     expect(pageData).to.contain.keys(
-      'subfolder', '04-sandbox', 'components', 'doThis', 'index');
+      'subfolder', '04-sandbox', 'components', 'doThis', 'index', 'nerkle');
     expect(pageData.components).to.contain.keys(
       'data', 'path', 'contents'
     );

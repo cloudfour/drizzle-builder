@@ -19,7 +19,8 @@ import { resourceContext } from '../utils/context';
  */
 function wrapWithLayout (page, drizzleData) {
   const layout = page.data.layout || drizzleData.options.layouts.page;
-
+  // TODO Add test to see if _any_ extends is extant. Multiple extends
+  // for ANY reason will cause handlebars-layouts to asplode.
   const alreadyWrapped = new RegExp(
     `{{\\s*#extend\\s*[\'\"]${layout}[\'\"].*}}`)
     .test(page.contents);
