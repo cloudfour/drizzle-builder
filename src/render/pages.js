@@ -1,5 +1,5 @@
 import { applyTemplate } from '../utils/render';
-import pageContext from './context/page';
+import { resourceContext } from '../utils/context';
 
 /**
  * Wrap the page's current contents with an `extend` helper
@@ -12,6 +12,10 @@ import pageContext from './context/page';
  * to `foo` in frontMatter, it will not double-wrap it. This is to prevent
  * errors if a designer/developer creates a page file with the `{{#extend}}`
  * already in it.
+ *
+ * @param {Object} page
+ * @param {Object} drizzleData
+ * @return {String} wrapped contents
  */
 function wrapWithLayout (page, drizzleData) {
   const layout = page.data.layout || drizzleData.options.layouts.page;
@@ -36,7 +40,7 @@ function wrapWithLayout (page, drizzleData) {
 function renderPage (page, drizzleData) {
   page.contents = applyTemplate(
     wrapWithLayout(page, drizzleData),
-    pageContext(page, drizzleData),
+    resourceContext(page, drizzleData),
     drizzleData.options);
   return page.contents;
 }
@@ -60,6 +64,12 @@ function walkPages (pages, drizzleData) {
   return drizzleData.pages;
 }
 
+/**
+ * Walk the pages object and render its contents
+ *
+ * @param {Object} drizzleData
+ * @return {Object} pageData
+ */
 function renderPages (drizzleData) {
   return walkPages(drizzleData.pages, drizzleData);
 }

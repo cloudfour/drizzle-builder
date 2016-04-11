@@ -1,6 +1,8 @@
 import renderPages from './pages';
 import renderCollections from './collections';
 
+import DrizzleError from '../utils/error';
+
 /**
  * Render pages and pattern-collection pages.
  *
@@ -19,7 +21,7 @@ function render (drizzleData) {
       layouts : drizzleData.layouts,
       options : drizzleData.options
     };
-  });
+  }, error => new DrizzleError(error).handle(drizzleData.options.debug));
 }
 
 export default render;
