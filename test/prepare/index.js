@@ -35,9 +35,10 @@ describe ('prepare/index', () => {
   it ('should prepare partials', () => {
     return opts.then(prepare).then(preparedOpts => {
       expect(preparedOpts.handlebars.partials).to.contain.keys(
-        'header', 'menu'
+        'partials.header', 'partials.menu'
       );
-      expect(preparedOpts.handlebars.partials).to.contain.keys('nested.thing');
+      expect(preparedOpts.handlebars.partials).to.contain.keys(
+        'partials.nested.thing');
       expect(preparedOpts.handlebars.partials).to.contain.keys('default');
     });
   });

@@ -5,32 +5,27 @@ var init = require('../../dist/init');
 var preparePartials = require('../../dist/prepare/partials');
 
 describe ('prepare/partials', () => {
-  var opts;
+  var options;
   before(() => {
-    opts = init(config.fixtureOpts);
-    return opts;
+    return init(config.fixtureOpts).then(preparePartials).then(pOpts => {
+      options = pOpts;
+    });
   });
   it ('should register layout partials', () => {
-    return opts.then(preparePartials).then(options => {
-      expect(options.handlebars.partials).to.contain.keys(
-        'collection', 'default', 'page');
-    });
+    expect(options.handlebars.partials).to.contain.keys(
+      'collection', 'default', 'page');
   });
-  it ('should register partial partials', () => {
-    return opts.then(preparePartials). then(options => {
-      expect(options.handlebars.partials).to.contain.keys(
-        'header', 'menu', 'nested.thing');
-    });
+  it ('should register partials', () => {
+    expect(options.handlebars.partials).to.contain.keys(
+      'partials.header', 'partials.menu', 'partials.nested.thing');
   });
   it ('should register patterns files as partials', () => {
-    return opts.then(preparePartials). then(options => {
-      expect(options.handlebars.partials).to.contain.keys(
-        'patterns.components.orange', 'patterns.components.button.aardvark');
-      expect(options.handlebars.partials).to.contain.keys(
-        'patterns.pink',
-        'patterns.components.button.base',
-        'patterns.components.button.color-variation'
-      );
-    });
+    expect(options.handlebars.partials).to.contain.keys(
+      'patterns.components.orange', 'patterns.components.button.aardvark');
+    expect(options.handlebars.partials).to.contain.keys(
+      'patterns.pink',
+      'patterns.components.button.base',
+      'patterns.components.button.color-variation'
+    );
   });
 });

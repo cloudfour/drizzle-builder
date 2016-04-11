@@ -5,7 +5,7 @@ var init = require('../dist/init');
 
 var Handlebars = require('handlebars');
 
-describe.only ('init', () => {
+describe ('init', () => {
   var keys = [
     'beautifier',
     'debug',
