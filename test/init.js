@@ -3,7 +3,7 @@ var chai = require('chai');
 var expect = chai.expect;
 var init = require('../dist/init');
 
-describe.only ('options', () => {
+describe ('options', () => {
   var keys = [
     'beautifier',
     'debug',
