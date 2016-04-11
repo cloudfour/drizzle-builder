@@ -1,4 +1,3 @@
-/* global describe, it */
 var chai = require('chai');
 var expect = chai.expect;
 chai.use(expect);
@@ -48,8 +47,13 @@ describe ('utils/error', () => {
         });
       });
     });
+  });
+  describe('debugging', () => {
+    it ('should throw all errors by default in debug', () => {
+      const error = new DrizzleError('random error');
+      expect (error.handle.bind(error)).to.throw;
+    });
     it ('should by default log to console on non-throw errors');
     it ('should accept a logging function');
-    it ('should throw by default on ERROR');
   });
 });

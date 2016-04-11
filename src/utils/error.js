@@ -9,7 +9,7 @@ DrizzleError.prototype = Object.create(Error.prototype);
 DrizzleError.prototype.handle = function (options = {}) {
   options = Object.assign({
     logFn: console.log,
-    throwThreshold: DrizzleError.LEVELS.ERROR
+    throwThreshold: (process.env.DRIZZLE_DEBUG) ? 0 : DrizzleError.LEVELS.ERROR
   }, options);
   if (this.level >= options.throwThreshold) {
     throw this;
