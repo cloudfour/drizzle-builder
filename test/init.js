@@ -1,9 +1,11 @@
 var chai = require('chai');
-//var config = require('./config');
+var config = require('./config');
 var expect = chai.expect;
 var init = require('../dist/init');
 
-describe ('options', () => {
+var Handlebars = require('handlebars');
+
+describe ('init', () => {
   var keys = [
     'beautifier',
     'debug',
@@ -68,7 +70,17 @@ describe ('options', () => {
     });
   });
   describe('merging passed options', () => {
-    it ('should have a test about handlebars instance');
+    it ('should take a handlebars instance', () => {
+      var opts = config.fixtureOpts;
+      var hbs = Handlebars.create();
+      var hbs2 = Handlebars.create();
+      hbs.registerPartial('fourthBanana', 'dingus');
+      hbs2.registerPartial('nopeNotMe', 'fooooo');
+      return init(opts, hbs).then(options => {
+        expect(options.handlebars.partials).to.contain.key('fourthBanana');
+        expect(options.handlebars.partials).not.to.contain.key('nopeNotMe');
+      });
+    });
 
     it('should allow override of dest paths', () => {
       var opts = init({ dest: {
