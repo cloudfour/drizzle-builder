@@ -1,12 +1,14 @@
-/* global describe, it */
 var chai = require('chai');
 var config = require('../config');
 var expect = chai.expect;
 var options = require('../../dist/options');
 var prepare = require('../../dist/prepare/');
 
-describe ('prepare/index', () => {
-  const opts = options(config.fixtureOpts);
+describe.skip ('prepare/index', () => {
+  var opts;
+  beforeEach(() => {
+    opts = options(config.fixtureOpts);
+  });
   it ('should resolve to an options object', () => {
     return prepare(opts).then(preparedOpts => {
       expect(preparedOpts).to.be.an('object');
