@@ -3,7 +3,6 @@ var yaml = require('js-yaml');
 var frontMatter = require('front-matter');
 var marked = require('marked');
 
-var prepareDrizzle = require('../dist/prepare');
 var init = require('../dist/init');
 
 const fixtures = path.join(__dirname, 'fixtures/');
@@ -45,27 +44,11 @@ function fixturePath (glob) {
   return path.normalize(path.join(fixtures, glob));
 }
 
-function prepare (options) {
-  return prepareDrizzle(options);
-}
-function prepareAll (options) {
-  var opts = init(options);
-  return prepare(opts).then(drizzleData => {
-    return {
-      context: drizzleData.context,
-      handlebars: drizzleData.handlebars,
-      options: opts
-    };
-  });
-}
-
 var config = {
   parsers,
   fixturePath,
   fixtures,
   init: init,
-  prepare,
-  prepareAll,
   fixtureOpts: {
     debug: {
       logFn: msg => msg
