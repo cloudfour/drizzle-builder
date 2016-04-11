@@ -4,7 +4,7 @@ var frontMatter = require('front-matter');
 var marked = require('marked');
 
 var prepareDrizzle = require('../dist/prepare');
-var parseDrizzleOptions = require('../dist/init');
+var init = require('../dist/init');
 
 const fixtures = path.join(__dirname, 'fixtures/');
 const parsers = {
@@ -46,7 +46,7 @@ function fixturePath (glob) {
 }
 
 function parseOptions (options) {
-  return parseDrizzleOptions(options);
+  return init(options);
 }
 function prepare (options) {
   return prepareDrizzle(options);
@@ -66,6 +66,7 @@ var config = {
   parsers,
   fixturePath,
   fixtures,
+  init: init,
   parseOptions,
   prepare,
   prepareAll,

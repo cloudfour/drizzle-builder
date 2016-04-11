@@ -3,9 +3,6 @@ var config = require('../config');
 var expect = chai.expect;
 var init = require('../../dist/init');
 var prepareHelpers = require('../../dist/prepare/helpers');
-var sinon = require('sinon');
-var sinonChai = require('sinon-chai');
-chai.use(sinonChai);
 
 describe ('prepare/helpers', () => {
   var opts;
