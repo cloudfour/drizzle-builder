@@ -9,7 +9,7 @@ var renderPages = require('../../dist/render/pages');
 describe ('render/pages', () => {
   var opts, pageData;
   before (() => {
-    opts = config.parseOptions(config.fixtureOpts);
+    opts = config.init(config.fixtureOpts);
     return opts.then(prepare).then(parse).then(renderPages).then(pData => {
       pageData = pData;
     });

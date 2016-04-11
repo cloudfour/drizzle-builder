@@ -45,14 +45,11 @@ function fixturePath (glob) {
   return path.normalize(path.join(fixtures, glob));
 }
 
-function parseOptions (options) {
-  return init(options);
-}
 function prepare (options) {
   return prepareDrizzle(options);
 }
 function prepareAll (options) {
-  var opts = parseOptions(options);
+  var opts = init(options);
   return prepare(opts).then(drizzleData => {
     return {
       context: drizzleData.context,
@@ -67,7 +64,6 @@ var config = {
   fixturePath,
   fixtures,
   init: init,
-  parseOptions,
   prepare,
   prepareAll,
   fixtureOpts: {
