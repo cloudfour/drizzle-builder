@@ -73,7 +73,7 @@ dest: {
 
 ### `layouts`
 
-An `{Object}` associating different drizzle output page types with their _default_ layout (template). Currently relevant for `page` and `collection`. String values correspond to the filename (minus extension) of the layout under the `src.layouts` directory/glob.
+An `{Object}` associating different drizzle output page types with their _default_ layout (template). Currently relevant for `page` and `collection`. String values correspond to the filename (minus extension) of the layout under the `src.templates` directory/glob.
 
 Defaults to:
 ```
@@ -113,34 +113,29 @@ indicates, e.g., that we should consider all pattern resources "relative" to the
 `src` properties include:
 
 * `data`: data files that contain (typically) YAML or JSON data to make available on drizzleData global context.
-* `layouts`: layouts to register as partials on `handlebars`
 * `pages`: source page files (typically Handlebars with YAML frontmatter) to transform into HTML pages.
-* `partials`: files to register as partials on `handlebars`.
 * `patterns`: patterns.
+* `templates`: Handlebars source files—layouts and partials—to be registered as partials on Handlebars. Also made available on the `templates` property of global data.
 
 Default:
 
 ```
 src: {
   data    : {
-    basedir: 'data',
+    basedir: 'src/data',
     glob: 'src/data/**/*'
   },
-  layouts : {
-    basedir: 'layouts',
-    glob: 'src/layouts/**/*'
-  },
   pages   : {
-    basedir: 'pages',
+    basedir: 'src/pages',
     glob: 'src/pages/**/*'
   },
-  partials: {
-    basedir: 'partials',
-    glob: 'src/partials/**/*'
-  },
   patterns: {
-    basedir: 'patterns',
+    basedir: 'src/patterns',
     glob: 'src/patterns/**/*.html'
+  },
+  templates: {
+    basedir: 'src/templates',
+    glob: 'src/templates/**/*'
   }
 }
 ```
@@ -153,9 +148,9 @@ src: {
 
 * `options`: The `options` the build was ultimately created with.
 * `data`: Parsed data from data source files.
-* `layouts`: Contents of parsed layout files and their metadata.
 * `pages`: Contents of parsed page source files and their metadata.
 * `patterns`: Hierarchical structure of patterns, their containing collections and metadata.
+* `templates`: Contents of parsed layouts and partials.
 
 ## Development
 
