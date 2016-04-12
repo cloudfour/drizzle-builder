@@ -58,21 +58,17 @@ var config = {
         glob: fixturePath('data/**/*'),
         basedir: fixturePath('data')
       },
-      layouts : {
-        glob: fixturePath('layouts/**/*'),
-        basedir: fixturePath('layouts')
-      },
       pages   : {
         glob: fixturePath('pages/**/*'),
         basedir: fixturePath('pages')
       },
-      partials: {
-        glob: fixturePath('partials/**/*.hbs'),
-        basedir: fixturePath('partials')
-      },
       patterns: {
         glob: fixturePath('patterns/**/*.html'),
         basedir: fixturePath('patterns')
+      },
+      templates: {
+        glob: fixturePath('templates/**/*'),
+        basedir: fixturePath('templates')
       }
     },
     dest: {

@@ -18,9 +18,15 @@ describe ('render/pages', () => {
     expect(pageData['04-sandbox'].contents)
       .to.have.string('<h1>Sandbox</h1>');
   });
-  it ('should override layouts when told to', () => {
-    const customPage = pageData.doThis;
-    expect(customPage.contents).to.contain('This is the Page Layout');
-    expect(customPage.contents).to.contain('<h2>foobar</h2>');
+  describe ('custom page layouts', () => {
+    it ('should override layouts', () => {
+      const customPage = pageData.doThis;
+      expect(customPage.contents).to.contain('This is the Page Layout');
+      expect(customPage.contents).to.contain('<h2>foobar</h2>');
+    });
+    it ('should be able to find nested layouts', () => {
+      expect(pageData.nerkle.contents).to.contain('Frankly Page');
+    });
   });
+
 });

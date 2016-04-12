@@ -14,9 +14,12 @@ import { applyTemplate } from '../utils/render';
  * @return {Object}              patterns data at this level.
  */
 function renderCollection (patterns, drizzleData, collectionKey) {
+  // TODO right now, layoutKey will only work if it is top-level in
+  // templates directory. Also, there is no override supported on a collection-
+  // by-collection level (i.e. in collection metadata files).
   const layoutKey = drizzleData.options.layouts.collection;
   patterns.collection.contents = applyTemplate(
-    drizzleData.layouts[layoutKey].contents, // TODO error-checking
+    drizzleData.templates[layoutKey].contents,
     resourceContext(patterns.collection, drizzleData),
     drizzleData.options);
   return patterns;

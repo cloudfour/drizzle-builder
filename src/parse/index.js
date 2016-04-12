@@ -2,9 +2,9 @@
  * @module parse
  */
 import parseData from './data';
-import parseLayouts from './layouts';
 import parsePages from './pages';
 import parsePatterns from './patterns';
+import parseTemplates from './templates';
 
 import DrizzleError from '../utils/error';
 /**
@@ -17,15 +17,15 @@ function parseAll (options) {
     parseData(options),
     parsePages(options),
     parsePatterns(options),
-    parseLayouts(options)
+    parseTemplates(options)
   ]).then(
     allData => {
       return {
-        data    : allData[0],
-        pages   : allData[1],
-        patterns: allData[2],
-        layouts : allData[3],
-        options : options
+        data      : allData[0],
+        pages     : allData[1],
+        patterns  : allData[2],
+        templates : allData[3],
+        options   : options
       };
     },
     error => new DrizzleError(error).handle(options.debug)

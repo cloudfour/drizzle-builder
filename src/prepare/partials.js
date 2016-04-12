@@ -32,9 +32,8 @@ function registerPartials (src, options, prefix = '') {
  */
 function preparePartials (options) {
   return Promise.all([
-    registerPartials(options.src.partials, options), // Partials as partials
-    registerPartials(options.src.patterns, options, 'patterns'), // Patterns
-    registerPartials(options.src.layouts, options) // Layouts as partials
+    registerPartials(options.src.templates, options), // Partials as partials
+    registerPartials(options.src.patterns, options, 'patterns') // Patterns
   ]).then(
     () => options,
     error => new DrizzleError(error).handle(options.debug));

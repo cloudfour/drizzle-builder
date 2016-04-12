@@ -47,7 +47,7 @@ describe ('init', () => {
       });
     });
     it ('should define default src-es', () => {
-      var srces = ['data', 'layouts', 'pages', 'partials', 'patterns'];
+      var srces = ['data', 'pages', 'patterns', 'templates'];
       return opts.then(options => {
         expect(options).to.include.key('src');
         expect(options.src).to.include.keys(srces);

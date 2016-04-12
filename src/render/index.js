@@ -18,7 +18,7 @@ function render (drizzleData) {
       data    : drizzleData.data,
       pages   : allData[0],
       patterns: allData[1],
-      layouts : drizzleData.layouts,
+      templates : drizzleData.templates,
       options : drizzleData.options
     };
   }, error => new DrizzleError(error).handle(drizzleData.options.debug));
