@@ -3,8 +3,9 @@ var chai = require('chai');
 var expect = chai.expect;
 //var config = require('./config');
 var utils = require('../../dist/utils/object');
+var DrizzleError = require('../../dist/utils/error');
 
-describe ('utils/object', () => {
+describe.only ('utils/object', () => {
   describe('deepCollection', () => {
     it ('should return deep collection', () => {
       var patternsObj = {
@@ -28,7 +29,7 @@ describe ('utils/object', () => {
     it ('should throw if collection path non-extant', () => {
       const obj = {foo : {}};
       expect(utils.deepCollection.bind(
-        utils, ('foo.bar.baz', obj, false))).to.throw;
+        utils, 'foo.bar.baz', obj, false)).to.throw(DrizzleError);
     });
   });
   describe('deepObj', () => {
@@ -41,7 +42,7 @@ describe ('utils/object', () => {
     it ('should not create paths when indicated', () => {
       const obj = {foo : {}};
       expect(utils.deepObj.bind(
-        utils, (['foo', 'bar', 'baz'], obj, false))).to.throw;
+        utils, ['foo', 'bar', 'baz'], obj, false)).to.throw(DrizzleError);
     });
   });
   describe('deepPattern', () => {
@@ -66,7 +67,7 @@ describe ('utils/object', () => {
     it ('should throw if pattern path non-extant', () => {
       const obj = {foo : {}};
       expect(utils.deepPattern.bind(
-        utils, ('foo.bar.baz', obj, false))).to.throw;
+        utils, 'foo.bar.baz', obj, false)).to.throw(DrizzleError);
     });
   });
 
