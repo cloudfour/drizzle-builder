@@ -1,5 +1,7 @@
 import { resourceContext } from '../utils/context';
 import { applyTemplate } from '../utils/render';
+import { deepObj } from '../utils/object';
+import DrizzleError from '../utils/error';
 
 /**
  * For any given `patterns` entry, render a pattern-collection page for
@@ -14,12 +16,21 @@ import { applyTemplate } from '../utils/render';
  * @return {Object}              patterns data at this level.
  */
 function renderCollection (patterns, drizzleData, collectionKey) {
-  // TODO right now, layoutKey will only work if it is top-level in
-  // templates directory. Also, there is no override supported on a collection-
-  // by-collection level (i.e. in collection metadata files).
   const layoutKey = drizzleData.options.layouts.collection;
+  let layoutObj;
+  try {
+    // deepObj will throw if it fails, which is good and fine...
+    layoutObj = deepObj(layoutKey.split('.'), drizzleData.templates, false);
+  } catch (e) {
+    // But Make this error more friendly and specific
+    DrizzleError.error(new DrizzleError(
+      `Could not find partial for default collection layout
+'${layoutKey}'. Check 'options.layouts.collection' and/or
+'options.src.templates' values to make sure they are OK`,
+    DrizzleError.LEVELS.ERROR), drizzleData.options.debug);
+  }
   patterns.collection.contents = applyTemplate(
-    drizzleData.templates[layoutKey].contents,
+    layoutObj.contents,
     resourceContext(patterns.collection, drizzleData),
     drizzleData.options);
   return patterns;
