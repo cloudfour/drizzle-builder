@@ -84,7 +84,7 @@ function parseField (fieldKey, fieldData, options) {
     else {
       DrizzleError.error(new DrizzleError(
         `parser '${fieldData.parser}' set on field '${fieldKey}' not defined`,
-        DrizzleError.LEVELS.WARN), options);
+        DrizzleError.LEVELS.WARN), options.debug);
     }
     contents = fieldData.contents;
     if (!fieldData.hasOwnProperty('contents')) {

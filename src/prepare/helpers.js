@@ -57,7 +57,7 @@ function prepareHelpers (options) {
         options.handlebars.registerHelper(helper, helpers[helper]);
       }
       return options;
-    }, error => DrizzleError.error(error, options));
+    }, error => DrizzleError.error(error, options.debug));
 }
 
 export default prepareHelpers;

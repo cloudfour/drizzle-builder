@@ -41,7 +41,7 @@ function preparePartials (options) {
     registerPartials(options.src.patterns, options, 'patterns') // Patterns
   ]).then(
     () => options,
-    error => DrizzleError.error(error, options)
+    error => DrizzleError.error(error, options.debug)
   );
 }
 

@@ -43,7 +43,7 @@ function writeCollections (drizzleData) {
     drizzleData,
     [drizzleData.options.src.patterns.basedir])
   ).then(writePromises => drizzleData,
-         error => DrizzleError.error(error, drizzleData.options));
+         error => DrizzleError.error(error, drizzleData.options.debug));
 }
 
 export default writeCollections;

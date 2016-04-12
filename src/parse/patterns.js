@@ -190,7 +190,7 @@ function parsePatterns (options) {
   return readFileTree(options.src.patterns, options).then(patternObj => {
     return Promise.all(buildCollections(patternObj, options))
       .then(() => patternObj,
-            error => DrizzleError.error(error, options));
+            error => DrizzleError.error(error, options.debug));
   });
 }
 

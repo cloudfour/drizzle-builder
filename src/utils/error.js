@@ -11,17 +11,17 @@ DrizzleError.prototype = Object.create(Error.prototype);
  * be DrizzleErrors yet (e.g. they're Errors).
  */
 DrizzleError.error = function (error, options = {}) {
-  options.debug = Object.assign({
+  options = Object.assign({
     logFn: console.log,
-    throwThreshold: DrizzleError.LEVELS.ERROR
-  }, options.debug || {});
+    throwThreshold: (process.env.DRIZZLE_DEBUG) ? 0 : DrizzleError.LEVELS.ERROR
+  }, options || {});
   if (!(error instanceof DrizzleError)) {
     error = new DrizzleError(error, DrizzleError.LEVELS.ERROR);
   }
-  if (this.level >= options.throwThreshold || process.env.DRIZZLE_DEBUG) {
+  if (this.level >= options.throwThreshold) {
     throw error;
   }
-  options.debug.logFn(error.message);
+  options.logFn(error.message);
 };
 
 DrizzleError.LEVELS = {

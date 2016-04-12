@@ -20,7 +20,7 @@ function renderPatternPartial (patternId, drizzleData, Handlebars) {
   } else {
     DrizzleError.error(new DrizzleError(
       `Partial for pattern ${patternId} not found`, DrizzleError.LEVELS.ERROR),
-      drizzleData.options);
+      drizzleData.options.debug);
   }
 }
 
@@ -31,7 +31,7 @@ function registerPatternHelpers (options) {
   const Handlebars = options.handlebars;
   if (Handlebars.helpers.pattern) {
     DrizzleError.error(new DrizzleError('`pattern` helper already registered',
-      DrizzleError.LEVELS.WARN), options);
+      DrizzleError.LEVELS.WARN), options.debug);
   }
   /**
    * The `pattern` helper allows the embedding of patterns anywhere
@@ -46,7 +46,7 @@ function registerPatternHelpers (options) {
   if (Handlebars.helpers.patternSource) {
     DrizzleError.error(new DrizzleError(
       '`patternSource` helper already registered',
-      DrizzleError.LEVELS.WARN), options);
+      DrizzleError.LEVELS.WARN), options.debug);
   }
   /**
    * Similar to `pattern` but the returned string is HTML-escaped.

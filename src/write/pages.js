@@ -37,7 +37,7 @@ function walkPages (pages, drizzleData, currentKeys = [], writePromises = []) {
 function writePages (drizzleData) {
   return Promise.all(walkPages(drizzleData.pages, drizzleData))
     .then(() => drizzleData,
-          error => DrizzleError.error(error, drizzleData.options));
+          error => DrizzleError.error(error, drizzleData.options.debug));
 }
 
 export default writePages;

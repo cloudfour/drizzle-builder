@@ -21,7 +21,7 @@ function render (drizzleData) {
       templates : drizzleData.templates,
       options : drizzleData.options
     };
-  }, error => DrizzleError.error(error, drizzleData.options));
+  }, error => DrizzleError.error(error, drizzleData.options.debug));
 }
 
 export default render;

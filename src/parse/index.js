@@ -28,7 +28,7 @@ function parseAll (options) {
         options   : options
       };
     },
-    error => DrizzleError.error(error, options)
+    error => DrizzleError.error(error, options.debug)
   );
 }
 
