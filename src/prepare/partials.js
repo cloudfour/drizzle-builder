@@ -21,9 +21,9 @@ function registerPartials (src, options, prefix = '') {
     partialFiles.forEach(partialFile => {
       const partialKey = resourceId(partialFile, src.basedir, prefix);
       if (options.handlebars.partials.hasOwnProperty(partialKey)) {
-        throw new DrizzleError(`Partial key '${partialKey}' already
+        DrizzleError.error(new DrizzleError(`Partial key '${partialKey}' already
 registered on Handlebars instance: is this intentional?`,
-          DrizzleError.LEVELS.WARN);
+          DrizzleError.LEVELS.WARN), options);
       }
       options.handlebars.registerPartial(partialKey, partialFile.contents);
     });

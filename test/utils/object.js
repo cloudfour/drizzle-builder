@@ -5,7 +5,7 @@ var expect = chai.expect;
 var utils = require('../../dist/utils/object');
 var DrizzleError = require('../../dist/utils/error');
 
-describe.only ('utils/object', () => {
+describe ('utils/object', () => {
   describe('deepCollection', () => {
     it ('should return deep collection', () => {
       var patternsObj = {

@@ -18,8 +18,9 @@ function deepObj (pathKeys, obj, createEntries = true) {
       if (createEntries) {
         prev[curr] = {};
       } else {
-        throw new DrizzleError(`Property ${curr} not found on supplied object`,
-          DrizzleError.LEVELS.ERROR);
+        DrizzleError.error(new DrizzleError(
+          `Property ${curr} not found on supplied object`,
+          DrizzleError.LEVELS.ERROR));
       }
     }
     return prev[curr];
@@ -49,8 +50,8 @@ function deepPattern (patternId, obj) {
  * in the object `obj`.
  * @see deepPattern
  */
-function deepCollection (patternId, obj) {
-  const pathBits = patternId.split('.'); // TODO pattern separator elsewhere?
+function deepCollection (collectionId, obj) {
+  const pathBits = collectionId.split('.'); // TODO pattern separator elsewhere?
   pathBits.pop();
   pathBits.push('collection');
   pathBits.shift();
