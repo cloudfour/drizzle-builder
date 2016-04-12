@@ -3,7 +3,9 @@ var yaml = require('js-yaml');
 var frontMatter = require('front-matter');
 var marked = require('marked');
 
-var init = require('../dist/init');
+var drizzleInit = require('../dist/init');
+
+var Handlebars = require('handlebars');
 
 const fixtures = path.join(__dirname, 'fixtures/');
 const parsers = {
@@ -42,6 +44,14 @@ const parsers = {
 
 function fixturePath (glob) {
   return path.normalize(path.join(fixtures, glob));
+}
+
+function init (options) {
+  options = options || config.fixtureOpts;
+  return drizzleInit(options).then(opts => {
+    opts.handlebars = Handlebars.create();
+    return opts;
+  });
 }
 
 var config = {

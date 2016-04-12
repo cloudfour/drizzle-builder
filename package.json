@@ -11,7 +11,7 @@
     "build": "babel src --out-dir dist",
     "coverage": "istanbul cover _mocha -- --recursive",
     "prepublish": "npm run test",
-    "test": "npm run build; mocha --recursive"
+    "test": "npm run build; env DRIZZLE_DEBUG=1 mocha --recursive"
   },
   "keywords": [
     "patterns"

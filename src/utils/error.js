@@ -6,15 +6,22 @@ function DrizzleError (message, level) {
 
 DrizzleError.prototype = Object.create(Error.prototype);
 
-DrizzleError.prototype.handle = function (options = {}) {
+/**
+ * This static method allows DrizzleError to handle things that may not
+ * be DrizzleErrors yet (e.g. they're Errors).
+ */
+DrizzleError.error = function (error, options = {}) {
   options = Object.assign({
     logFn: console.log,
-    throwThreshold: DrizzleError.LEVELS.ERROR
-  }, options);
-  if (this.level >= options.throwThreshold) {
-    throw this;
+    throwThreshold: (process.env.DRIZZLE_DEBUG) ? 0 : DrizzleError.LEVELS.ERROR
+  }, options || {});
+  if (!(error instanceof DrizzleError)) {
+    error = new DrizzleError(error, DrizzleError.LEVELS.ERROR);
   }
-  options.logFn(this.message);
+  if (error.level >= options.throwThreshold) {
+    throw error;
+  }
+  options.logFn(error.message);
 };
 
 DrizzleError.LEVELS = {

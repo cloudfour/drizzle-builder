@@ -5,13 +5,13 @@ var prepare = require('../../dist/prepare/');
 var parse = require('../../dist/parse/');
 var render = require('../../dist/render/');
 var writePatterns = require('../../dist/write/collections');
-var init = require('../../dist/init');
 var testUtils = require('../test-utils');
 
 describe ('write/collections', () => {
   var drizzleData;
   before (() => {
-    return init(config.fixtureOpts).then(prepare).then(parse).then(render)
+    return config.init(config.fixtureOpts)
+      .then(prepare).then(parse).then(render)
       .then(writePatterns).then(aData => {
         drizzleData = aData;
         return drizzleData;

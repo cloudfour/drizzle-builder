@@ -1,22 +1,24 @@
 var chai = require('chai');
 var config = require('../config');
 var expect = chai.expect;
-var init = require('../../dist/init');
 var prepare = require('../../dist/prepare/');
 
 describe ('prepare/index', () => {
   var opts;
   beforeEach(() => {
-    opts = init(config.fixtureOpts);
+    return config.init(config.fixtureOpts).then(options => {
+      opts = options;
+      return opts;
+    });
   });
   it ('should resolve to an options object', () => {
-    return opts.then(prepare).then(preparedOpts => {
+    return prepare(opts).then(preparedOpts => {
       expect(preparedOpts).to.be.an('object');
       expect(preparedOpts).to.contain.keys('handlebars');
     });
   });
   it ('should prepare helpers', () => {
-    return opts.then(prepare).then(preparedOpts => {
+    return prepare(opts).then(preparedOpts => {
       expect(preparedOpts.handlebars.helpers).to.contain.keys(
         'toFraction', 'toJSON', 'toSlug'
       );
@@ -26,14 +28,14 @@ describe ('prepare/index', () => {
     });
   });
   it ('should register layouts as partials', () => {
-    return opts.then(prepare).then(preparedOpts => {
+    return prepare(opts).then(preparedOpts => {
       expect(preparedOpts.handlebars.partials).to.contain.keys(
         'default', 'page', 'collection'
       );
     });
   });
   it ('should prepare partials', () => {
-    return opts.then(prepare).then(preparedOpts => {
+    return prepare(opts).then(preparedOpts => {
       expect(preparedOpts.handlebars.partials).to.contain.keys(
         'partials.header', 'partials.menu'
       );
@@ -43,7 +45,7 @@ describe ('prepare/index', () => {
     });
   });
   it ('should prepare pattern partials', () => {
-    return opts.then(prepare).then(preparedOpts => {
+    return prepare(opts).then(preparedOpts => {
       expect(preparedOpts.handlebars.partials).to.contain.keys(
         'patterns.pink',
         'patterns.components.button.base',
@@ -52,7 +54,7 @@ describe ('prepare/index', () => {
     });
   });
   it ('should register the `pattern` helper', () => {
-    return opts.then(prepare).then(preparedOpts => {
+    return prepare(opts).then(preparedOpts => {
       expect(preparedOpts.handlebars.helpers).to.contain.key('pattern');
     });
   });

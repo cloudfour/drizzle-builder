@@ -20,7 +20,7 @@ function prepare (options) {
     preparePartials(options)
   ]).then(
     () => options,
-    error => new DrizzleError(error).handle(options.debug)
+    error => DrizzleError.error(error, options.debug)
   );
 }
 

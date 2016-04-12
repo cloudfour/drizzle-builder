@@ -1,4 +1,5 @@
 import { writeResource } from '../utils/write';
+import DrizzleError from '../utils/error';
 
 const isPage = page => page.hasOwnProperty('contents');
 
@@ -35,7 +36,8 @@ function walkPages (pages, drizzleData, currentKeys = [], writePromises = []) {
  */
 function writePages (drizzleData) {
   return Promise.all(walkPages(drizzleData.pages, drizzleData))
-    .then(() => drizzleData);
+    .then(() => drizzleData,
+          error => DrizzleError.error(error, drizzleData.options.debug));
 }
 
 export default writePages;

@@ -1,10 +1,10 @@
 import globby from 'globby';
-import marked from 'marked';
 import Promise from 'bluebird';
 import {readFile as readFileCB} from 'fs';
 var readFile = Promise.promisify(readFileCB);
 import { relativePathArray } from './shared';
 import { deepObj, resourceKey } from './object'; // TODO NO NO NO NO NO
+import DrizzleError from './error';
 
 /**
  * @param {glob} glob
@@ -81,7 +81,10 @@ function parseField (fieldKey, fieldData, options) {
     if (options.parsers.hasOwnProperty(fieldData.parser)) {
       parseFn = options.parsers[fieldData.parser].parseFn;
     }
-    else { // TODO Handle error
+    else {
+      DrizzleError.error(new DrizzleError(
+        `parser '${fieldData.parser}' set on field '${fieldKey}' not defined`,
+        DrizzleError.LEVELS.WARN), options.debug);
     }
     contents = fieldData.contents;
     if (!fieldData.hasOwnProperty('contents')) {

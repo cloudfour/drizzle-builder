@@ -1,5 +1,7 @@
 import { keyname, relativePathArray } from './shared';
 
+import DrizzleError from './error';
+
 /**
  * Return a reference to the deeply-nested object indicated by the items
  * in `pathKeys`. If `createEntries`, entry levels will be created as needed
@@ -16,7 +18,9 @@ function deepObj (pathKeys, obj, createEntries = true) {
       if (createEntries) {
         prev[curr] = {};
       } else {
-        throw new Error(`Property ${curr} not found on supplied object`);
+        DrizzleError.error(new DrizzleError(
+          `Property ${curr} not found on supplied object`,
+          DrizzleError.LEVELS.ERROR));
       }
     }
     return prev[curr];
@@ -46,8 +50,8 @@ function deepPattern (patternId, obj) {
  * in the object `obj`.
  * @see deepPattern
  */
-function deepCollection (patternId, obj) {
-  const pathBits = patternId.split('.'); // TODO pattern separator elsewhere?
+function deepCollection (collectionId, obj) {
+  const pathBits = collectionId.split('.'); // TODO pattern separator elsewhere?
   pathBits.pop();
   pathBits.push('collection');
   pathBits.shift();
