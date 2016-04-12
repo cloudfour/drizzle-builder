@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "description": "The builder for Drizzle",
   "main": "dist/index.js",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "engines": {
     "node": ">=4.0.0"
   },
@@ -21,7 +23,7 @@
   "repository": "cloudfour/drizzle-builder",
   "dependencies": {
     "bluebird": "^3.3.1",
-    "deepmerge": "^0.2.10",
+    "deep-extend": "^0.4.1",
     "front-matter": "^2.0.6",
     "globby": "^4.0.0",
     "handlebars": "^4.0.5",

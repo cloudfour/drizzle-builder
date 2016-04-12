@@ -1,4 +1,4 @@
-import merge from 'deepmerge';
+import deepExtend from 'deep-extend';
 import defaults from './defaults';
 import Promise from 'bluebird';
 
@@ -10,8 +10,9 @@ import Promise from 'bluebird';
  * @return {Promise} resolving to merged options
  */
 function init (options = {}, handlebars) {
-  options.handlebars = handlebars || require('handlebars');
-  return Promise.resolve(merge(defaults, options));
+  const opts = deepExtend({}, defaults, options);
+  opts.handlebars = handlebars || require('handlebars');
+  return Promise.resolve(opts);
 }
 
 export default init;

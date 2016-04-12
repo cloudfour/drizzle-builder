@@ -1,6 +1,7 @@
 import { resourceContext } from '../utils/context';
 import { applyTemplate } from '../utils/render';
 import { deepObj } from '../utils/object';
+import DrizzleError from '../utils/error';
 
 /**
  * For any given `patterns` entry, render a pattern-collection page for
@@ -16,7 +17,18 @@ import { deepObj } from '../utils/object';
  */
 function renderCollection (patterns, drizzleData, collectionKey) {
   const layoutKey = drizzleData.options.layouts.collection;
-  const layoutObj = deepObj(layoutKey.split('.'), drizzleData.templates, false);
+  let layoutObj;
+  try {
+    // deepObj will throw if it fails, which is good and fine...
+    layoutObj = deepObj(layoutKey.split('.'), drizzleData.templates, false);
+  } catch (e) {
+    // But Make this error more friendly and specific
+    DrizzleError.error(new DrizzleError(
+      `Could not find partial for default collection layout
+'${layoutKey}'. Check 'options.layouts.collection' and/or
+'options.src.templates' values to make sure they are OK`,
+    DrizzleError.LEVELS.ERROR), drizzleData.options.debug);
+  }
   patterns.collection.contents = applyTemplate(
     layoutObj.contents,
     resourceContext(patterns.collection, drizzleData),

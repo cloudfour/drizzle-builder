@@ -6,10 +6,10 @@ var parse = require('../../dist/parse/');
 var renderAll = require('../../dist/render/');
 
 describe ('render/index (renderAll)', () => {
-  var opts, drizzleData;
+  var drizzleData;
   before (() => {
-    opts = config.init(config.fixtureOpts);
-    return opts.then(prepare).then(parse).then(renderAll).then(dData => {
+    return config.init(config.fixtureOpts).then(prepare)
+    .then(parse).then(renderAll).then(dData => {
       drizzleData = dData;
     });
   });
