@@ -6,7 +6,7 @@ var prepare = require('../../dist/prepare/');
 var parse = require('../../dist/parse/');
 var renderPages = require('../../dist/render/pages');
 
-describe.only ('render/pages', () => {
+describe ('render/pages', () => {
   var opts, pageData;
   before (() => {
     opts = config.init(config.fixtureOpts);
