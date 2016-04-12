@@ -15,7 +15,7 @@ function write (drizzleData) {
     writeCollections(drizzleData)
   ]).then(
     () => drizzleData,
-    error => new DrizzleError(error).handle(drizzleData.options.debug)
+    error => DrizzleError.error(error, drizzleData.options)
   );
 }
 
