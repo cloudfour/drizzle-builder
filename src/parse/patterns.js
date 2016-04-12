@@ -12,6 +12,19 @@ const isPattern = obj => obj.hasOwnProperty('path');
 const collectionPath = itms => path.dirname(itms[Object.keys(itms).pop()].path);
 const collectionKey = itms => collectionPath(itms).split(path.sep).pop();
 
+function checkNamespaceCollision (key, obj, id, options = {}) {
+  if (Array.isArray(key)) {
+    return key.map(oneKey =>
+      checkNamespaceCollision(oneKey, obj, id, options)
+    );
+  }
+  if (obj && obj.hasOwnProperty(key)) {
+    DrizzleError.error(new DrizzleError(`'${id}' has local '${key}'
+property set. This is a Drizzle reserved property and will be
+overwritten. See docs.`, DrizzleError.LEVELS.WARN), options.debug);
+  }
+}
+
 /**
  * Should this pattern be hidden per collection or pattern metadata?
  * @param {Object} collection   Collection obj
@@ -65,8 +78,12 @@ const hasPatternOrdering = itms => {
  */
 function buildPattern (patternObj, options) {
   const patternFile = { path: patternObj.path };
+  const patternId = resourceId(patternFile,
+    options.src.patterns.basedir, 'patterns');
+  checkNamespaceCollision('id', patternObj.data,
+    `Pattern ${patternId}`, options);
   return Object.assign(patternObj, {
-    id: resourceId(patternFile, options.src.patterns.basedir, 'patterns'),
+    id: patternId,
     name: (patternObj.data && patternObj.data.name) ||
       titleCase(resourceKey(patternFile))
   });
@@ -148,9 +165,11 @@ function buildCollection (collectionObj, options) {
   return readFiles(collectionGlob(items), options).then(collData => {
     const collectionMeta = (collData.length) ? collData[0].contents : {};
     collectionObj.collection = Object.assign ({
-      items: items,
       name: titleCase(collectionKey(items))
     }, collectionMeta);
+    checkNamespaceCollision(['items', 'patterns'], collectionObj.collection,
+      `Collection ${collectionObj.collection.name}`, options);
+    collectionObj.collection.items = items;
     collectionObj.collection.patterns = buildOrderedPatterns(
       collectionObj.collection);
     return collectionObj;

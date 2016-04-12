@@ -70,7 +70,7 @@ Each file that matches the `pages` glob (`options.src.pages.glob`) will generate
 
 Collections are "meta" resources. Each directory within the glob match for `options.src.patterns.glob` that contains at least one matching pattern file is considered a "collection." By default, collections are named based on their directory name. One output HTML page is generated per collection.
 
-##### Collection Metadata
+##### Collection Metadata (Special Properties)
 
 Creating a file named `collection.yaml`, `collection.yml` or `collection.json` in a pattern directory allows you to override data about that collection. Accepted properties are:
 
@@ -79,6 +79,13 @@ Creating a file named `collection.yaml`, `collection.yml` or `collection.json` i
 * `order`: An `Array` of `{String}` pattern ids in the order you'd like them to display
 
 `hidden` and `order` values can also be defined in individual patterns' front matter. Local pattern data will override data in `collection` metadata files.
+
+Unlike other resources, properties in `collection` metadata files that are _not_ one the properties listed here will be ignored.
+
+##### Reserved Properties
+
+* `items`: Used by Drizzle to store _all_ of the patterns in this collection (even hidden ones)
+* `patterns`: Used by Drizzle to store all of the _visible_, _ordered_ patterns in this collection.
 
 #### Data
 
