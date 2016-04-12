@@ -1,5 +1,6 @@
 import { resourceContext } from '../utils/context';
 import { applyTemplate } from '../utils/render';
+import { deepObj } from '../utils/object';
 
 /**
  * For any given `patterns` entry, render a pattern-collection page for
@@ -14,12 +15,10 @@ import { applyTemplate } from '../utils/render';
  * @return {Object}              patterns data at this level.
  */
 function renderCollection (patterns, drizzleData, collectionKey) {
-  // TODO right now, layoutKey will only work if it is top-level in
-  // templates directory. Also, there is no override supported on a collection-
-  // by-collection level (i.e. in collection metadata files).
   const layoutKey = drizzleData.options.layouts.collection;
+  const layoutObj = deepObj(layoutKey.split('.'), drizzleData.templates, false);
   patterns.collection.contents = applyTemplate(
-    drizzleData.templates[layoutKey].contents,
+    layoutObj.contents,
     resourceContext(patterns.collection, drizzleData),
     drizzleData.options);
   return patterns;

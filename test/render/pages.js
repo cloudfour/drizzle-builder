@@ -18,6 +18,7 @@ describe ('render/pages', () => {
     expect(pageData['04-sandbox'].contents)
       .to.have.string('<h1>Sandbox</h1>');
   });
+  it ('should throw if layout is missing');
   it ('should be able to deal with empty pages', () => {
     // Technically we know it can because we got this far and there is an
     // empty page file in the fixtures
