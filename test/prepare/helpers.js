@@ -1,48 +1,68 @@
 var chai = require('chai');
 var config = require('../config');
 var expect = chai.expect;
-var init = require('../../dist/init');
 var prepareHelpers = require('../../dist/prepare/helpers');
 
-describe ('prepare/helpers', () => {
-  var opts;
-  before(() => {
-    opts = init(config.fixtureOpts);
-    return opts;
-  });
-  it ('should register handlebars-layouts helpers', () => {
-    return opts.then(prepareHelpers).then(options => {
-      expect(options.handlebars.helpers).to.contain.keys(
+var DrizzleError = require('../../dist/utils/error');
+
+describe.only ('prepare/helpers', () => {
+  describe ('default helpers', () => {
+    var preparedOptions;
+    before(() => {
+      return config.init(config.fixtureOpts).then(prepareHelpers)
+      .then(pOpts => {
+        preparedOptions = pOpts;
+        return preparedOptions;
+      });
+    });
+    it ('should register handlebars-layouts helpers', () => {
+      expect(preparedOptions.handlebars.helpers).to.contain.keys(
         'embed', 'block', 'content');
     });
-  });
-  it ('should register pattern helpers', () => {
-    return opts.then(prepareHelpers).then(options => {
-      expect(options.handlebars.helpers).to.contain.keys(
+    it ('should register pattern helpers', () => {
+      expect(preparedOptions.handlebars.helpers).to.contain.keys(
         'pattern', 'patternSource');
     });
   });
-  it ('should register passed helper', () => {
-    opts.helpers = {
-      foo: function () { return 'foo'; }
-    };
-    return init(opts).then(prepareHelpers).then(options => {
-      expect(options.handlebars.helpers).to.contain.keys('foo');
+  describe ('passed helpers', () => {
+    it ('should register passed helper', () => {
+      var opts = config.fixtureOpts;
+      opts.helpers = {
+        foo: function () { return 'foo'; }
+      };
+      return config.init(opts).then(prepareHelpers).then(options => {
+        expect(options.handlebars.helpers).to.contain.keys('foo');
+      });
+    });
+    it ('should register helper files', () => {
+      var opts = config.fixtureOpts;
+      opts.helpers = config.fixturePath('helpers/**/*.js');
+      return config.init(opts).then(prepareHelpers).then(options => {
+        expect(options.handlebars.helpers).to.contain.keys('toFraction',
+          'toJSON',
+          'toSlug',
+          'random',
+          'toFixed',
+          'toTitle');
+      });
     });
   });
-  it ('should register helper files', () => {
-    opts.helpers = config.fixturePath('helpers/**/*.js');
-    return init(opts).then(prepareHelpers).then(options => {
-      expect(options.handlebars.helpers).to.contain.keys('toFraction',
-        'toJSON',
-        'toSlug',
-        'random',
-        'toFixed',
-        'toTitle');
-    });
-  });
+
   describe ('namespace conflicts', () => {
-    it ('should have this test expanded when error-handling done');
+    var opts;
+    before (() => {
+      return config.init(config.fixtureOpts).then(options => {
+        opts = options;
+        return prepareHelpers(opts);
+      });
+    });
+    it ('should raise an error if duplicate helpers encountered', () => {
+      return prepareHelpers(opts).catch(error => {
+        expect(error).to.be.an.instanceof(DrizzleError);
+        expect(error.message).to.contain('already registered');
+        expect(error.level).to.equal(DrizzleError.LEVELS.WARN);
+      });
+    });
   });
 
 });

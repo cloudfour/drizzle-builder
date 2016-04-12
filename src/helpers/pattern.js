@@ -28,8 +28,8 @@ function renderPatternPartial (patternId, drizzleData, Handlebars) {
  */
 function registerPatternHelpers (options) {
   const Handlebars = options.handlebars;
-  if (Handlebars.partials.pattern) {
-    new DrizzleError('`Handlebars.partials.pattern` already registered',
+  if (Handlebars.helpers.pattern) {
+    new DrizzleError('`pattern` helper already registered',
       DrizzleError.LEVELS.WARN).handle(options.debug);
   }
   /**
@@ -42,8 +42,8 @@ function registerPatternHelpers (options) {
     return renderedTemplate;
   });
 
-  if (Handlebars.partials.patternSource) {
-    new DrizzleError('`Handlebars.partials.patternSource` already registered',
+  if (Handlebars.helpers.patternSource) {
+    new DrizzleError('`patternSource` helper already registered',
       DrizzleError.LEVELS.WARN).handle(options.debug);
   }
   /**

@@ -8,6 +8,8 @@ import { getFiles, isGlob } from '../utils/parse';
 import registerPatternHelpers from '../helpers/pattern';
 import handlebarsLayouts from 'handlebars-layouts';
 
+import DrizzleError from '../utils/error';
+
 /**
  * Register helpers on Handlebars. Helpers (options.helpers) can be provided as
  * either:
@@ -55,7 +57,7 @@ function prepareHelpers (options) {
         options.handlebars.registerHelper(helper, helpers[helper]);
       }
       return options;
-    });
+    }, error => DrizzleError.error(error));
 }
 
 export default prepareHelpers;
