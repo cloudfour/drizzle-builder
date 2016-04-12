@@ -7,7 +7,7 @@ import Promise from 'bluebird';
  * @param {Object} options
  * @param {Object} handlebars   Handlebars instance—it can be passed explicitly,
  *                              primarily for testing purposes.
- * @return {Object} merged options
+ * @return {Promise} resolving to merged options
  */
 function init (options = {}, handlebars) {
   options.handlebars = handlebars || require('handlebars');

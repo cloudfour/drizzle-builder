@@ -6,6 +6,8 @@ import { readFiles, readFileTree } from '../utils/parse';
 import { titleCase } from '../utils/shared';
 import path from 'path';
 
+import DrizzleError from '../utils/error';
+
 const isPattern = obj => obj.hasOwnProperty('path');
 const collectionPath = itms => path.dirname(itms[Object.keys(itms).pop()].path);
 const collectionKey = itms => collectionPath(itms).split(path.sep).pop();
@@ -187,7 +189,8 @@ function buildCollections (patternObj, options, collectionPromises = []) {
 function parsePatterns (options) {
   return readFileTree(options.src.patterns, options).then(patternObj => {
     return Promise.all(buildCollections(patternObj, options))
-      .then(() => patternObj);
+      .then(() => patternObj,
+            error => DrizzleError.error(error, options));
   });
 }
 

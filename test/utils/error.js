@@ -32,18 +32,14 @@ describe ('utils/error', () => {
         it ('should use a default throw threshold on `handle`', () => {
           const error = new DrizzleError('random error',
             DrizzleError.LEVELS.ERROR);
-          expect(error.handle.bind(error)).to.throw;
+          expect(DrizzleError.error.bind(DrizzleError, error))
+            .to.throw(DrizzleError);
         });
         it ('should not throw if below threshold', () => {
           const error = new DrizzleError('random error',
             DrizzleError.LEVELS.NOTICE);
-          expect(error.handle.bind(error)).not.to.throw;
-        });
-        it ('should take a threshold', () => {
-          const error = new DrizzleError('random error',
-            DrizzleError.LEVELS.NOTICE);
-          expect(error.handle.bind(error,
-            { throwThreshold: DrizzleError.LEVELS.NOTICE })).to.throw;
+          expect(DrizzleError.error.bind(DrizzleError, error))
+            .to.throw(DrizzleError);
         });
       });
     });
@@ -51,7 +47,8 @@ describe ('utils/error', () => {
   describe('debugging', () => {
     it ('should throw all errors by default in debug', () => {
       const error = new DrizzleError('random error');
-      expect (error.handle.bind(error)).to.throw;
+      expect(DrizzleError.error.bind(DrizzleError, error))
+        .to.throw(DrizzleError);
     });
     it ('should by default log to console on non-throw errors');
     it ('should accept a logging function');

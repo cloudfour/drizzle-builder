@@ -5,7 +5,7 @@ var prepareHelpers = require('../../dist/prepare/helpers');
 
 var DrizzleError = require('../../dist/utils/error');
 
-describe.only ('prepare/helpers', () => {
+describe ('prepare/helpers', () => {
   describe ('default helpers', () => {
     var preparedOptions;
     before(() => {
