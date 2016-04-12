@@ -18,7 +18,7 @@ DrizzleError.error = function (error, options = {}) {
   if (!(error instanceof DrizzleError)) {
     error = new DrizzleError(error, DrizzleError.LEVELS.ERROR);
   }
-  if (this.level >= options.throwThreshold) {
+  if (error.level >= options.throwThreshold) {
     throw error;
   }
   options.logFn(error.message);
