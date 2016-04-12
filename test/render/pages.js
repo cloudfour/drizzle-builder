@@ -6,7 +6,7 @@ var prepare = require('../../dist/prepare/');
 var parse = require('../../dist/parse/');
 var renderPages = require('../../dist/render/pages');
 
-describe ('render/pages', () => {
+describe.only ('render/pages', () => {
   var opts, pageData;
   before (() => {
     opts = config.init(config.fixtureOpts);
@@ -17,6 +17,14 @@ describe ('render/pages', () => {
   it ('should compile templates', () => {
     expect(pageData['04-sandbox'].contents)
       .to.have.string('<h1>Sandbox</h1>');
+  });
+  it ('should be able to deal with empty pages', () => {
+    // Technically we know it can because we got this far and there is an
+    // empty page file in the fixtures
+    expect(pageData.emptyPage).to.be.an('object')
+      .and.to.contain.keys('contents');
+    // Page contents were empty but are now wrapped with the page template
+    expect(pageData.emptyPage.contents).not.to.equal('');
   });
   describe ('custom page layouts', () => {
     it ('should override layouts', () => {

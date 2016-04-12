@@ -56,7 +56,7 @@ function renderPage (page, drizzleData) {
  * @return {Object} drizzleData, mutated to include updated contents from render
  */
 function walkPages (pages, drizzleData) {
-  if (pages.contents) {
+  if (typeof pages.contents !== 'undefined') {
     return renderPage(pages, drizzleData);
   }
   for (var pageKey in pages) {
