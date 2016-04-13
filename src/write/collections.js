@@ -1,5 +1,6 @@
 import { writeResource } from '../utils/write';
 import DrizzleError from '../utils/error';
+import path from 'path';
 
 const hasCollection = patterns => patterns.hasOwnProperty('collection');
 const isCollection = patterns => patterns.hasOwnProperty('items');
@@ -41,7 +42,7 @@ function writeCollections (drizzleData) {
   return Promise.all(walkCollections(
     drizzleData.patterns,
     drizzleData,
-    [drizzleData.options.src.patterns.basedir])
+    [path.basename(drizzleData.options.src.patterns.basedir)])
   ).then(writePromises => drizzleData,
          error => DrizzleError.error(error, drizzleData.options.debug));
 }

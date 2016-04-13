@@ -140,5 +140,6 @@ describe ('init', () => {
         expect(options.parsers.foo).to.contain.keys('pattern');
       });
     });
+    it ('should convert relative src paths to absolute');
   });
 });
