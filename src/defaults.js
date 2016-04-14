@@ -51,6 +51,5 @@ defaults.keys = {
   data       : 'data',
   templates  : 'templates'
 };
-defaults.sep = '.';
 
 export default defaults;

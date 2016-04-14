@@ -1,6 +1,5 @@
 import { writePage } from '../utils/write';
 import DrizzleError from '../utils/error';
-import path from 'path';
 
 const hasCollection = patterns => patterns.hasOwnProperty('collection');
 const isCollection = patterns => patterns.hasOwnProperty('items');

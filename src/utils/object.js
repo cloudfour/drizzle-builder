@@ -1,4 +1,4 @@
-import { keyname, relativePathArray } from './shared';
+import { idKeys, keyname, relativePathArray } from './shared';
 
 import DrizzleError from './error';
 
@@ -39,7 +39,7 @@ function deepObj (pathKeys, obj, createEntries = true) {
  * @return {Object}          Object reference to patterns
  */
 function deepPattern (patternId, obj) {
-  const pathBits = patternId.split('.'); // TODO pattern separator elsewhere?
+  const pathBits = idKeys(patternId);
   pathBits.shift();
   pathBits.splice(-1, 0, 'collection', 'items');
   return deepObj(pathBits, obj, false);
@@ -51,7 +51,7 @@ function deepPattern (patternId, obj) {
  * @see deepPattern
  */
 function deepCollection (collectionId, obj) {
-  const pathBits = collectionId.split('.'); // TODO pattern separator elsewhere?
+  const pathBits = idKeys(collectionId);
   pathBits.pop();
   pathBits.push('collection');
   pathBits.shift();

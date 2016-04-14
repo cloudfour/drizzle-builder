@@ -15,7 +15,6 @@ describe ('init', () => {
     'keys',
     'layouts',
     'parsers',
-    'sep',
     'src'
   ];
   var parserKeys = [
