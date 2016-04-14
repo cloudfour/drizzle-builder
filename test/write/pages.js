@@ -63,4 +63,22 @@ describe.only ('write/pages', () => {
       );
     });
   });
+  describe ('deeply nested pages', () => {
+    var alteredData;
+    before (() => {
+      var opts = config.fixtureOpts;
+      opts.dest.pages = './test/dist/pagesnested';
+      opts.src.pages = {
+        glob: config.fixturePath('morePages/**/*'),
+        basedir: config.fixturePath('morePages')
+      };
+      return config.init(opts).then(prepare).then(parse)
+        .then(render).then(writePages).then(aData => {
+          alteredData = aData;
+        });
+    });
+    it ('should ouput pages to the right output paths', () => {
+      console.log(alteredData.pages);
+    });
+  });
 });
