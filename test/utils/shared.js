@@ -4,6 +4,12 @@ var expect = chai.expect;
 var utils = require('../../dist/utils/shared');
 
 describe ('utils/shared', () => {
+  describe ('idKeys', () => {
+    it ('should split strings on a common character', () => {
+      expect(utils.idKeys('one.two.three.four')).to.be.an('Array')
+        .and.to.contain('one', 'two', 'three', 'four');
+    });
+  });
   describe('keyname', () => {
     it ('should not strip leading numbers by default', () => {
       var result = utils.keyname('foo/01-bar.baz');

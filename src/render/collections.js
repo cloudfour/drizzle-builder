@@ -1,6 +1,7 @@
 import { resourceContext } from '../utils/context';
 import { applyTemplate } from '../utils/render';
 import { deepObj } from '../utils/object';
+import { idKeys } from '../utils/shared';
 import DrizzleError from '../utils/error';
 
 /**
@@ -20,7 +21,7 @@ function renderCollection (patterns, drizzleData, collectionKey) {
   let layoutObj;
   try {
     // deepObj will throw if it fails, which is good and fine...
-    layoutObj = deepObj(layoutKey.split('.'), drizzleData.templates, false);
+    layoutObj = deepObj(idKeys(layoutKey), drizzleData.templates, false);
   } catch (e) {
     // But Make this error more friendly and specific
     DrizzleError.error(new DrizzleError(

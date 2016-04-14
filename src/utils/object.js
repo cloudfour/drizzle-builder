@@ -1,4 +1,4 @@
-import { keyname, relativePathArray } from './shared';
+import { idKeys, keyname, relativePathArray } from './shared';
 
 import DrizzleError from './error';
 
@@ -39,7 +39,7 @@ function deepObj (pathKeys, obj, createEntries = true) {
  * @return {Object}          Object reference to patterns
  */
 function deepPattern (patternId, obj) {
-  const pathBits = patternId.split('.'); // TODO pattern separator elsewhere?
+  const pathBits = idKeys(patternId);
   pathBits.shift();
   pathBits.splice(-1, 0, 'collection', 'items');
   return deepObj(pathBits, obj, false);
@@ -51,13 +51,42 @@ function deepPattern (patternId, obj) {
  * @see deepPattern
  */
 function deepCollection (collectionId, obj) {
-  const pathBits = collectionId.split('.'); // TODO pattern separator elsewhere?
+  const pathBits = idKeys(collectionId);
   pathBits.pop();
   pathBits.push('collection');
   pathBits.shift();
   return deepObj(pathBits, obj, false);
 }
 
+/**
+ * isObject function opinionated against Arrays
+ * @param {Obj}
+ * @return {Boolean}
+ */
+function isObject (obj) {
+  const objType = typeof obj;
+  return (objType === 'object' && !!obj && !Array.isArray(obj));
+}
+
+/**
+ * Take a deeply-nested object and return a single-level object keyed
+ * by the `id` property of original object entries.
+ *
+ * @param {Obj} obj
+ * @param {Obj} keyedObj   For recursion; not strictly necessary but...
+ * @return {Obj} keyed by ids
+ */
+function flattenById (obj, keyedObj = {}) {
+  if (obj.hasOwnProperty('id')) {
+    keyedObj[obj.id] = obj;
+  }
+  for (var key in obj) {
+    if (isObject(obj[key])) {
+      flattenById(obj[key], keyedObj);
+    }
+  }
+  return keyedObj;
+}
 /**
  * Generate a resourceId for a file. Use file.path and base the
  * ID elements on the path elements between relativeTo and file. Path
@@ -99,6 +128,7 @@ function resourceKey (resourceFile) {
 export { deepCollection, // object
          deepObj, // object
          deepPattern, // object
+         flattenById,
          keyname, // object
          resourceId, //object
          resourceKey // object

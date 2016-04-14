@@ -9,7 +9,7 @@ import { readFileTree } from '../utils/parse';
  * @return {Promise} resolving to parsed file data
  */
 function parseData (options) {
-  return readFileTree(options.src.data, options);
+  return readFileTree(options.src.data, options.keys.data, options);
 }
 
 export default parseData;

@@ -11,7 +11,7 @@ function renderPatternPartial (patternId, drizzleData, Handlebars) {
   const patternObj = deepPattern(patternId, drizzleData.patterns);
   const localContext = patternContext(patternObj, drizzleData);
   let template = Handlebars.partials[patternId];
-  if (template) {
+  if (typeof template !== 'undefined') {
     if (typeof template !== 'function') {
       template = Handlebars.compile(template);
     }

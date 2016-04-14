@@ -40,4 +40,16 @@ const defaults = {
   }
 };
 
+/*
+ * The following are undocumented because it is not anticipated they'll
+ * change in common usage.
+ */
+defaults.keys = {
+  pages      : 'pages',
+  patterns   : 'patterns',
+  collections: 'collections',
+  data       : 'data',
+  templates  : 'templates'
+};
+
 export default defaults;

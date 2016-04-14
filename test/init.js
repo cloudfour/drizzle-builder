@@ -12,6 +12,7 @@ describe ('init', () => {
     'dest',
     'fieldParsers',
     'helpers',
+    'keys',
     'layouts',
     'parsers',
     'src'

@@ -21,35 +21,38 @@ describe ('utils/write', () => {
       });
     });
   });
-  describe ('write/writeResource', () => {
+  describe ('write/writePage', () => {
     it ('should generate an outputPath', () => {
-      var entryKeys = ['one', 'two', 'three', 'page'];
       var pageObj = {
         contents: 'These are some contents'
       };
-      var dest = './test/dist/testWriteResource';
-      return utils.writeResource(entryKeys, pageObj, dest).then(updatedObj => {
+      var pageId = 'pages.one.two.three';
+      var dest = './test/dist/writePage';
+      return utils.writePage(pageId, pageObj, dest, 'pages')
+      .then(updatedObj => {
         expect(pageObj).to.contain.key('outputPath');
+        expect(pageObj.outputPath).to.contain('one/two/three.html');
       });
     });
-    it ('should write file based on entryKeys', () => {
-      var entryKeys = ['one', 'two', 'three', 'four', 'page'];
+    it ('should remove resource prefix from output path', () => {
       var pageObj = {
         contents: 'These are some contents'
       };
-      var dest = './test/dist/testWriteResource';
-      return utils.writeResource(entryKeys, pageObj, dest).then(updatedObj => {
-        expect(pageObj.outputPath).to.contain('test/dist/testWriteResource');
-        expect(pageObj.outputPath).to.contain('one/two/three/four');
+      var pageId = 'pages.one.two.three';
+      var dest = './test/dist/writePage';
+      return utils.writePage(pageId, pageObj, dest, 'pages')
+      .then(updatedObj => {
+        expect(pageObj.outputPath).not.to.contain('pages');
       });
     });
-    it ('should write `contents` property to file', () => {
-      var entryKeys = ['one', 'two', 'three', 'four', 'five', 'page'];
+    it ('should write contents to file', () => {
       var pageObj = {
         contents: 'These are some contents'
       };
-      var dest = './test/dist/testWriteResource';
-      return utils.writeResource(entryKeys, pageObj, dest).then(updatedObj => {
+      var pageId = 'pages.one.two.three';
+      var dest = './test/dist/writePage';
+      return utils.writePage(pageId, pageObj, dest, 'pages')
+      .then(updatedObj => {
         return testUtils.fileContents(pageObj.outputPath).then(contents => {
           expect(contents).to.equal('These are some contents');
         });

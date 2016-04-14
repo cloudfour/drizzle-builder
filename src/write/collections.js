@@ -1,6 +1,5 @@
-import { writeResource } from '../utils/write';
+import { writePage } from '../utils/write';
 import DrizzleError from '../utils/error';
-import path from 'path';
 
 const hasCollection = patterns => patterns.hasOwnProperty('collection');
 const isCollection = patterns => patterns.hasOwnProperty('items');
@@ -10,23 +9,19 @@ const isCollection = patterns => patterns.hasOwnProperty('items');
  *
  * @param {Object} pages   current level of pages tree
  * @param {Object} drizzleData
- * @param {Array} entryKeys  Array of path elements leading to this collection
  * @param {Array} writePromises All write promises so far
  * @return {Array} of Promises
  */
-function walkCollections (patterns, drizzleData,
-  entryKeys = [], writePromises = []) {
+function walkCollections (patterns, drizzleData, writePromises = []) {
   if (hasCollection(patterns)) {
-    writePromises.push(
-      writeResource(entryKeys, patterns.collection,
-        drizzleData.options.dest.patterns));
+    writePromises.push(writePage(patterns.collection.id, patterns.collection,
+      drizzleData.options.dest.patterns,
+      drizzleData.options.keys.collections));
   }
   for (const patternKey in patterns) {
     if (!isCollection(patterns[patternKey])) {
-      entryKeys.push(patternKey);
       walkCollections(patterns[patternKey],
-        drizzleData, entryKeys, writePromises);
-      entryKeys.pop();
+        drizzleData, writePromises);
     }
   }
   return writePromises;
@@ -41,8 +36,7 @@ function walkCollections (patterns, drizzleData,
 function writeCollections (drizzleData) {
   return Promise.all(walkCollections(
     drizzleData.patterns,
-    drizzleData,
-    [path.basename(drizzleData.options.src.patterns.basedir)])
+    drizzleData)
   ).then(writePromises => drizzleData,
          error => DrizzleError.error(error, drizzleData.options.debug));
 }
