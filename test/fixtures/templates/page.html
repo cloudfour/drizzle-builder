@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  {{#block "head"}}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{title}}</title>
+  {{/block}}
+</head>
+
+<body>
+  <h1>This is the Page Layout</h1>
+  <h2>{{customHeader}}</h2>
+  {{#block "body"}}
+    Body content should replace this.
+  {{/block}}
+</body>
+
+</html>

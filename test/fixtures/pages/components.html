@@ -1,0 +1,13 @@
+---
+title: Components
+customHeader: ding
+layout: page
+---
+
+{{#extend 'page'}}
+  {{#content 'body'}}
+    <h1>{{title}}</h1>
+
+{{#pattern drizzle.patterns.components.button.collection.items.aardvark.id @root }}{{/pattern}}
+  {{/content}}
+{{/extend}}
