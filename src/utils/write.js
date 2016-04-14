@@ -17,6 +17,22 @@ function write (filepath, contents) {
   });
 }
 
+/**
+ * Take an object's contents and write them to an HTML file on the filesystem.
+ * @param {String} resourceId   e.g. pages.follow-me.down `.`-separated ID
+ *                              representing the hierarchical position of the
+ *                              resource in its object structure. Will be used
+ *                              to derive output path.
+ * @param {Object} resourceObj  The object to output. Must have `contents` prop
+ * @param {String} pathPrefix   The output path prefix (as defined in
+ *                              options.dest—@see defaults).
+ * @param {String} idPrefix     Expected resource-type prefix on ID string. This
+ *                              string will be removed from the front of the
+ *                              path. E.g. a resourceId of `pages.one.two`
+ *                              and `idPrefix` of `pages` will remove the
+ *                              'pages' entry from the path.
+ * @return {Promise}
+ */
 function writePage (resourceId, resourceObj, pathPrefix, idPrefix = '') {
   const subPath = resourceId.split('.');
   if (subPath.length && idPrefix && subPath[0] === idPrefix) {

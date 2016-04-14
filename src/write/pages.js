@@ -1,4 +1,4 @@
-import { writePage, writeResource } from '../utils/write';
+import { writePage } from '../utils/write';
 import DrizzleError from '../utils/error';
 
 const isPage = page => page.hasOwnProperty('contents');
@@ -9,9 +9,6 @@ const isPage = page => page.hasOwnProperty('contents');
  *
  * @param {Object} pages   current level of pages tree
  * @param {Object} drizzleData
- * @param {String} currentKey  This is a bit inelegant, but we need to keep
- *                             track of the current object's key in the owning
- *                             object because it will be part of the filename(s)
  * @param {Array} writePromises All write promises so far
  * @return {Array} of Promises
  */
