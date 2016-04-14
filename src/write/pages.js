@@ -1,4 +1,4 @@
-import { writeResource } from '../utils/write';
+import { writePage, writeResource } from '../utils/write';
 import DrizzleError from '../utils/error';
 
 const isPage = page => page.hasOwnProperty('contents');
@@ -15,15 +15,13 @@ const isPage = page => page.hasOwnProperty('contents');
  * @param {Array} writePromises All write promises so far
  * @return {Array} of Promises
  */
-function walkPages (pages, drizzleData, currentKeys = [], writePromises = []) {
+function walkPages (pages, drizzleData, writePromises = []) {
   if (isPage(pages)) {
-    return writeResource(currentKeys, pages, drizzleData.options.dest.pages);
+    return writePage(pages.id, pages, drizzleData.options.dest.pages, 'pages');
   }
   for (var pageKey in pages) {
-    currentKeys.push(pageKey);
     writePromises = writePromises.concat(
-      walkPages(pages[pageKey], drizzleData, currentKeys, writePromises));
-    currentKeys.pop();
+      walkPages(pages[pageKey], drizzleData, writePromises));
   }
   return writePromises;
 }

@@ -6,8 +6,9 @@ var parse = require('../../dist/parse/');
 var render = require('../../dist/render/');
 var writePages = require('../../dist/write/pages');
 var testUtils = require('../test-utils');
+var objectUtils = require('../../dist/utils/object');
 
-describe ('write/pages', () => {
+describe.only ('write/pages', () => {
   var drizzleData;
   describe ('write out page files', () => {
     before (() => {
@@ -78,7 +79,11 @@ describe ('write/pages', () => {
         });
     });
     it ('should ouput pages to the right output paths', () => {
-      config.logObj(alteredData.patterns);
+      var pagesById = objectUtils.flattenById(alteredData.pages);
+      for (var pageKey in pagesById) {
+        //console.log(pageKey);
+        //console.log(pagesById[pageKey].outputPath);
+      }
     });
   });
 });

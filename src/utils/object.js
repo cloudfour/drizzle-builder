@@ -58,6 +58,22 @@ function deepCollection (collectionId, obj) {
   return deepObj(pathBits, obj, false);
 }
 
+function isObject (obj) {
+  const objType = typeof obj;
+  return (objType === 'object' && !!obj && !Array.isArray(obj));
+}
+
+function flattenById (obj, keyedObj = {}) {
+  if (obj.hasOwnProperty('id')) {
+    keyedObj[obj.id] = obj;
+  }
+  for (var key in obj) {
+    if (isObject(obj[key])) {
+      flattenById(obj[key], keyedObj);
+    }
+  }
+  return keyedObj;
+}
 /**
  * Generate a resourceId for a file. Use file.path and base the
  * ID elements on the path elements between relativeTo and file. Path
@@ -99,6 +115,7 @@ function resourceKey (resourceFile) {
 export { deepCollection, // object
          deepObj, // object
          deepPattern, // object
+         flattenById,
          keyname, // object
          resourceId, //object
          resourceKey // object

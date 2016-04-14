@@ -17,6 +17,21 @@ function write (filepath, contents) {
   });
 }
 
+function writePage (resourceId, resourceObj, pathPrefix, idPrefix = '') {
+  const subPath = resourceId.split('.');
+  if (subPath.length && idPrefix && subPath[0] === idPrefix) {
+    subPath.shift();
+  }
+  const filename = subPath.pop() + '.html';
+  const outputPath = path.normalize(path.join(
+    pathPrefix,
+    subPath.join(path.sep),
+    filename
+  ));
+  resourceObj.outputPath = outputPath;
+  return write(outputPath, resourceObj.contents);
+}
+
 /**
  * Write a single resource (e.g. page or pattern-collection) to
  * the filesystem. Update the resourceObj with the outputPath.
@@ -41,4 +56,4 @@ function writeResource (entryKeys, resourceObj, destPath) {
   return write(fullPath, resourceObj.contents);
 }
 
-export { write, writeResource };
+export { write, writePage, writeResource };
