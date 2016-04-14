@@ -135,7 +135,7 @@ describe ('utils/parse', () => {
         glob: config.fixturePath('helpers/**/*.js'),
         basedir: config.fixturePath('helpers')
       };
-      return utils.readFileTree(src, {
+      return utils.readFileTree(src, 'test', {
         parsers: parsers
       }).then(fileTree => {
         expect(fileTree).to.be.an('object').and.to.contain.keys('moar-helpers',

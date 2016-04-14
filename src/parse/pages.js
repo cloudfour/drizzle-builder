@@ -9,7 +9,7 @@ import { readFileTree } from '../utils/parse';
  * @return {Promise} resolving to page data
  */
 function parsePages (options) {
-  return readFileTree(options.src.pages, options);
+  return readFileTree(options.src.pages, 'pages', options);
 }
 
 export default parsePages;

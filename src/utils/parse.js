@@ -3,7 +3,7 @@ import Promise from 'bluebird';
 import {readFile as readFileCB} from 'fs';
 var readFile = Promise.promisify(readFileCB);
 import { relativePathArray } from './shared';
-import { deepObj, resourceKey } from './object'; // TODO NO NO NO NO NO
+import { deepObj, resourceKey, resourceId } from './object'; // TODO NO NO NO NO
 import DrizzleError from './error';
 
 /**
@@ -165,14 +165,17 @@ function readFiles (glob, {
  *
  * @param {Object} src    Object with properties `glob` and `basedir`
  *                        @see defaults
+ * @param {String} prefix Key to prefix items in this object with when creating
+ *                        ids. e.g. 'patterns', 'pages'
  * @param {Object} options
  * @return {Promise} resolving to {Object} of keyed file contents
  */
-function readFileTree (src, options) {
+function readFileTree (src, prefix, options) {
   const fileTree = {};
   return readFiles(src.glob, options).then(fileData => {
     fileData.forEach(itemFile => {
       const fileKeys = relativePathArray(itemFile.path, src.basedir);
+      itemFile.id = resourceId(itemFile, src.basedir, prefix);
       deepObj(fileKeys, fileTree)[resourceKey(itemFile)] = parseLocalData(
         itemFile, options);
     });

@@ -78,12 +78,11 @@ const hasPatternOrdering = itms => {
  */
 function buildPattern (patternObj, options) {
   const patternFile = { path: patternObj.path };
-  const patternId = resourceId(patternFile,
-    options.src.patterns.basedir, 'patterns');
-  checkNamespaceCollision('id', patternObj.data,
-    `Pattern ${patternId}`, options);
+  // const patternId = resourceId(patternFile,
+  //   options.src.patterns.basedir, 'patterns');
+  // checkNamespaceCollision('id', patternObj.data,
+  //   `Pattern ${patternId}`, options);
   return Object.assign(patternObj, {
-    id: patternId,
     name: (patternObj.data && patternObj.data.name) ||
       titleCase(resourceKey(patternFile))
   });
@@ -206,7 +205,8 @@ function buildCollections (patternObj, options, collectionPromises = []) {
  * @return {Promise} resolving to pattern/collection data
  */
 function parsePatterns (options) {
-  return readFileTree(options.src.patterns, options).then(patternObj => {
+  return readFileTree(options.src.patterns, 'patterns', options)
+  .then(patternObj => {
     return Promise.all(buildCollections(patternObj, options))
       .then(() => patternObj,
             error => DrizzleError.error(error, options.debug));

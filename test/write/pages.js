@@ -7,7 +7,7 @@ var render = require('../../dist/render/');
 var writePages = require('../../dist/write/pages');
 var testUtils = require('../test-utils');
 
-describe.only ('write/pages', () => {
+describe ('write/pages', () => {
   var drizzleData;
   describe ('write out page files', () => {
     before (() => {
@@ -78,7 +78,7 @@ describe.only ('write/pages', () => {
         });
     });
     it ('should ouput pages to the right output paths', () => {
-      console.log(alteredData.pages);
+      config.logObj(alteredData.patterns);
     });
   });
 });
