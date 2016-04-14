@@ -5,7 +5,7 @@ import path from 'path';
  * @param {String} idString
  * @return {Array}
  */
-function idKeys(idString) {
+function idKeys (idString) {
   return idString.split('.');
 }
 /**

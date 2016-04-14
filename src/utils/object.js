@@ -58,11 +58,24 @@ function deepCollection (collectionId, obj) {
   return deepObj(pathBits, obj, false);
 }
 
+/**
+ * isObject function opinionated against Arrays
+ * @param {Obj}
+ * @return {Boolean}
+ */
 function isObject (obj) {
   const objType = typeof obj;
   return (objType === 'object' && !!obj && !Array.isArray(obj));
 }
 
+/**
+ * Take a deeply-nested object and return a single-level object keyed
+ * by the `id` property of original object entries.
+ *
+ * @param {Obj} obj
+ * @param {Obj} keyedObj   For recursion; not strictly necessary but...
+ * @return {Obj} keyed by ids
+ */
 function flattenById (obj, keyedObj = {}) {
   if (obj.hasOwnProperty('id')) {
     keyedObj[obj.id] = obj;
