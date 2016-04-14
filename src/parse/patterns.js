@@ -161,10 +161,12 @@ function buildOrderedPatterns (collection) {
  */
 function buildCollection (collectionObj, options) {
   const items = buildPatterns (collectionObj, options);
+  const pseudoFile = { path: collectionPath(items) };
   return readFiles(collectionGlob(items), options).then(collData => {
     const collectionMeta = (collData.length) ? collData[0].contents : {};
     collectionObj.collection = Object.assign ({
-      name: titleCase(collectionKey(items))
+      name: titleCase(collectionKey(items)),
+      id: resourceId(pseudoFile, options.src.patterns.basedir, 'collection')
     }, collectionMeta);
     checkNamespaceCollision(['items', 'patterns'], collectionObj.collection,
       `Collection ${collectionObj.collection.name}`, options);

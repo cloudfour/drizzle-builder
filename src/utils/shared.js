@@ -21,7 +21,7 @@ function keyname (str) {
  * @return {Array}
  */
 function relativePathArray (filePath, fromPath) {
-  if (filePath.indexOf(fromPath) === -1) {
+  if (filePath.indexOf(fromPath) === -1 || filePath  === fromPath) {
     // TODO Error handling: this should cause a warn
     return [];
   }
