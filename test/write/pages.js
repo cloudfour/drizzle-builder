@@ -21,6 +21,8 @@ describe ('write/pages', () => {
         drizzleData.pages.doThis.outputPath,
         drizzleData.pages['04-sandbox'].outputPath,
         drizzleData.pages['follow-me'].down.apage.outputPath,
+        drizzleData.pages['follow-me'].down.ortwo.outputPath,
+        drizzleData.pages['follow-me'].down.orthree.outputPath,
         drizzleData.pages.subfolder.subpage.outputPath
       ];
       return testUtils.areFiles(paths).then(allAreFiles => {

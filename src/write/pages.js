@@ -23,8 +23,8 @@ function walkPages (pages, drizzleData, currentKeys = [], writePromises = []) {
     currentKeys.push(pageKey);
     writePromises = writePromises.concat(
       walkPages(pages[pageKey], drizzleData, currentKeys, writePromises));
-    currentKeys.pop();
   }
+  currentKeys.pop();
   return writePromises;
 }
 
