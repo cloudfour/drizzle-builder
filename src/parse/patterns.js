@@ -78,10 +78,6 @@ const hasPatternOrdering = itms => {
  */
 function buildPattern (patternObj, options) {
   const patternFile = { path: patternObj.path };
-  // const patternId = resourceId(patternFile,
-  //   options.src.patterns.basedir, 'patterns');
-  // checkNamespaceCollision('id', patternObj.data,
-  //   `Pattern ${patternId}`, options);
   return Object.assign(patternObj, {
     name: (patternObj.data && patternObj.data.name) ||
       titleCase(resourceKey(patternFile))
