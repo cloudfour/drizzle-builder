@@ -7,7 +7,7 @@ var render = require('../../dist/render/');
 var writePages = require('../../dist/write/pages');
 var testUtils = require('../test-utils');
 
-describe ('write/pages', () => {
+describe.only ('write/pages', () => {
   var drizzleData;
   describe ('write out page files', () => {
     before (() => {
@@ -29,6 +29,14 @@ describe ('write/pages', () => {
       return testUtils.areFiles(paths).then(allAreFiles => {
         expect(allAreFiles).to.be.true;
       });
+    });
+    it ('should write files to correctly-nested paths', () => {
+      var followMe = drizzleData.pages['follow-me'];
+      expect(followMe.down.apage.outputPath).to.contain('follow-me/down/apage');
+      expect(followMe.down.deeper.still.outputPath).to.contain(
+        'follow-me/down/deeper/still');
+      expect(followMe.down.orthree.outputPath).to.contain(
+        'follow-me/down/orthree');
     });
     it ('should write page files with compiled contents', () => {
       return testUtils.fileContents(drizzleData.pages.doThis.outputPath)
