@@ -78,11 +78,13 @@ describe.only ('write/pages', () => {
           alteredData = aData;
         });
     });
-    it ('should ouput pages to the right output paths', () => {
+    it ('should ouput pages to the correct output paths', () => {
       var pagesById = objectUtils.flattenById(alteredData.pages);
       for (var pageKey in pagesById) {
-        //console.log(pageKey);
-        //console.log(pagesById[pageKey].outputPath);
+        const outputPath = pagesById[pageKey].outputPath;
+        const expectedPath = pagesById[pageKey].data &&
+          pagesById[pageKey].data.expectedOutputPath;
+        expect(outputPath).to.contain(expectedPath);
       }
     });
   });
