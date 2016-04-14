@@ -16,7 +16,8 @@ const isCollection = patterns => patterns.hasOwnProperty('items');
 function walkCollections (patterns, drizzleData, writePromises = []) {
   if (hasCollection(patterns)) {
     writePromises.push(writePage(patterns.collection.id, patterns.collection,
-      drizzleData.options.dest.patterns, 'collection'));
+      drizzleData.options.dest.patterns,
+      drizzleData.options.keys.collections));
   }
   for (const patternKey in patterns) {
     if (!isCollection(patterns[patternKey])) {

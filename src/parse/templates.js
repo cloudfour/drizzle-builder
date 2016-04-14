@@ -6,7 +6,7 @@ import { readFileTree } from '../utils/parse';
  * @return {Promise} resolving to object of parsed template contents
  */
 function parseTemplates (options) {
-  return readFileTree(options.src.templates, 'templates', options);
+  return readFileTree(options.src.templates, options.keys.templates, options);
 }
 
 export default parseTemplates;

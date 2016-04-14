@@ -12,8 +12,10 @@ describe ('init', () => {
     'dest',
     'fieldParsers',
     'helpers',
+    'keys',
     'layouts',
     'parsers',
+    'sep',
     'src'
   ];
   var parserKeys = [

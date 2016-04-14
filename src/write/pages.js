@@ -14,7 +14,9 @@ const isPage = page => page.hasOwnProperty('contents');
  */
 function walkPages (pages, drizzleData, writePromises = []) {
   if (isPage(pages)) {
-    return writePage(pages.id, pages, drizzleData.options.dest.pages, 'pages');
+    return writePage(pages.id, pages,
+      drizzleData.options.dest.pages,
+      drizzleData.options.keys.pages);
   }
   for (var pageKey in pages) {
     writePromises = writePromises.concat(

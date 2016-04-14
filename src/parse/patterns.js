@@ -166,7 +166,8 @@ function buildCollection (collectionObj, options) {
     const collectionMeta = (collData.length) ? collData[0].contents : {};
     collectionObj.collection = Object.assign ({
       name: titleCase(collectionKey(items)),
-      id: resourceId(pseudoFile, options.src.patterns.basedir, 'collection')
+      id: resourceId(pseudoFile, options.src.patterns.basedir,
+        options.keys.collections)
     }, collectionMeta);
     checkNamespaceCollision(['items', 'patterns'], collectionObj.collection,
       `Collection ${collectionObj.collection.name}`, options);
@@ -207,7 +208,7 @@ function buildCollections (patternObj, options, collectionPromises = []) {
  * @return {Promise} resolving to pattern/collection data
  */
 function parsePatterns (options) {
-  return readFileTree(options.src.patterns, 'patterns', options)
+  return readFileTree(options.src.patterns, options.keys.patterns, options)
   .then(patternObj => {
     return Promise.all(buildCollections(patternObj, options))
       .then(() => patternObj,
