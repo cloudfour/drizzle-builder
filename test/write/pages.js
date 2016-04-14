@@ -23,6 +23,7 @@ describe ('write/pages', () => {
         drizzleData.pages['follow-me'].down.apage.outputPath,
         drizzleData.pages['follow-me'].down.ortwo.outputPath,
         drizzleData.pages['follow-me'].down.orthree.outputPath,
+        drizzleData.pages['follow-me'].down.deeper.still.outputPath,
         drizzleData.pages.subfolder.subpage.outputPath
       ];
       return testUtils.areFiles(paths).then(allAreFiles => {
