@@ -45,11 +45,26 @@ const defaults = {
  * change in common usage.
  */
 defaults.keys = {
-  pages      : 'pages',
-  patterns   : 'patterns',
-  collections: 'collections',
-  data       : 'data',
-  templates  : 'templates'
+  collections: {
+    singular: 'collection',
+    plural: 'collections'
+  },
+  data: {
+    singular: 'data',
+    plural: 'data'
+  },
+  pages      : {
+    singular: 'page',
+    plural: 'pages'
+  },
+  patterns   : {
+    singular: 'pattern',
+    plural: 'patterns'
+  },
+  templates  : {
+    singular: 'template',
+    plural: 'templates'
+  }
 };
 
 export default defaults;

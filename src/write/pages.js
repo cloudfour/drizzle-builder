@@ -16,7 +16,7 @@ function walkPages (pages, drizzleData, writePromises = []) {
   if (isPage(pages)) {
     return writePage(pages.id, pages,
       drizzleData.options.dest.pages,
-      drizzleData.options.keys.pages);
+      drizzleData.options.keys.pages.plural);
   }
   for (var pageKey in pages) {
     writePromises = writePromises.concat(

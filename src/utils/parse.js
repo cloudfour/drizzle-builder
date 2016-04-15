@@ -175,7 +175,8 @@ function readFileTree (src, prefix, options) {
   return readFiles(src.glob, options).then(fileData => {
     fileData.forEach(itemFile => {
       const fileKeys = relativePathArray(itemFile.path, src.basedir);
-      itemFile.id = resourceId(itemFile, src.basedir, prefix);
+      itemFile.id = resourceId(itemFile, src.basedir, prefix.plural);
+      itemFile.resourceType = prefix.singular;
       deepObj(fileKeys, fileTree)[resourceKey(itemFile)] = parseLocalData(
         itemFile, options);
     });

@@ -16,7 +16,7 @@ function walkCollections (patterns, drizzleData, writePromises = []) {
   if (hasCollection(patterns)) {
     writePromises.push(writePage(patterns.collection.id, patterns.collection,
       drizzleData.options.dest.patterns,
-      drizzleData.options.keys.collections));
+      drizzleData.options.keys.collections.plural));
   }
   for (const patternKey in patterns) {
     if (!isCollection(patterns[patternKey])) {
