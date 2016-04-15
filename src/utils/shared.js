@@ -46,10 +46,14 @@ function relativePathArray (filePath, fromPath) {
  * @param {String} dest         This path will be prepended
  * @return {String} path
  */
-function resourcePath (resourceId, dest) {
+function resourcePath (resourceId, dest = '') {
   const subPath = idKeys(resourceId);
   // Remove first item because it is the "resource type"
-  subPath.shift();
+  // If there _is_ only one item in the ID, it will be left alone
+  // To serve as the filename.
+  if (subPath.length && subPath.length > 1) {
+    subPath.shift();
+  }
   const filename = subPath.pop() + '.html';
   const outputPath = path.normalize(path.join(
     dest,

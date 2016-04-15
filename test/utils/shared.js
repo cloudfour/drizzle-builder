@@ -44,6 +44,20 @@ describe ('utils/shared', () => {
       expect(relative).to.be.an('array').and.to.contain('baz', 'ding');
     });
   });
+  describe('resourcePath', () => {
+    it ('should build a resource path from an ID', () => {
+      const pathBuilt = utils.resourcePath('foo.bar.baz.ding.dong');
+      expect(pathBuilt).to.equal('bar/baz/ding/dong.html');
+    });
+    it ('should prefix a dest path', () => {
+      const pathBuilt = utils.resourcePath('foo.bar.baz.ding.dong', 'ding/wow');
+      expect(pathBuilt).to.equal('ding/wow/bar/baz/ding/dong.html');
+    });
+    it ('should be able to tolerate IDs that do not have separators', () => {
+      const pathBuilt = utils.resourcePath('foo');
+      expect(pathBuilt).to.be.ok.and.to.equal('foo.html');
+    });
+  });
   describe('titleCase', () => {
     it ('should correctly title-case a string', () => {
       // @TODO move these into fixtures?
