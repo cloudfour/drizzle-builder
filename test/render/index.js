@@ -15,7 +15,7 @@ describe ('render/index (renderAll)', () => {
   });
   it ('should correctly build composite data object', () => {
     expect(drizzleData).to.be.an('object').and.to.have
-      .keys('data', 'pages', 'patterns', 'options', 'templates');
+      .keys('data', 'pages', 'patterns', 'options', 'templates', 'tree');
     expect(drizzleData.pages).to.contain.keys('components', 'doThis');
     expect(drizzleData.patterns).to.contain.keys('fingers', 'components');
     expect(drizzleData.data).to.contain.keys('data-as-json');
