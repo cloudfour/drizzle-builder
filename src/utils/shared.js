@@ -41,6 +41,21 @@ function relativePathArray (filePath, fromPath) {
 }
 
 /**
+ *
+ */
+function resourcePath (resourceId, dest, options) {
+  const subPath = idKeys(resourceId);
+  subPath.shift();
+  const filename = subPath.pop() + '.html';
+  const outputPath = path.normalize(path.join(
+    dest,
+    subPath.join(path.sep),
+    filename
+  ));
+  return outputPath;
+}
+
+/**
  * Convert str to title case (every word will be capitalized)
  * @param {String} str
  * @return {String}
@@ -55,5 +70,6 @@ function titleCase (str) {
 export { idKeys,
          keyname,
          relativePathArray,
+         resourcePath,
          titleCase
        };

@@ -10,6 +10,7 @@ const defaults = {
     logFn: console.log
   },
   dest          : {
+    collections: './dist/patterns',
     pages   : './dist/pages',
     patterns: './dist/patterns'
   },
