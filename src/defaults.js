@@ -2,9 +2,13 @@ import parsers from './parse/parsers';
 
 const defaults = {
   beautifier: {
-    indent_size: 1,
-    indent_char: '	',
-    indent_with_tabs: true
+    indent_size: 2,
+    indent_char: ' ',
+    indent_with_tabs: false,
+    unformatted:
+      `a abbr acronym address b bdo big cite code col del dfn dt em font
+      h1 h2 h3 h4 h5 h6 i img ins kbd mark pre q s samp small span
+      strike strong sub sup tt u var`.split(' ')
   },
   debug: {
     logFn: console.log
