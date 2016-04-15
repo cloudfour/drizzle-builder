@@ -41,10 +41,14 @@ function relativePathArray (filePath, fromPath) {
 }
 
 /**
- *
+ * Generate a path for a resource based on its ID.
+ * @param {String} resourceId   '.'-separated ID for this resource
+ * @param {String} dest         This path will be prepended
+ * @return {String} path
  */
-function resourcePath (resourceId, dest, options) {
+function resourcePath (resourceId, dest) {
   const subPath = idKeys(resourceId);
+  // Remove first item because it is the "resource type"
   subPath.shift();
   const filename = subPath.pop() + '.html';
   const outputPath = path.normalize(path.join(
