@@ -59,7 +59,7 @@ describe ('init', () => {
     });
     it('should provide default destination entries', () => {
       return opts.then(options => {
-        expect(options.dest).to.have.keys('pages', 'patterns');
+        expect(options.dest).to.have.keys('pages', 'patterns', 'collections');
         expect(options.dest.patterns).to.equal('./dist/patterns');
       });
     });

@@ -6,6 +6,8 @@ import parsePages from './pages';
 import parsePatterns from './patterns';
 import parseTemplates from './templates';
 
+import parseTree from './tree';
+
 import DrizzleError from '../utils/error';
 /**
  * Parse files with data from src and build a drizzleData object
@@ -18,16 +20,7 @@ function parseAll (options) {
     parsePages(options),
     parsePatterns(options),
     parseTemplates(options)
-  ]).then(
-    allData => {
-      return {
-        data      : allData[0],
-        pages     : allData[1],
-        patterns  : allData[2],
-        templates : allData[3],
-        options   : options
-      };
-    },
+  ]).then(allData => parseTree(allData, options),
     error => DrizzleError.error(error, options.debug)
   );
 }

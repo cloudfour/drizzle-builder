@@ -162,8 +162,9 @@ function buildCollection (collectionObj, options) {
     const collectionMeta = (collData.length) ? collData[0].contents : {};
     collectionObj.collection = Object.assign ({
       name: titleCase(collectionKey(items)),
+      resourceType: options.keys.collections.singular,
       id: resourceId(pseudoFile, options.src.patterns.basedir,
-        options.keys.collections)
+        options.keys.collections.plural)
     }, collectionMeta);
     checkNamespaceCollision(['items', 'patterns'], collectionObj.collection,
       `Collection ${collectionObj.collection.name}`, options);

@@ -41,6 +41,29 @@ function relativePathArray (filePath, fromPath) {
 }
 
 /**
+ * Generate a path for a resource based on its ID.
+ * @param {String} resourceId   '.'-separated ID for this resource
+ * @param {String} dest         This path will be prepended
+ * @return {String} path
+ */
+function resourcePath (resourceId, dest = '') {
+  const subPath = idKeys(resourceId);
+  // Remove first item because it is the "resource type"
+  // If there _is_ only one item in the ID, it will be left alone
+  // To serve as the filename.
+  if (subPath.length && subPath.length > 1) {
+    subPath.shift();
+  }
+  const filename = subPath.pop() + '.html';
+  const outputPath = path.normalize(path.join(
+    dest,
+    subPath.join(path.sep),
+    filename
+  ));
+  return outputPath;
+}
+
+/**
  * Convert str to title case (every word will be capitalized)
  * @param {String} str
  * @return {String}
@@ -55,5 +78,6 @@ function titleCase (str) {
 export { idKeys,
          keyname,
          relativePathArray,
+         resourcePath,
          titleCase
        };

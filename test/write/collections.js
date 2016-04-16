@@ -21,6 +21,8 @@ describe ('write/collections', () => {
     });
     describe ('determining output paths', () => {
       it ('should write out the correct files', () => {
+        // console.log(Object.keys(objectUtils.flattenById(drizzleData.patterns)));
+        // console.log(Object.keys(objectUtils.flattenById(drizzleData.pages)));
         const outPaths = [
           drizzleData.patterns.collection.outputPath,
           drizzleData.patterns.components.collection.outputPath,

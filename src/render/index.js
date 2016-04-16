@@ -19,7 +19,8 @@ function render (drizzleData) {
       pages   : allData[0],
       patterns: allData[1],
       templates : drizzleData.templates,
-      options : drizzleData.options
+      options : drizzleData.options,
+      tree: drizzleData.tree
     };
   }, error => DrizzleError.error(error, drizzleData.options.debug));
 }

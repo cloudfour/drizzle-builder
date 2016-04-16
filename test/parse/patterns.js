@@ -50,7 +50,8 @@ describe ('parse/patterns', () => {
     });
     it ('should define the appropriate properties for each pattern', () => {
       var aPattern = patternData.components.button.collection.items.base;
-      expect(aPattern).to.have.keys('id', 'name', 'data', 'path', 'contents');
+      expect(aPattern).to.have.keys('id', 'name', 'data', 'path', 'contents',
+        'resourceType');
       expect(aPattern).not.to.have.keys('notes', 'links');
       expect(aPattern.data).to.contain.keys('notes', 'links');
     });
@@ -71,7 +72,7 @@ describe ('parse/patterns', () => {
     it ('should add relevant properties to individual pattern objects', () => {
       expect(patternData.collection.items.pink).to.be.an('object');
       expect(patternData.collection.items.pink).to.have.keys(
-        'name', 'id', 'contents', 'path', 'data');
+        'name', 'id', 'contents', 'path', 'data', 'resourceType');
     });
   });
   describe('parsing collections', () => {
