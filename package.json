@@ -16,7 +16,9 @@
     "test": "npm run build; env DRIZZLE_DEBUG=1 mocha --recursive"
   },
   "keywords": [
-    "patterns"
+    "patterns",
+    "styleguide",
+    "components"
   ],
   "author": "Cloud Four",
   "license": "MIT",
