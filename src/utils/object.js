@@ -95,7 +95,7 @@ function flattenById (obj, keyedObj = {}) {
  *  '/foo/bar/baz/ole/01-fun-times.hbs', '/foo/bar/baz/', 'patterns'
  * ); // -> patterns.ole.fun-times
  * @param {Object}    Object representing file. Needs to have a `path` property
- * @param {String} || {Array} relativeTo path to relative root or path
+ * @param {String|Array} relativeTo path to relative root or path
  *                            elements to same in Array
  * @param {String} resourceCollection  Will be prepended as first element in ID
  *                                     if provided.

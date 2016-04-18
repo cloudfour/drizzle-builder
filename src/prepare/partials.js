@@ -33,7 +33,7 @@ registered on Handlebars instance: is this intentional?`,
 /**
  * Register a glob of partials.
  * @param {Object} Handlebars instance
- * @param {String} or {Array} glob
+ * @param {String|Array} glob
  */
 function preparePartials (options) {
   return Promise.all([
