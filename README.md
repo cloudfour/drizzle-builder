@@ -1,4 +1,4 @@
-# drizzle-builder
+# drizzle-builder [![Build Status](https://travis-ci.org/cloudfour/drizzle-builder.svg?branch=master)](https://travis-ci.org/cloudfour/drizzle-builder)
 
 Transform source patterns and pages into static HTML output.
 
