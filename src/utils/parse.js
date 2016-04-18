@@ -22,7 +22,7 @@ function getFiles (glob, globOpts = {}) {
  * an Array of strings counts. Just because this returns true, however,
  * doesn't mean it is a glob that makes sense, just that it looks like one.
  *
- * @param {String} or {Array} candidate
+ * @param {String|Array} candidate
  * @return Boolean
  */
 function isGlob (candidate) {
@@ -122,7 +122,7 @@ function parseLocalData (fileObj, options, extendedData = {}) {
  *  - {Object} globOpts gets passed to getFiles
  * @return {Promise} resolving to Array of Objects:
  *  - {String} path
- *  - {String || Mixed} contents: contents of file after contentFn
+ *  - {String|Mixed} contents: contents of file after contentFn
  */
 function readFiles (glob, {
   parsers = {},
