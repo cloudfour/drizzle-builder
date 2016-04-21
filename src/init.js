@@ -1,7 +1,7 @@
 import deepExtend from 'deep-extend';
 import defaults from './defaults';
 import Promise from 'bluebird';
-
+import Handlebars from 'handlebars';
 import path from 'path';
 
 /**
@@ -31,7 +31,7 @@ function normalizePaths (opts) {
 function init (options = {}, handlebars) {
   const opts = deepExtend({}, defaults, options);
   normalizePaths(opts);
-  opts.handlebars = handlebars || require('handlebars');
+  opts.handlebars = handlebars || Handlebars.create();
   return Promise.resolve(opts);
 }
 
