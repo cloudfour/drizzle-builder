@@ -1,3 +1,4 @@
+import {html as beautify} from 'js-beautify';
 import DrizzleError from '../utils/error';
 import { deepPattern } from '../utils/object';
 import { patternContext } from '../utils/context';
@@ -54,8 +55,12 @@ function registerPatternHelpers (options) {
    */
   Handlebars.registerHelper('patternSource', (id, rootContext, opts) => {
     const renderedTemplate = renderPatternPartial(
-      id, rootContext.drizzle, Handlebars);
-    return Handlebars.Utils.escapeExpression(renderedTemplate);
+      id,
+      rootContext.drizzle,
+      Handlebars
+    );
+    const sourceMarkup = beautify(renderedTemplate, options.beautifier);
+    return Handlebars.Utils.escapeExpression(sourceMarkup);
   });
   return Handlebars;
 }
