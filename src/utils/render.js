@@ -1,3 +1,10 @@
+/**
+ * Options for Handlebars.compile()
+ */
+const compileOptions = {
+  preventIndent: true
+};
+
 function applyTemplate (template, context, options) {
   if (typeof template !== 'function') {
     template = compileTemplate(template, options);
@@ -6,7 +13,7 @@ function applyTemplate (template, context, options) {
 }
 
 function compileTemplate (template, options) {
-  return options.handlebars.compile(template);
+  return options.handlebars.compile(template, compileOptions);
 }
 
 export { applyTemplate,
