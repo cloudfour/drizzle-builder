@@ -1,0 +1,17 @@
+<!-- Using #with and targeting a specific array index -->
+{{#with (data "another-data.ding.2")}}
+  <output>{{.}}</output>
+{{/with}}
+
+<!-- Using #each to iterate over a data file (object) -->
+{{#each (data "sample-data") as |val key|}}
+  <output>{{key}}: {{val}}</output>
+{{/each}}
+
+<!-- Using #each to iterate over a data file (array of objects) -->
+{{#each (data "people")}}
+  <output>{{name}}: {{age}}</output>
+{{/each}}
+
+<!-- Targeting a specific value -->
+<output>{{data "data-as-json.fortunately"}}</output>

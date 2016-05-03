@@ -23,6 +23,9 @@ describe ('prepare/helpers', () => {
       expect(preparedOptions.handlebars.helpers).to.contain.keys(
         'pattern', 'patternSource');
     });
+    it ('should register data helpers', () => {
+      expect(preparedOptions.handlebars.helpers).to.contain.keys('data');
+    });
   });
   describe ('passed helpers', () => {
     it ('should register passed helper', () => {

@@ -47,6 +47,15 @@ describe ('write/pages', () => {
         expect(contents).not.to.contain('Body content should replace this.');
       });
     });
+    it ('should write page files with functioning helpers', () => {
+      return testUtils.fileContents(drizzleData.pages.usingHelpers.outputPath)
+      .then(contents => {
+        expect(contents).to.contain('<output>cat is in the well</output>');
+        expect(contents).to.contain('<output>elfin: small things</output>');
+        expect(contents).to.contain('<output>Winston: 43</output>');
+        expect(contents).to.contain('<output>5</output>');
+      });
+    });
   });
   describe ('write to page destination', () => {
     var alteredData;
