@@ -19,6 +19,10 @@ const sortObjects = natsort();
  * @example
  * sortByProp('order', items);
  * // [{order: 1}, {order: 2}]
+ *
+ * @example
+ * sortByProp(['data', 'title'], items);
+ * // [{data: {title: 'a'}}, {data: {title: 'b'}}]
  */
 function sortByProp (prop, list) {
   const get = R.is(Array, prop) ? R.path : R.prop;
