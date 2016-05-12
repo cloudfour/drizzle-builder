@@ -1,4 +1,7 @@
 import R from 'ramda';
+import natsort from 'natsort';
+
+const sortObjects = natsort();
 
 /**
  * Sort an array of objects by property.
@@ -22,7 +25,7 @@ function sortByProp (prop, list) {
   return R.sort((elA, elB) => {
     const a = get(prop, elA);
     const b = get(prop, elB);
-    return (a || b) ? (!a ? 1 : !b ? -1 : a.localeCompare(b)) : 0;
+    return sortObjects(a, b);
   }, list);
 }
 
