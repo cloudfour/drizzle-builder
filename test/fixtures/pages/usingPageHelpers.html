@@ -13,3 +13,7 @@
 {{#with (pages "follow-me/down" sortby="alias")}}
   <output>alias: {{this.[0].data.alias}}</output>
 {{/with}}
+
+{{#with (page "nerkle")}}
+  <output>page: {{id}}</output>
+{{/with}}

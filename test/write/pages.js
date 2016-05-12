@@ -63,6 +63,7 @@ describe ('write/pages', () => {
         expect(contents).to.contain('<output>default: 04-sandbox</output>');
         expect(contents).to.contain('<output>order: 1</output>');
         expect(contents).to.contain('<output>alias: apple</output>');
+        expect(contents).to.contain('<output>page: pages.nerkle</output>');
       });
     });
   });
