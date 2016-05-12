@@ -1,4 +1,5 @@
 import R from 'ramda';
+import {relative as relativePath} from 'path';
 import {splitPath} from '../utils/object';
 import {resourcePath} from '../utils/shared';
 import {sortByProp} from '../utils/list';
@@ -8,12 +9,18 @@ export default function register (options) {
 
   Handlebars.registerHelper('pages', (path, context) => {
     const builder = context.data.root.drizzle;
-    const pageDest = builder.options.dest.pages;
     const pathBits = splitPath(path);
     const subset = R.path(pathBits, builder.pages);
     const isPage = R.propEq('resourceType', 'page');
     const pickProps = R.pick(['id', 'url', 'data', 'key']);
     const options = context.hash;
+
+    // TODO: https://github.com/cloudfour/drizzle/issues/43
+    const pageDest = relativePath(
+      builder.options.dest.root,
+      builder.options.dest.pages
+    );
+
     let results = [];
 
     // Fill results with objects refined from the page subset
