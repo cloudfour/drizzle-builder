@@ -8,7 +8,7 @@ var writePages = require('../../dist/write/pages');
 var testUtils = require('../test-utils');
 var objectUtils = require('../../dist/utils/object');
 
-describe.only ('write/pages', () => {
+describe ('write/pages', () => {
   var drizzleData;
   describe ('write out page files', () => {
     before (() => {
