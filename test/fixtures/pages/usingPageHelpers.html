@@ -1,0 +1,11 @@
+{{#each (pages "follow-me/down")}}
+  <output>{{key}}: {{url}}</output>
+{{/each}}
+
+{{#with (pages "follow-me/down" sortby="order")}}
+  <output>order: {{this.[0].data.order}}</output>
+{{/with}}
+
+{{#with (pages "follow-me/down" sortby="alias")}}
+  <output>alias: {{this.[0].data.alias}}</output>
+{{/with}}

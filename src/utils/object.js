@@ -125,11 +125,31 @@ function resourceKey (resourceFile) {
   return keyname(resourceFile.path);
 }
 
+/**
+ * Split a path string delimited by "." or "/".
+ *
+ * @param {String} path
+ * A path string to split.
+ *
+ * @return {Array}
+ * An array of path segments.
+ *
+ * @example
+ * splitPath('a/b/c/1.2.3');
+ * // ['a', 'b', 'c', '1', '2', '3']
+ */
+function splitPath (path) {
+  const delim = /[\.\/]/;
+  const result = path.split(delim);
+  return result;
+}
+
 export { deepCollection, // object
          deepObj, // object
          deepPattern, // object
          flattenById,
          keyname, // object
          resourceId, //object
-         resourceKey // object
+         resourceKey, // object
+         splitPath
        };
