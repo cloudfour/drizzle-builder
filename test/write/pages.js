@@ -60,6 +60,7 @@ describe ('write/pages', () => {
       return testUtils.fileContents(drizzleData.pages.usingPageHelpers.outputPath)
       .then(contents => {
         expect(contents).to.contain('<output>apage:');
+        expect(contents).to.contain('<output>default: 04-sandbox</output>');
         expect(contents).to.contain('<output>order: 1</output>');
         expect(contents).to.contain('<output>alias: apple</output>');
       });

@@ -2,6 +2,10 @@
   <output>{{key}}: {{url}}</output>
 {{/each}}
 
+{{#with (pages ".")}}
+  <output>default: {{this.[0].key}}</output>
+{{/with}}
+
 {{#with (pages "follow-me/down" sortby="order")}}
   <output>order: {{this.[0].data.order}}</output>
 {{/with}}

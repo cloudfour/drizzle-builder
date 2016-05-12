@@ -10,7 +10,7 @@ export default function register (options) {
   Handlebars.registerHelper('pages', (path, context) => {
     const builder = context.data.root.drizzle;
     const pathBits = splitPath(path);
-    const subset = R.path(pathBits, builder.pages);
+    const subset = R.path(pathBits, builder.pages) || builder.pages;
     const isPage = R.propEq('resourceType', 'page');
     const pickProps = R.pick(['id', 'url', 'data', 'key']);
     const options = context.hash;
