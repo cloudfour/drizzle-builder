@@ -78,7 +78,9 @@ function menuItem (props, drizzle) {
 export default function register (options) {
   const Handlebars = options.handlebars;
 
-  Handlebars.registerHelper('pages', (path, context) => {
+  Handlebars.registerHelper('pages', (...args) => {
+    const path = R.is(String, args[0]) ? args[0] : '.';
+    const context = args[1] || args[0];
     const drizzle = context.data.root.drizzle;
     const options = context.hash;
     const subset = extractSubset(`pages/${path}`, drizzle);
@@ -101,7 +103,9 @@ export default function register (options) {
     return results;
   });
 
-  Handlebars.registerHelper('page', (path, context) => {
+  Handlebars.registerHelper('page', (...args) => {
+    const path = R.is(String, args[0]) ? args[0] : 'index';
+    const context = args[1] || args[0];
     const drizzle = context.data.root.drizzle;
     const subset = extractSubset(`pages/${path}`, drizzle);
     const result = {};
