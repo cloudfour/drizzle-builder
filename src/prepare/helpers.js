@@ -6,6 +6,7 @@
 import { keyname } from '../utils/shared';
 import { getFiles, isGlob } from '../utils/parse';
 import registerDataHelpers from '../helpers/data';
+import registerPageHelpers from '../helpers/page';
 import registerPatternHelpers from '../helpers/pattern';
 import handlebarsLayouts from 'handlebars-layouts';
 
@@ -55,6 +56,7 @@ function prepareHelpers (options) {
     .then(helpers => {
       options.handlebars = registerPatternHelpers(options);
       options.handlebars = registerDataHelpers(options);
+      options.handlebars = registerPageHelpers(options);
       for (var helper in helpers) {
         options.handlebars.registerHelper(helper, helpers[helper]);
       }

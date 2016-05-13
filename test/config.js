@@ -82,6 +82,7 @@ var config = {
       }
     },
     dest: {
+      root: './test/dist',
       collections: './test/dist/collections',
       pages: './test/dist',
       patterns: './test/dist/patterns'
