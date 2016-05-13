@@ -1,56 +1,72 @@
 import R from 'ramda';
 import {relative as relativePath} from 'path';
 import {splitPath} from '../utils/object';
-import {resourcePath} from '../utils/shared';
 import {sortByProp} from '../utils/list';
+import {
+  resourcePath,
+  isType
+} from '../utils/shared';
 
-function extractPages (path, drizzle) {
-  const pages = drizzle.pages;
+const isDir = isType(undefined);
+const pickProps = R.pick(['id', 'url', 'data']);
+
+/**
+ * Return an inner object/array from the Drizzle context.
+ */
+function extractSubset (path, drizzle) {
   const pathBits = splitPath(path);
-  const isPage = R.propEq('resourceType', 'page');
-  const pickProps = R.pick(['id', 'url', 'data', 'key', 'path']);
-  const results = [];
-  let subset = R.path(pathBits, pages) || Object.assign({}, pages);
-
-  // TODO: https://github.com/cloudfour/drizzle/issues/43
-  const pageDest = relativePath(
-    drizzle.options.dest.root,
-    drizzle.options.dest.pages
-  );
-
-  // If path pointed to a single page, wrap it up
-  if (isPage(subset)) {
-    subset = Object.assign({}, {[path]: subset});
-  }
-
-  // Fill results with objects refined from the page subset
-  for (const key in subset) {
-    const page = subset[key];
-    if (isPage(page)) {
-      page.url = resourcePath(page.id, pageDest);
-      page.key = key;
-      page.path = path;
-      results.push(pickProps(page));
-    }
-  }
-
+  const results = R.path(pathBits, drizzle);
   return results;
+}
+
+/**
+ * Return a relative base path for .html destinations.
+ */
+function destRoot (type, drizzle) {
+  // TODO: this is unfortunate, and due to difficulty using defaults.keys
+  const keys = new Map([
+    ['page', 'pages'],
+    ['collection', 'collections'],
+    ['pattern', 'patterns']
+  ]);
+
+  return relativePath(
+    drizzle.options.dest.root,
+    drizzle.options.dest[keys.get(type)]
+  );
+}
+
+/**
+ * Return a refined object (page, pattern, etc.) representing a menu item.
+ */
+function menuItem (props, drizzle) {
+  props.url = resourcePath(
+    props.id,
+    destRoot(props.resourceType, drizzle)
+  );
+  return pickProps(props);
 }
 
 export default function register (options) {
   const Handlebars = options.handlebars;
 
   Handlebars.registerHelper('pages', (path, context) => {
+    const drizzle = context.data.root.drizzle;
     const options = context.hash;
-    let results = extractPages(path, context.data.root.drizzle);
+    const subset = extractSubset(`pages/${path}`, drizzle);
+    const isIgnored = R.equals(options.ignore);
+    let results = [];
 
-    // Apply filtering to results
-    if (options.ignore) {
-      results = results.filter(page => page.key !== options.ignore);
+    for (const key in subset) {
+      const item = subset[key];
+
+      if (!isDir(item) && !isIgnored(key)) {
+        results.push(menuItem(item, drizzle));
+      }
     }
 
-    // Apply sorting to results
     if (options.sortby) {
+      // TODO: do we want to access via "data.foo" or just "foo"
       results = sortByProp(['data', options.sortby], results);
     }
 
@@ -58,8 +74,14 @@ export default function register (options) {
   });
 
   Handlebars.registerHelper('page', (path, context) => {
-    const pages = extractPages(path, context.data.root.drizzle);
-    const result = pages.find(page => page.path === path);
+    const drizzle = context.data.root.drizzle;
+    const subset = extractSubset(`pages/${path}`, drizzle);
+    const result = {};
+
+    if (!isDir(subset)) {
+      Object.assign(result, menuItem(subset, drizzle));
+    }
+
     return result;
   });
 

@@ -1,5 +1,5 @@
 import { idKeys, keyname, relativePathArray } from './shared';
-
+import R from 'ramda';
 import DrizzleError from './error';
 
 /**
@@ -140,7 +140,7 @@ function resourceKey (resourceFile) {
  */
 function splitPath (path) {
   const delim = /[\.\/]/;
-  const result = path.split(delim);
+  const result = R.pipe(R.split(delim), R.without(''))(path);
   return result;
 }
 

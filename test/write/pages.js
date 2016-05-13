@@ -59,8 +59,7 @@ describe ('write/pages', () => {
     it ('should write page files with functioning {{pages}} helpers', () => {
       return testUtils.fileContents(drizzleData.pages.usingPageHelpers.outputPath)
       .then(contents => {
-        expect(contents).to.contain('<output>apage:');
-        expect(contents).to.contain('<output>default: 04-sandbox</output>');
+        expect(contents).to.contain('<output>default: 04-sandbox.html</output>');
         expect(contents).to.contain('<output>order: 1</output>');
         expect(contents).to.contain('<output>alias: apple</output>');
         expect(contents).to.contain('<output>page: pages.nerkle</output>');
