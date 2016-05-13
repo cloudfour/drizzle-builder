@@ -12,6 +12,15 @@ const pickProps = R.pick(['id', 'url', 'data']);
 
 /**
  * Return an inner object/array from the Drizzle context.
+ *
+ * @param {String} path
+ * The path string (e.g. "foo/bar/baz")
+ *
+ * @param {Object} drizzle
+ * The Drizzle root context.
+ *
+ * @return {Mixed}
+ * Whatever structure exists at the supplied path.
  */
 function extractSubset (path, drizzle) {
   const pathBits = splitPath(path);
@@ -21,6 +30,15 @@ function extractSubset (path, drizzle) {
 
 /**
  * Return a relative base path for .html destinations.
+ *
+ * @param {String} type
+ * The resource type identifier (e.g. "page", "pattern", "collection")
+ *
+ * @param {Object} drizzle
+ * The Drizzle root context.
+ *
+ * @return {String}
+ * The relative base path for the supplied resource type.
  */
 function destRoot (type, drizzle) {
   // TODO: this is unfortunate, and due to difficulty using defaults.keys
@@ -38,6 +56,16 @@ function destRoot (type, drizzle) {
 
 /**
  * Return a refined object (page, pattern, etc.) representing a menu item.
+ *
+ * @param {Object} props
+ * The "raw" object representation of a menu item.
+ *
+ * @param {Object} drizzle
+ * The Drizzle root context.
+ *
+ * @return {Object}
+ * The "refined" object representation of a menu item (with fewer properties
+ * and a new `url` property).
  */
 function menuItem (props, drizzle) {
   props.url = resourcePath(
