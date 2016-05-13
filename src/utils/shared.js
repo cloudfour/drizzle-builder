@@ -1,4 +1,5 @@
 import path from 'path';
+import R from 'ramda';
 
 /**
  * Split a string on a common separator.
@@ -8,6 +9,7 @@ import path from 'path';
 function idKeys (idString) {
   return idString.split('.');
 }
+
 /**
  * Utility function to process strings to make them key-like (for properties).
  * Previously this stripped prefixed numbers, etc., but for now it is
@@ -75,9 +77,21 @@ function titleCase (str) {
     .replace(/\w\S*/g, word => word.charAt(0).toUpperCase() + word.substr(1));
 }
 
+/**
+ * Resource type logic.
+ */
+const isType = R.propEq('resourceType');
+const isPage = isType('page');
+const isPattern = isType('pattern');
+const isCollection = isType('collection');
+
 export { idKeys,
          keyname,
          relativePathArray,
          resourcePath,
-         titleCase
+         titleCase,
+         isType,
+         isPage,
+         isPattern,
+         isCollection
        };

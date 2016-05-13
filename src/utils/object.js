@@ -1,5 +1,5 @@
 import { idKeys, keyname, relativePathArray } from './shared';
-
+import R from 'ramda';
 import DrizzleError from './error';
 
 /**
@@ -125,11 +125,31 @@ function resourceKey (resourceFile) {
   return keyname(resourceFile.path);
 }
 
+/**
+ * Split a path string delimited by "." or "/".
+ *
+ * @param {String} path
+ * A path string to split.
+ *
+ * @return {Array}
+ * An array of path segments.
+ *
+ * @example
+ * splitPath('a/b/c/1.2.3');
+ * // ['a', 'b', 'c', '1', '2', '3']
+ */
+function splitPath (path) {
+  const delim = /[\.\/]/;
+  const result = R.pipe(R.split(delim), R.without(''))(path);
+  return result;
+}
+
 export { deepCollection, // object
          deepObj, // object
          deepPattern, // object
          flattenById,
          keyname, // object
          resourceId, //object
-         resourceKey // object
+         resourceKey, // object
+         splitPath
        };
