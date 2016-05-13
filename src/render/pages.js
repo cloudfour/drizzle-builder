@@ -25,7 +25,7 @@ function wrapWithLayout (page, drizzleData) {
     `{{\\s*#extend\\s*[\'\"]${layout}[\'\"].*}}`)
     .test(page.contents);
   const wrapped = (alreadyWrapped) ? page.contents : `  {{#extend '${layout}' }}
-    {{#content 'body'}}${page.contents}{{/content}}
+    {{#content 'main'}}${page.contents}{{/content}}
   {{/extend}}`;
   return wrapped;
 }
