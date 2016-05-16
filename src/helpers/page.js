@@ -96,7 +96,6 @@ export default function register (options) {
     }
 
     if (options.sortby) {
-      // TODO: do we want to access via "data.foo" or just "foo"
       results = sortByProp(['data', options.sortby], results);
     }
 
