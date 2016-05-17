@@ -1,6 +1,7 @@
-import { idKeys, keyname, relativePathArray } from './shared';
+import {idKeys, keyname, relativePathArray} from './shared';
 import R from 'ramda';
 import DrizzleError from './error';
+import {join, relative} from 'path';
 
 /**
  * Return a reference to the deeply-nested object indicated by the items
@@ -144,6 +145,42 @@ function splitPath (path) {
   return result;
 }
 
+/**
+ * Normalize a sloppy (or dot-separated) path into a "valid" path.
+ *
+ * @param {String} path
+ * A raw input path string.
+ *
+ * @return {String}
+ * A normalized path string.
+ *
+ * @example
+ * normalizePath('foo/bar//baz.bang.1./');
+ * // 'foo/bar/baz/bang/1'
+ */
+function normalizePath (path) {
+  return join(...splitPath(path));
+}
+
+/**
+ * Check if one path is a direct child of another.
+ *
+ * @param {String} pathA
+ * @param {String} pathB
+ * @return {Boolean}
+ *
+ * @example
+ * isPathChild('components/button', 'components');
+ * // true
+ */
+function isPathChild (pathA, pathB) {
+  const relPath = relative(
+    normalizePath(pathA),
+    normalizePath(pathB)
+  );
+  return relPath === '..';
+}
+
 export { deepCollection, // object
          deepObj, // object
          deepPattern, // object
@@ -151,5 +188,7 @@ export { deepCollection, // object
          keyname, // object
          resourceId, //object
          resourceKey, // object
-         splitPath
+         splitPath,
+         normalizePath,
+         isPathChild
        };

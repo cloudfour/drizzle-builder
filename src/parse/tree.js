@@ -3,8 +3,6 @@
  * @module parse/tree
  */
 
-import { resourcePath } from '../utils/shared';
-
 /**
 return {
   data      : allData[0],
@@ -15,22 +13,22 @@ return {
 };
 **/
 
-function walkResources (resources, options, resourceType, resourceTree = {}) {
+function walkResources (
+  resources,
+  options,
+  resourceType,
+  resourceTree = []
+) {
   for (var resourceKey in resources) {
-    if (resources[resourceKey].resourceType &&
-      resources[resourceKey].resourceType === resourceType.singular) {
-      resourceTree.items = resourceTree.items || [];
-      resourceTree.items.push({
-        id: resources[resourceKey].id,
-        key: resourceKey,
-        path: resourcePath(resources[resourceKey].id,
-          options.dest[resourceType.plural], options)
-      });
+    const item = resources[resourceKey];
+    if (item.resourceType && item.resourceType === resourceType.singular) {
+      resourceTree.push(item);
     } else {
-      resourceTree.children = resourceTree.children || [];
-      resourceTree.children.push(
-        walkResources(resources[resourceKey], options,
-          resourceType, resourceTree[resourceKey])
+      walkResources(
+        item,
+        options,
+        resourceType,
+        resourceTree
       );
     }
   }
@@ -44,9 +42,16 @@ function parseTree (allData, options) {
     patterns : allData[2],
     templates: allData[3],
     tree: {
-      pages: walkResources(allData[1], options, options.keys.pages),
+      pages: walkResources(
+        allData[1],
+        options,
+        options.keys.pages
+      ),
       collections: walkResources(
-        allData[2], options, options.keys.collections)
+        allData[2],
+        options,
+        options.keys.collections
+      )
     },
     options  : options
   };
