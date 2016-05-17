@@ -1,0 +1,21 @@
+{{#* inline "collection-item"}}
+	<output test-collection-index="{{@index}}" test-collection-id="{{id}}">
+    {{url}}
+    {{name}}
+  </output>
+{{/inline}}
+
+<!-- Iterating over collections -->
+{{#each (collections) as |collection|}}
+	{{> collection-item collection}}
+{{/each}}
+
+<!-- Iterating over collections: "components" -->
+{{#each (collections "components") as |collection|}}
+	{{> collection-item collection}}
+{{/each}}
+
+<!-- Iterating over collections: "typography" -->
+{{#each (collections "typography") as |collection|}}
+	{{> collection-item collection}}
+{{/each}}

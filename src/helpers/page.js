@@ -1,6 +1,6 @@
 import R from 'ramda';
 import {relative as relativePath} from 'path';
-import {splitPath} from '../utils/object';
+import {splitPath, normalizePath, isPathChild} from '../utils/object';
 import {sortByProp} from '../utils/list';
 import {
   resourcePath,
@@ -8,7 +8,7 @@ import {
 } from '../utils/shared';
 
 const isDir = isType(undefined);
-const pickProps = R.pick(['id', 'url', 'data']);
+const pickProps = R.pick(['id', 'url', 'name', 'data']);
 
 /**
  * Return an inner object/array from the Drizzle context.
@@ -41,6 +41,8 @@ function extractSubset (path, drizzle) {
  * The relative base path for the supplied resource type.
  */
 function destRoot (type, drizzle) {
+  const options = drizzle.options;
+
   // TODO: this is unfortunate, and due to difficulty using defaults.keys
   const keys = new Map([
     ['page', 'pages'],
@@ -49,8 +51,8 @@ function destRoot (type, drizzle) {
   ]);
 
   return relativePath(
-    drizzle.options.dest.root,
-    drizzle.options.dest[keys.get(type)]
+    options.dest.root,
+    options.dest[keys.get(type)]
   );
 }
 
@@ -114,6 +116,19 @@ export default function register (options) {
     }
 
     return result;
+  });
+
+  Handlebars.registerHelper('collections', (...args) => {
+    const path = R.is(String, args[0]) ? args[0] : '.';
+    const context = args[1] || args[0];
+    const drizzle = context.data.root.drizzle;
+    const tree = drizzle.tree.collections;
+    const treePath = normalizePath(`collections.${path}`);
+    const results = tree
+      .filter(item => isPathChild(item.id, treePath))
+      .map(item => menuItem(item, drizzle));
+
+    return results;
   });
 
   return Handlebars;
