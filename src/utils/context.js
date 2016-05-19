@@ -1,6 +1,7 @@
 import { deepCollection } from './object'; // TODO NOPE
 import { resourcePath } from './shared';
 import path from 'path';
+import { pathSatisfies, is } from 'ramda';
 
 function getBaseUrl (resource, drizzleData) {
   const options = drizzleData.options;
@@ -23,7 +24,7 @@ function resourceContext (resource, drizzleData) {
   const context = Object.assign({}, resource);
   context.drizzle = drizzleData;
 
-  if (drizzleData.options.dest) {
+  if (pathSatisfies(is(String), ['dest', 'root'], drizzleData.options)) {
     context.baseurl = getBaseUrl(resource, drizzleData);
   }
 
