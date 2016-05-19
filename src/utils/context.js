@@ -3,6 +3,25 @@ import { resourcePath } from './shared';
 import path from 'path';
 import { pathSatisfies, is } from 'ramda';
 
+/**
+ * This will return a relative URL prefix for a given resource (anything being
+ * output to an HTML file).
+ *
+ * The purpose of this to value is to be assigned to the `{{baseurl}}` template
+ * context property, for use in relative URLs within the HTML.
+ *
+ * This relative path is determined by the path-based ID of the resource (e.g.
+ * patterns.components.button) and the `dest` configration settings for the
+ * `resourceType` of the supplied resource (e.g. 'page', 'pattern').
+ *
+ * @param {Object} resource
+ * @param {Object} drizzleData
+ * @return {String}
+ *
+ * @example
+ * getBaseUrl(somePageResource, drizzleData);
+ * // '../..'
+ */
 function getBaseUrl (resource, drizzleData) {
   const options = drizzleData.options;
   const destRoot = options.dest.root;
