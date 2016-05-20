@@ -91,6 +91,9 @@ describe ('write/pages', () => {
         expect(contents).to.contain(
           '<output test-ns-whitespace="drizzle-seven drizzle-eight drizzle-nine drizzle-ten">'
         );
+        expect(contents).to.contain(
+          '<output test-ns-yfm="drizzle-ham drizzle-cheese">'
+        );
       });
     });
   });

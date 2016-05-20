@@ -1,3 +1,7 @@
+---
+someClass: cheese
+---
+
 <!-- ns helper with defaults -->
 <output test-ns-default="{{ns 'one two three'}}"></output>
 
@@ -11,3 +15,6 @@
           nine
               ten
   '}}"></output>
+
+  <!-- ns helper with front-matter property -->
+  <output test-ns-yfm="{{ns 'ham'}} {{ns someClass}}"></output>
