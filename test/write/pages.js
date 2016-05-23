@@ -79,6 +79,23 @@ describe ('write/pages', () => {
         );
       });
     });
+    it ('should write page files with functioning {{ns}} helper', () => {
+      return testUtils.fileContents(drizzleData.pages['helpers-demo-string'].outputPath)
+      .then(contents => {
+        expect(contents).to.contain(
+          '<output test-ns-default="drizzle-one drizzle-two drizzle-three">'
+        );
+        expect(contents).to.contain(
+          '<output test-ns-prefix="foo-four foo-five foo-six">'
+        );
+        expect(contents).to.contain(
+          '<output test-ns-whitespace="drizzle-seven drizzle-eight drizzle-nine drizzle-ten">'
+        );
+        expect(contents).to.contain(
+          '<output test-ns-yfm="drizzle-ham drizzle-cheese">'
+        );
+      });
+    });
   });
   describe ('write to page destination', () => {
     var alteredData;

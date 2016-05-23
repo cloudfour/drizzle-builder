@@ -8,6 +8,7 @@ import { getFiles, isGlob } from '../utils/parse';
 import registerDataHelpers from '../helpers/data';
 import registerPageHelpers from '../helpers/page';
 import registerPatternHelpers from '../helpers/pattern';
+import stringHelpers from '../helpers/string';
 import handlebarsLayouts from 'handlebars-layouts';
 
 import DrizzleError from '../utils/error';
@@ -54,9 +55,14 @@ function prepareHelpers (options) {
   options.handlebars.registerHelper(handlebarsLayouts(options.handlebars));
   return getHelpers(options)
     .then(helpers => {
-      options.handlebars = registerPatternHelpers(options);
-      options.handlebars = registerDataHelpers(options);
-      options.handlebars = registerPageHelpers(options);
+      registerPatternHelpers(options);
+      registerDataHelpers(options);
+      registerPageHelpers(options);
+
+      options.handlebars.registerHelper(
+        'ns', stringHelpers.ns(options.handlebars, {prefix: 'drizzle-'})
+      );
+
       for (var helper in helpers) {
         options.handlebars.registerHelper(helper, helpers[helper]);
       }
