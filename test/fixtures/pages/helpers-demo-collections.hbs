@@ -19,3 +19,8 @@
 {{#each (collections "typography") as |collection|}}
 	{{> collection-item collection}}
 {{/each}}
+
+<!-- Targeting a single collection -->
+{{#with (collection "components/alert") as |collection|}}
+	{{> collection-item collection}}
+{{/with}}

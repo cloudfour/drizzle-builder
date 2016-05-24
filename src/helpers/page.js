@@ -138,5 +138,19 @@ export default function register (options) {
     return results;
   });
 
+  Handlebars.registerHelper('collection', (...args) => {
+    const path = R.is(String, args[0]) ? args[0] : '.';
+    const context = args[1] || args[0];
+    const drizzle = context.data.root.drizzle;
+    const subset = extractSubset(`patterns/${path}/collection`, drizzle);
+    const result = {};
+
+    if (!isDir(subset)) {
+      Object.assign(result, menuItem(subset, drizzle));
+    }
+
+    return result;
+  });
+
   return Handlebars;
 }
