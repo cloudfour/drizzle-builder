@@ -73,7 +73,7 @@ var config = {
         basedir: fixturePath('pages')
       },
       patterns: {
-        glob: './test/fixtures/patterns/**/*.html',
+        glob: './test/fixtures/patterns/**/*.{html,hbs}',
         basedir: './test/fixtures/patterns'
       },
       templates: {
