@@ -11,7 +11,7 @@
 {{/each}}
 
 <!-- Iterating over collections: "components" -->
-{{#each (collections "components") as |collection|}}
+{{#each (collections "components" sortby="order") as |collection|}}
 	{{> collection-item collection}}
 {{/each}}
 
