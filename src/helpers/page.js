@@ -1,14 +1,10 @@
 import R from 'ramda';
 import {relative as relativePath} from 'path';
-import {splitPath, normalizePath, isPathChild} from '../utils/object';
+import {splitPath} from '../utils/object';
 import {sortByProp} from '../utils/list';
-import {
-  resourcePath,
-  isType
-} from '../utils/shared';
+import {resourcePath, isType} from '../utils/shared';
 
 const isDir = isType(undefined);
-const pickProps = R.pick(['id', 'url', 'name', 'data']);
 
 /**
  * Return an inner object/array from the Drizzle context.
@@ -74,7 +70,7 @@ function menuItem (props, drizzle) {
     props.id,
     destRoot(props.resourceType, drizzle)
   );
-  return pickProps(props);
+  return R.omit(['contents', 'items'], props);
 }
 
 export default function register (options) {
@@ -122,13 +118,38 @@ export default function register (options) {
     const path = R.is(String, args[0]) ? args[0] : '.';
     const context = args[1] || args[0];
     const drizzle = context.data.root.drizzle;
-    const tree = drizzle.tree.collections;
-    const treePath = normalizePath(`collections.${path}`);
-    const results = tree
-      .filter(item => isPathChild(item.id, treePath))
-      .map(item => menuItem(item, drizzle));
+    const options = context.hash;
+    const subset = extractSubset(`patterns/${path}`, drizzle);
+    const isIgnored = R.equals(options.ignore);
+    let results = [];
+
+    for (const key in subset) {
+      const item = subset[key];
+
+      if (item.collection && !isIgnored(key)) {
+        results.push(menuItem(item.collection, drizzle));
+      }
+    }
+
+    if (options.sortby) {
+      results = sortByProp([options.sortby], results);
+    }
 
     return results;
+  });
+
+  Handlebars.registerHelper('collection', (...args) => {
+    const path = R.is(String, args[0]) ? args[0] : '.';
+    const context = args[1] || args[0];
+    const drizzle = context.data.root.drizzle;
+    const subset = extractSubset(`patterns/${path}/collection`, drizzle);
+    const result = {};
+
+    if (!isDir(subset)) {
+      Object.assign(result, menuItem(subset, drizzle));
+    }
+
+    return result;
   });
 
   return Handlebars;

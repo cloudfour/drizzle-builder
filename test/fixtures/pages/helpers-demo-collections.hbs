@@ -11,7 +11,7 @@
 {{/each}}
 
 <!-- Iterating over collections: "components" -->
-{{#each (collections "components") as |collection|}}
+{{#each (collections "components" sortby="order") as |collection|}}
 	{{> collection-item collection}}
 {{/each}}
 
@@ -19,3 +19,8 @@
 {{#each (collections "typography") as |collection|}}
 	{{> collection-item collection}}
 {{/each}}
+
+<!-- Targeting a single collection -->
+{{#with (collection "components/alert") as |collection|}}
+	{{> collection-item collection}}
+{{/with}}

@@ -77,6 +77,9 @@ describe ('write/pages', () => {
         expect(contents).to.contain(
           '<output test-collection-index="0" test-collection-id="collections.typography.headings">'
         );
+        expect(contents).to.contain(
+          '<output test-collection-index="" test-collection-id="collections.components.alert">'
+        );
       });
     });
     it ('should write page files with functioning {{ns}} helper', () => {

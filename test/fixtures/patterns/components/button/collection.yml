@@ -1,6 +1,2 @@
 name: Not a Button
-order:
-  - base
-  - aardvark
-  - disabled
-  - 'color-variation'
+order: 1

@@ -125,7 +125,7 @@ function buildOrderedPatterns (collection) {
       return orderA - orderB;
     });
   } else {
-    sortedKeys = collection.order || [];
+    sortedKeys = [];
   }
   const patterns = [];
   sortedKeys = sortedKeys.concat(
