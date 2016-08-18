@@ -9,7 +9,7 @@ import path from 'path';
 import DrizzleError from '../utils/error';
 
 const isPattern = obj => obj.hasOwnProperty('path');
-const collectionPath = itms => path.dirname(itms[Object.keys(itms).pop()].path);
+const collectionPath = itms => path.dirname(path.normalize(itms[Object.keys(itms).pop()].path));
 const collectionKey = itms => collectionPath(itms).split(path.sep).pop();
 
 function checkNamespaceCollision (key, obj, id, options = {}) {
