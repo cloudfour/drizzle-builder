@@ -134,8 +134,7 @@ describe ('write/pages', () => {
       var pagesById = objectUtils.flattenById(alteredData.pages);
       for (var pageKey in pagesById) {
         const outputPath = pagesById[pageKey].outputPath;
-        const expectedPath = pagesById[pageKey].data &&
-          pagesById[pageKey].data.expectedOutputPath;
+        const expectedPath = pagesById[pageKey].data.expectedOutputPath;
         expect(outputPath).to.contain(expectedPath);
       }
     });
