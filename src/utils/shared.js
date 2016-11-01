@@ -16,7 +16,7 @@ function idKeys (idString) {
  * dead simple.
  */
 function keyname (str) {
-  return path.basename(str, path.extname(str));
+  return path.basename(path.normalize(str), path.extname(str));
 }
 
 /**
@@ -31,6 +31,8 @@ function keyname (str) {
  * @return {Array}
  */
 function relativePathArray (filePath, fromPath) {
+  filePath = path.normalize(filePath);
+  fromPath = path.normalize(fromPath);
   if (filePath.indexOf(fromPath) === -1 || filePath  === fromPath) {
     // TODO Error handling: this should cause a warn
     return [];
