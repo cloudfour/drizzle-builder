@@ -7,6 +7,9 @@ var render = require('../../dist/render/');
 var writePatterns = require('../../dist/write/collections');
 var objectUtils = require('../../dist/utils/object');
 var testUtils = require('../test-utils');
+var path = require('path');
+
+chai.use(require('chai-fs'));
 
 describe ('write/collections', () => {
   describe ('writing normal collections', () => {
@@ -88,13 +91,13 @@ describe ('write/collections', () => {
     it ('should correctly nest collection pages', () => {
       var allPatterns = objectUtils.flattenById(drizzleData.patterns);
       expect(allPatterns['collections.one.one-one'].outputPath)
-        .to.contain('one/one-one.html');
+        .to.contain(path.normalize('one/one-one.html'));
       expect(allPatterns['collections.one'].outputPath)
-        .to.contain('one.html');
+        .to.have.basename('one.html');
       expect(allPatterns['collections.two'].outputPath)
-        .to.contain('two.html');
+        .to.have.basename('two.html');
       expect(allPatterns['collections.two.two-one'].outputPath)
-        .to.contain('two/two-one.html');
+        .to.contain(path.normalize('two/two-one.html'));
     });
   });
 });

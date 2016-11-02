@@ -2,6 +2,7 @@
 var chai = require('chai');
 var expect = chai.expect;
 var utils = require('../../dist/utils/shared');
+var path = require('path');
 
 chai.use(require('chai-fs'));
 
@@ -49,12 +50,12 @@ describe ('utils/shared', () => {
   describe('resourcePath', () => {
     it ('should build a resource path from an ID', () => {
       const pathBuilt = utils.resourcePath('foo.bar.baz.ding.dong');
-      expect(pathBuilt).to.have.dirname('bar/baz/ding');
+      expect(pathBuilt).to.contain(path.normalize('bar/baz/ding'));
       expect(pathBuilt).to.have.basename('dong.html');
     });
     it ('should prefix a dest path', () => {
       const pathBuilt = utils.resourcePath('foo.bar.baz.ding.dong', 'ding/wow');
-      expect(pathBuilt).to.have.dirname('ding/wow/bar/baz/ding');
+      expect(pathBuilt).to.contain(path.normalize('ding/wow/bar/baz/ding'));
     });
     it ('should be able to tolerate IDs that do not have separators', () => {
       const pathBuilt = utils.resourcePath('foo');
