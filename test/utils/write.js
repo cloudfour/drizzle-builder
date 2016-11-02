@@ -5,6 +5,7 @@ var utils = require('../../dist/utils/write');
 var Promise = require('bluebird');
 var rimraf = Promise.promisify(require('rimraf'));
 var testUtils = require('../test-utils');
+var path = require('path');
 
 describe ('utils/write', () => {
   var outPath = './test/dist/testFileWrite/';
@@ -31,7 +32,7 @@ describe ('utils/write', () => {
       return utils.writePage(pageId, pageObj, dest, 'pages')
       .then(updatedObj => {
         expect(pageObj).to.contain.key('outputPath');
-        expect(pageObj.outputPath).to.contain('one/two/three.html');
+        expect(pageObj.outputPath).to.contain(path.normalize('one/two/three.html'));
       });
     });
     it ('should remove resource prefix from output path', () => {

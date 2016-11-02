@@ -7,6 +7,7 @@ var render = require('../../dist/render/');
 var writePages = require('../../dist/write/pages');
 var testUtils = require('../test-utils');
 var objectUtils = require('../../dist/utils/object');
+var path = require('path');
 
 describe ('write/pages', () => {
   var drizzleData;
@@ -33,11 +34,15 @@ describe ('write/pages', () => {
     });
     it ('should write files to correctly-nested paths', () => {
       var followMe = drizzleData.pages['follow-me'];
-      expect(followMe.down.apage.outputPath).to.contain('follow-me/down/apage');
+      expect(followMe.down.apage.outputPath).to.contain(
+        path.normalize('follow-me/down/apage')
+      );
       expect(followMe.down.deeper.still.outputPath).to.contain(
-        'follow-me/down/deeper/still');
+        path.normalize('follow-me/down/deeper/still')
+      );
       expect(followMe.down.orthree.outputPath).to.contain(
-        'follow-me/down/orthree');
+        path.normalize('follow-me/down/orthree')
+      );
     });
     it ('should write page files with compiled contents', () => {
       return testUtils.fileContents(drizzleData.pages.doThis.outputPath)
@@ -135,7 +140,7 @@ describe ('write/pages', () => {
       for (var pageKey in pagesById) {
         const outputPath = pagesById[pageKey].outputPath;
         const expectedPath = pagesById[pageKey].data.expectedOutputPath;
-        expect(outputPath).to.contain(expectedPath);
+        expect(outputPath).to.contain(path.normalize(expectedPath));
       }
     });
   });
