@@ -12,9 +12,10 @@
   "scripts": {
     "build": "babel src --out-dir dist",
     "coverage": "istanbul cover _mocha -- --recursive",
-    "prepublish": "npm run test",
+    "prepublish": "npm run snyk-protect; npm run test",
     "pretest": "npm run build",
-    "test": "cross-env DRIZZLE_DEBUG=1 mocha --recursive"
+    "test": "cross-env DRIZZLE_DEBUG=1 mocha --recursive",
+    "snyk-protect": "snyk protect"
   },
   "keywords": [
     "patterns",
@@ -36,7 +37,8 @@
     "marked": "^0.3.5",
     "mkdirp": "^0.5.1",
     "natsort": "^1.0.5",
-    "ramda": "^0.21.0"
+    "ramda": "^0.21.0",
+    "snyk": "^1.47.0"
   },
   "devDependencies": {
     "babel-cli": "^6.5.1",
@@ -53,5 +55,6 @@
     "rimraf": "^2.5.2",
     "sinon": "^1.17.3",
     "sinon-chai": "^2.8.0"
-  }
+  },
+  "snyk": true
 }
