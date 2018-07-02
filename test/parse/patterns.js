@@ -95,11 +95,14 @@ describe ('parse/patterns', () => {
     });
     it ('should order patterns per front matter', () => {
       var collection = patternData.components.button.collection;
-      expect(collection.patterns[0]).to.equal(collection.items.disabled);
-      expect(collection.patterns[1]).to
+      console.log(collection.patterns);
+      expect(collection.patterns[0]).to.equal(collection.items['yet-another']);
+      expect(collection.patterns[1]).to.equal(collection.items.aaaaabstraction);
+      expect(collection.patterns[2]).to.equal(collection.items.disabled);
+      expect(collection.patterns[3]).to
         .equal(collection.items['color-variation']);
-      expect(collection.patterns[2]).to.equal(collection.items.aardvark);
-      expect(collection.patterns[3]).to.equal(collection.items.base);
+      expect(collection.patterns[4]).to.equal(collection.items.aardvark);
+      expect(collection.patterns[5]).to.equal(collection.items.base);
     });
   });
   describe ('pattern error situations', () => {
