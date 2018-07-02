@@ -95,7 +95,6 @@ describe ('parse/patterns', () => {
     });
     it ('should order patterns per front matter', () => {
       var collection = patternData.components.button.collection;
-      console.log(collection.patterns);
       expect(collection.patterns[0]).to.equal(collection.items['yet-another']);
       expect(collection.patterns[1]).to.equal(collection.items.aaaaabstraction);
       expect(collection.patterns[2]).to.equal(collection.items.disabled);
