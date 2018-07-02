@@ -120,8 +120,8 @@ function buildOrderedPatterns (collection) {
   let sortedKeys;
   if (hasPatternOrdering(collection.items)) {
     sortedKeys = Object.keys(collection.items).sort((keyA, keyB) => {
-      const orderA = collection.items[keyA].data.order || 10000;
-      const orderB = collection.items[keyB].data.order || 10000;
+      const orderA = collection.items[keyA].data.order || 0;
+      const orderB = collection.items[keyB].data.order || 0;
       return orderA - orderB;
     });
   } else {

@@ -60,7 +60,7 @@ Each file that matches the `pages` glob (`options.src.pages.glob`) will generate
 
 * `name`: Override default naming for the pattern, which is based on filename.
 * `hidden`: A truthy value will "hide" this pattern, making it available as data, but not rendered on its collection's page.
-* `order`: Numeric value for where this pattern should appear in its collection's list of patterns. Defaults to alphabetical by filename.
+* `order`: Numeric value for where this pattern should appear in its collection's list of patterns. Defaults to alphabetical by filename. Items are ordered like the [CSS `order` property](https://developer.mozilla.org/en-US/docs/Web/CSS/order). Items with negative values come first, then items without values, then items with positive values.
 
 ##### Reserved Properties
 
@@ -76,7 +76,7 @@ Creating a file named `collection.yaml`, `collection.yml` or `collection.json` i
 
 * `name` `{String}`: Override default directory-based naming
 * `hidden` : An `Array` of `{String}` pattern ids to hide in the collection's output (base filename without extension)
-* `order`: An `Array` of `{String}` pattern ids in the order you'd like them to display
+* `order`: An `Array` of `{String}` pattern ids in the order you'd like them to display. Items are ordered like the [CSS `order` property](https://developer.mozilla.org/en-US/docs/Web/CSS/order). Items with negative values come first, then items without values, then items with positive values.
 
 `hidden` and `order` values can also be defined in individual patterns' front matter. Local pattern data will override data in `collection` metadata files.
 
