@@ -12,8 +12,8 @@
  *   {{toTitle "01 Introduction"}} //=> "Introduction"
  */
 
-module.exports = function toTitle (name) {
-  var pattern = /^[0-9]{0,4}[-_]?\s+?/;
+module.exports = function toTitle(name) {
+  var pattern = /^\d{0,4}[-_]?\s+?/;
   name = name.toString();
   return name.replace(pattern, '');
 };

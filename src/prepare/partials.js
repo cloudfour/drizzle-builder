@@ -16,14 +16,19 @@ import DrizzleError from '../utils/error';
  *                        `resourceCollection` argument. @see utils/object
  * @return {Promise}
  */
-function registerPartials (src, options, prefix = '') {
+function registerPartials(src, options, prefix = '') {
   return readFiles(src.glob, options).then(partialFiles => {
     partialFiles.forEach(partialFile => {
       const partialKey = resourceId(partialFile, src.basedir, prefix);
       if (options.handlebars.partials.hasOwnProperty(partialKey)) {
-        DrizzleError.error(new DrizzleError(`Partial key '${partialKey}' already
+        DrizzleError.error(
+          new DrizzleError(
+            `Partial key '${partialKey}' already
 registered on Handlebars instance: is this intentional?`,
-          DrizzleError.LEVELS.WARN), options);
+            DrizzleError.LEVELS.WARN
+          ),
+          options
+        );
       }
       options.handlebars.registerPartial(partialKey, partialFile.contents);
     });
@@ -35,14 +40,11 @@ registered on Handlebars instance: is this intentional?`,
  * @param {Object} Handlebars instance
  * @param {String|Array} glob
  */
-function preparePartials (options) {
+function preparePartials(options) {
   return Promise.all([
     registerPartials(options.src.templates, options), // Partials as partials
     registerPartials(options.src.patterns, options, 'patterns') // Patterns
-  ]).then(
-    () => options,
-    error => DrizzleError.error(error, options.debug)
-  );
+  ]).then(() => options, error => DrizzleError.error(error, options.debug));
 }
 
 export default preparePartials;

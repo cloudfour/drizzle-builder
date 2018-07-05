@@ -9,7 +9,7 @@ import DrizzleError from '../utils/error';
  * @param {Object} drizzleData All drizzle data so far
  * @return {Promise} resolving to drizzleData
  */
-function write (drizzleData) {
+function write(drizzleData) {
   return Promise.all([
     writePages(drizzleData),
     writeCollections(drizzleData)

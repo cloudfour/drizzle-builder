@@ -1,8 +1,8 @@
 import R from 'ramda';
-import {relative as relativePath} from 'path';
-import {splitPath} from '../utils/object';
-import {sortByProp} from '../utils/list';
-import {resourcePath, isType} from '../utils/shared';
+import { relative as relativePath } from 'path';
+import { splitPath } from '../utils/object';
+import { sortByProp } from '../utils/list';
+import { resourcePath, isType } from '../utils/shared';
 
 const isDir = isType(undefined);
 
@@ -18,7 +18,7 @@ const isDir = isType(undefined);
  * @return {Mixed}
  * Whatever structure exists at the supplied path.
  */
-function extractSubset (path, drizzle) {
+function extractSubset(path, drizzle) {
   const pathBits = splitPath(path);
   const results = R.path(pathBits, drizzle);
   return results;
@@ -36,7 +36,7 @@ function extractSubset (path, drizzle) {
  * @return {String}
  * The relative base path for the supplied resource type.
  */
-function destRoot (type, drizzle) {
+function destRoot(type, drizzle) {
   const options = drizzle.options;
 
   // TODO: this is unfortunate, and due to difficulty using defaults.keys
@@ -46,10 +46,7 @@ function destRoot (type, drizzle) {
     ['pattern', 'patterns']
   ]);
 
-  return relativePath(
-    options.dest.root,
-    options.dest[keys.get(type)]
-  );
+  return relativePath(options.dest.root, options.dest[keys.get(type)]);
 }
 
 /**
@@ -65,15 +62,12 @@ function destRoot (type, drizzle) {
  * The "refined" object representation of a menu item (with fewer properties
  * and a new `url` property).
  */
-function menuItem (props, drizzle) {
-  props.url = resourcePath(
-    props.id,
-    destRoot(props.resourceType, drizzle)
-  );
+function menuItem(props, drizzle) {
+  props.url = resourcePath(props.id, destRoot(props.resourceType, drizzle));
   return R.omit(['contents', 'items'], props);
 }
 
-export default function register (options) {
+export default function register(options) {
   const Handlebars = options.handlebars;
 
   Handlebars.registerHelper('pages', (...args) => {

@@ -9,7 +9,7 @@ import path from 'path';
  * absolute paths, if they are not already.
  * @param {Object} opts   Mutated in place.
  */
-function normalizePaths (opts) {
+function normalizePaths(opts) {
   for (var srcKey in opts.src) {
     if (!path.isAbsolute(opts.src[srcKey].glob)) {
       opts.src[srcKey].glob = path.resolve(opts.src[srcKey].glob);
@@ -28,7 +28,7 @@ function normalizePaths (opts) {
  * @return {Promise} resolving to merged options
  */
 
-function init (options = {}, handlebars) {
+function init(options = {}, handlebars) {
   const opts = deepExtend({}, defaults, options);
   normalizePaths(opts);
   opts.handlebars = handlebars || Handlebars.create();

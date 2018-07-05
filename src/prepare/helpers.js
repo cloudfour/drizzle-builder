@@ -24,7 +24,7 @@ import DrizzleError from '../utils/error';
  * @param {Object} options with `helpers` property
  * @return {Promise} resolving to the helpers that have been registered
  */
-function getHelpers (options) {
+function getHelpers(options) {
   const helpers = {};
   return new Promise((resolve, reject) => {
     if (isGlob(options.helpers)) {
@@ -50,24 +50,27 @@ function getHelpers (options) {
  * @param {Object} options
  * @return {Promise} that resolves to all helpers registered on Handlebars
  */
-function prepareHelpers (options) {
+function prepareHelpers(options) {
   // Register helper for layouts, from the module
   options.handlebars.registerHelper(handlebarsLayouts(options.handlebars));
-  return getHelpers(options)
-    .then(helpers => {
+  return getHelpers(options).then(
+    helpers => {
       registerPatternHelpers(options);
       registerDataHelpers(options);
       registerPageHelpers(options);
 
       options.handlebars.registerHelper(
-        'ns', stringHelpers.ns(options.handlebars, {prefix: 'drizzle-'})
+        'ns',
+        stringHelpers.ns(options.handlebars, { prefix: 'drizzle-' })
       );
 
       for (var helper in helpers) {
         options.handlebars.registerHelper(helper, helpers[helper]);
       }
       return options;
-    }, error => DrizzleError.error(error, options.debug));
+    },
+    error => DrizzleError.error(error, options.debug)
+  );
 }
 
 export default prepareHelpers;

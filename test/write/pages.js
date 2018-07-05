@@ -1,24 +1,29 @@
 var chai = require('chai');
 var expect = chai.expect;
 var config = require('../config');
-var prepare = require('../../dist/prepare/');
-var parse = require('../../dist/parse/');
-var render = require('../../dist/render/');
+var prepare = require('../../dist/prepare');
+var parse = require('../../dist/parse');
+var render = require('../../dist/render');
 var writePages = require('../../dist/write/pages');
 var testUtils = require('../test-utils');
 var objectUtils = require('../../dist/utils/object');
 var path = require('path');
 
-describe ('write/pages', () => {
+describe('write/pages', () => {
   var drizzleData;
-  describe ('write out page files', () => {
-    before (() => {
-      return config.init(config.fixtureOpts).then(prepare).then(parse)
-        .then(render).then(writePages).then(dData => {
+  describe('write out page files', () => {
+    before(() => {
+      return config
+        .init(config.fixtureOpts)
+        .then(prepare)
+        .then(parse)
+        .then(render)
+        .then(writePages)
+        .then(dData => {
           drizzleData = dData;
         });
     });
-    it ('should write page files', () => {
+    it('should write page files', () => {
       const paths = [
         drizzleData.pages.doThis.outputPath,
         drizzleData.pages['04-sandbox'].outputPath,
@@ -32,7 +37,7 @@ describe ('write/pages', () => {
         expect(allAreFiles).to.be.true;
       });
     });
-    it ('should write files to correctly-nested paths', () => {
+    it('should write files to correctly-nested paths', () => {
       var followMe = drizzleData.pages['follow-me'];
       expect(followMe.down.apage.outputPath).to.contain(
         path.normalize('follow-me/down/apage')
@@ -44,98 +49,115 @@ describe ('write/pages', () => {
         path.normalize('follow-me/down/orthree')
       );
     });
-    it ('should write page files with compiled contents', () => {
-      return testUtils.fileContents(drizzleData.pages.doThis.outputPath)
-      .then(contents => {
-        expect(contents).to.contain('<h2>foobar</h2>');
-        expect(contents).to.contain('<h1>This is the Page Layout</h1>');
-        expect(contents).not.to.contain('Body content should replace this.');
-      });
+    it('should write page files with compiled contents', () => {
+      return testUtils
+        .fileContents(drizzleData.pages.doThis.outputPath)
+        .then(contents => {
+          expect(contents).to.contain('<h2>foobar</h2>');
+          expect(contents).to.contain('<h1>This is the Page Layout</h1>');
+          expect(contents).not.to.contain('Body content should replace this.');
+        });
     });
-    it ('should write page files with functioning {{data}} helper', () => {
-      return testUtils.fileContents(drizzleData.pages.usingHelpers.outputPath)
-      .then(contents => {
-        expect(contents).to.contain('<output>cat is in the well</output>');
-        expect(contents).to.contain('<output>elfin: small things</output>');
-        expect(contents).to.contain('<output>Winston: 43</output>');
-        expect(contents).to.contain('<output>5</output>');
-      });
+    it('should write page files with functioning {{data}} helper', () => {
+      return testUtils
+        .fileContents(drizzleData.pages.usingHelpers.outputPath)
+        .then(contents => {
+          expect(contents).to.contain('<output>cat is in the well</output>');
+          expect(contents).to.contain('<output>elfin: small things</output>');
+          expect(contents).to.contain('<output>Winston: 43</output>');
+          expect(contents).to.contain('<output>5</output>');
+        });
     });
-    it ('should write page files with functioning {{pages}} helper', () => {
-      return testUtils.fileContents(drizzleData.pages.usingPageHelpers.outputPath)
-      .then(contents => {
-        expect(contents).to.contain('<output>default: 04-sandbox.html</output>');
-        expect(contents).to.contain('<output>order: 1</output>');
-        expect(contents).to.contain('<output>alias: apple</output>');
-        expect(contents).to.contain('<output>page: pages.nerkle</output>');
-      });
+    it('should write page files with functioning {{pages}} helper', () => {
+      return testUtils
+        .fileContents(drizzleData.pages.usingPageHelpers.outputPath)
+        .then(contents => {
+          expect(contents).to.contain(
+            '<output>default: 04-sandbox.html</output>'
+          );
+          expect(contents).to.contain('<output>order: 1</output>');
+          expect(contents).to.contain('<output>alias: apple</output>');
+          expect(contents).to.contain('<output>page: pages.nerkle</output>');
+        });
     });
-    it ('should write page files with functioning {{collections}} helper', () => {
-      return testUtils.fileContents(drizzleData.pages['helpers-demo-collections'].outputPath)
-      .then(contents => {
-        expect(contents).to.contain(
-          '<output test-collection-index="0" test-collection-id="collections.components">'
-        );
-        expect(contents).to.contain(
-          '<output test-collection-index="0" test-collection-id="collections.components.button">'
-        );
-        expect(contents).to.contain(
-          '<output test-collection-index="0" test-collection-id="collections.typography.headings">'
-        );
-        expect(contents).to.contain(
-          '<output test-collection-index="" test-collection-id="collections.components.alert">'
-        );
-      });
+    it('should write page files with functioning {{collections}} helper', () => {
+      return testUtils
+        .fileContents(drizzleData.pages['helpers-demo-collections'].outputPath)
+        .then(contents => {
+          expect(contents).to.contain(
+            '<output test-collection-index="0" test-collection-id="collections.components">'
+          );
+          expect(contents).to.contain(
+            '<output test-collection-index="0" test-collection-id="collections.components.button">'
+          );
+          expect(contents).to.contain(
+            '<output test-collection-index="0" test-collection-id="collections.typography.headings">'
+          );
+          expect(contents).to.contain(
+            '<output test-collection-index="" test-collection-id="collections.components.alert">'
+          );
+        });
     });
-    it ('should write page files with functioning {{ns}} helper', () => {
-      return testUtils.fileContents(drizzleData.pages['helpers-demo-string'].outputPath)
-      .then(contents => {
-        expect(contents).to.contain(
-          '<output test-ns-default="drizzle-one drizzle-two drizzle-three">'
-        );
-        expect(contents).to.contain(
-          '<output test-ns-prefix="foo-four foo-five foo-six">'
-        );
-        expect(contents).to.contain(
-          '<output test-ns-whitespace="drizzle-seven drizzle-eight drizzle-nine drizzle-ten">'
-        );
-        expect(contents).to.contain(
-          '<output test-ns-yfm="drizzle-ham drizzle-cheese">'
-        );
-      });
+    it('should write page files with functioning {{ns}} helper', () => {
+      return testUtils
+        .fileContents(drizzleData.pages['helpers-demo-string'].outputPath)
+        .then(contents => {
+          expect(contents).to.contain(
+            '<output test-ns-default="drizzle-one drizzle-two drizzle-three">'
+          );
+          expect(contents).to.contain(
+            '<output test-ns-prefix="foo-four foo-five foo-six">'
+          );
+          expect(contents).to.contain(
+            '<output test-ns-whitespace="drizzle-seven drizzle-eight drizzle-nine drizzle-ten">'
+          );
+          expect(contents).to.contain(
+            '<output test-ns-yfm="drizzle-ham drizzle-cheese">'
+          );
+        });
     });
   });
-  describe ('write to page destination', () => {
+  describe('write to page destination', () => {
     var alteredData;
-    before (() => {
+    before(() => {
       var opts = config.fixtureOpts;
       opts.dest.pages = './test/dist/pageprefixed';
-      return config.init(opts).then(prepare).then(parse)
-        .then(render).then(writePages).then(aData => {
+      return config
+        .init(opts)
+        .then(prepare)
+        .then(parse)
+        .then(render)
+        .then(writePages)
+        .then(aData => {
           alteredData = aData;
         });
     });
-    it ('should use dest.pages from options', () => {
+    it('should use dest.pages from options', () => {
       expect(alteredData.pages.subfolder.subpage.outputPath).to.contain(
         'pageprefixed'
       );
     });
   });
-  describe ('deeply nested pages', () => {
+  describe('deeply nested pages', () => {
     var alteredData;
-    before (() => {
+    before(() => {
       var opts = config.fixtureOpts;
       opts.dest.pages = './test/dist/pagesnested';
       opts.src.pages = {
         glob: config.fixturePath('morePages/**/*'),
         basedir: config.fixturePath('morePages')
       };
-      return config.init(opts).then(prepare).then(parse)
-        .then(render).then(writePages).then(aData => {
+      return config
+        .init(opts)
+        .then(prepare)
+        .then(parse)
+        .then(render)
+        .then(writePages)
+        .then(aData => {
           alteredData = aData;
         });
     });
-    it ('should ouput pages to the correct output paths', () => {
+    it('should ouput pages to the correct output paths', () => {
       var pagesById = objectUtils.flattenById(alteredData.pages);
       for (var pageKey in pagesById) {
         const outputPath = pagesById[pageKey].outputPath;

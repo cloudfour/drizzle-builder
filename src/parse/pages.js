@@ -8,7 +8,7 @@ import { readFileTree } from '../utils/parse';
  * @param {Object} Options
  * @return {Promise} resolving to page data
  */
-function parsePages (options) {
+function parsePages(options) {
   return readFileTree(options.src.pages, options.keys.pages, options);
 }
 

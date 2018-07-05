@@ -16,24 +16,29 @@ import DrizzleError from '../utils/error';
  *                               Used to derive the collection's "name"
  * @return {Object}              patterns data at this level.
  */
-function renderCollection (patterns, drizzleData, collectionKey) {
+function renderCollection(patterns, drizzleData, collectionKey) {
   const layoutKey = drizzleData.options.layouts.collection;
   let layoutObj;
   try {
-    // deepObj will throw if it fails, which is good and fine...
+    // DeepObj will throw if it fails, which is good and fine...
     layoutObj = deepObj(idKeys(layoutKey), drizzleData.templates, false);
   } catch (e) {
     // But Make this error more friendly and specific
-    DrizzleError.error(new DrizzleError(
-      `Could not find partial for default collection layout
+    DrizzleError.error(
+      new DrizzleError(
+        `Could not find partial for default collection layout
 '${layoutKey}'. Check 'options.layouts.collection' and/or
 'options.src.templates' values to make sure they are OK`,
-    DrizzleError.LEVELS.ERROR), drizzleData.options.debug);
+        DrizzleError.LEVELS.ERROR
+      ),
+      drizzleData.options.debug
+    );
   }
   patterns.collection.contents = applyTemplate(
     layoutObj.contents,
     resourceContext(patterns.collection, drizzleData),
-    drizzleData.options);
+    drizzleData.options
+  );
   return patterns;
 }
 
@@ -47,7 +52,7 @@ function renderCollection (patterns, drizzleData, collectionKey) {
  * @param {String} currentKey   The key for the current `patterns` object.
  * @return {Object} drizzleData All drizzleData
  */
-function walkCollections (patterns, drizzleData, currentKey = 'patterns') {
+function walkCollections(patterns, drizzleData, currentKey = 'patterns') {
   for (const patternKey in patterns) {
     if (patternKey === 'collection') {
       renderCollection(patterns, drizzleData, currentKey);
@@ -63,7 +68,7 @@ function walkCollections (patterns, drizzleData, currentKey = 'patterns') {
  * @param {Object} drizzleData
  * @return {Object} patterns data
  */
-function renderCollections (drizzleData) {
+function renderCollections(drizzleData) {
   return walkCollections(drizzleData.patterns, drizzleData);
 }
 

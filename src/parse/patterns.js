@@ -9,19 +9,27 @@ import path from 'path';
 import DrizzleError from '../utils/error';
 
 const isPattern = obj => obj.hasOwnProperty('path');
-const collectionPath = itms => path.dirname(path.normalize(itms[Object.keys(itms).pop()].path));
-const collectionKey = itms => collectionPath(itms).split(path.sep).pop();
+const collectionPath = itms =>
+  path.dirname(path.normalize(itms[Object.keys(itms).pop()].path));
+const collectionKey = itms =>
+  collectionPath(itms)
+    .split(path.sep)
+    .pop();
 
-function checkNamespaceCollision (key, obj, id, options = {}) {
+function checkNamespaceCollision(key, obj, id, options = {}) {
   if (Array.isArray(key)) {
-    return key.map(oneKey =>
-      checkNamespaceCollision(oneKey, obj, id, options)
-    );
+    return key.map(oneKey => checkNamespaceCollision(oneKey, obj, id, options));
   }
   if (obj && obj.hasOwnProperty(key)) {
-    DrizzleError.error(new DrizzleError(`'${id}' has local '${key}'
+    DrizzleError.error(
+      new DrizzleError(
+        `'${id}' has local '${key}'
 property set. This is a Drizzle reserved property and will be
-overwritten. See docs.`, DrizzleError.LEVELS.WARN), options.debug);
+overwritten. See docs.`,
+        DrizzleError.LEVELS.WARN
+      ),
+      options.debug
+    );
   }
 }
 
@@ -32,9 +40,11 @@ overwritten. See docs.`, DrizzleError.LEVELS.WARN), options.debug);
  * @param {String} patternKey
  * @return {Boolean}
  */
-function isHidden (collection, pattern, patternKey) {
-  return ((collection.hidden && collection.hidden.indexOf(patternKey) !== -1) ||
-    (pattern.data && pattern.data.hidden));
+function isHidden(collection, pattern, patternKey) {
+  return (
+    (collection.hidden && collection.hidden.indexOf(patternKey) !== -1) ||
+    (pattern.data && pattern.data.hidden)
+  );
 }
 
 /**
@@ -42,8 +52,10 @@ function isHidden (collection, pattern, patternKey) {
  * @param {Object} obj
  * @return {Boolean}
  */
-function isCollection (obj) {
-  if (isPattern(obj)) { return false; }
+function isCollection(obj) {
+  if (isPattern(obj)) {
+    return false;
+  }
   return Object.keys(obj).some(childKey => isPattern(obj[childKey]));
 }
 
@@ -52,7 +64,7 @@ function isCollection (obj) {
  * @param {Object} items  All the patterns
  * @return {String} glob
  */
-function collectionGlob (items) {
+function collectionGlob(items) {
   return path.join(collectionPath(items), 'collection.+(yml|yaml|json)');
 }
 
@@ -65,7 +77,7 @@ function collectionGlob (items) {
  */
 const hasPatternOrdering = itms => {
   return Object.keys(itms).some(itm => {
-    return (itms[itm].data && itms[itm].data.hasOwnProperty('order'));
+    return itms[itm].data && itms[itm].data.hasOwnProperty('order');
   });
 };
 
@@ -76,10 +88,11 @@ const hasPatternOrdering = itms => {
  * @param {Object} options
  * @return {Object} built-out pattern
  */
-function buildPattern (patternObj, options) {
+function buildPattern(patternObj, options) {
   const patternFile = { path: patternObj.path };
   return Object.assign(patternObj, {
-    name: (patternObj.data && patternObj.data.name) ||
+    name:
+      (patternObj.data && patternObj.data.name) ||
       titleCase(resourceKey(patternFile))
   });
 }
@@ -95,7 +108,7 @@ function buildPattern (patternObj, options) {
  * @param {Object} options
  * @return {Object} patterns      Built-out pattern objects
  */
-function buildPatterns (collectionObj, options) {
+function buildPatterns(collectionObj, options) {
   const patterns = {};
   for (const childKey in collectionObj) {
     if (isPattern(collectionObj[childKey])) {
@@ -116,7 +129,7 @@ function buildPatterns (collectionObj, options) {
  * @param {Object} collection
  * @return {Array} patterns            Ordered, visible patterns
  */
-function buildOrderedPatterns (collection) {
+function buildOrderedPatterns(collection) {
   let sortedKeys;
   if (hasPatternOrdering(collection.items)) {
     sortedKeys = Object.keys(collection.items).sort((keyA, keyB) => {
@@ -131,7 +144,7 @@ function buildOrderedPatterns (collection) {
   sortedKeys = sortedKeys.concat(
     Object.keys(collection.items).filter(itemKey => {
       // Make sure all keys are accounted for
-      return (sortedKeys.indexOf(itemKey) < 0);
+      return sortedKeys.indexOf(itemKey) < 0;
     })
   );
   sortedKeys.forEach(sortedKey => {
@@ -155,22 +168,33 @@ function buildOrderedPatterns (collection) {
  *                                collectionObj.collection, which is what this
  *                                function tacks on).
  */
-function buildCollection (collectionObj, options) {
-  const items = buildPatterns (collectionObj, options);
+function buildCollection(collectionObj, options) {
+  const items = buildPatterns(collectionObj, options);
   const pseudoFile = { path: collectionPath(items) };
   return readFiles(collectionGlob(items), options).then(collData => {
-    const collectionMeta = (collData.length) ? collData[0].contents : {};
-    collectionObj.collection = Object.assign ({
-      name: titleCase(collectionKey(items)),
-      resourceType: options.keys.collections.singular,
-      id: resourceId(pseudoFile, options.src.patterns.basedir,
-        options.keys.collections.plural)
-    }, collectionMeta);
-    checkNamespaceCollision(['items', 'patterns'], collectionObj.collection,
-      `Collection ${collectionObj.collection.name}`, options);
+    const collectionMeta = collData.length ? collData[0].contents : {};
+    collectionObj.collection = Object.assign(
+      {
+        name: titleCase(collectionKey(items)),
+        resourceType: options.keys.collections.singular,
+        id: resourceId(
+          pseudoFile,
+          options.src.patterns.basedir,
+          options.keys.collections.plural
+        )
+      },
+      collectionMeta
+    );
+    checkNamespaceCollision(
+      ['items', 'patterns'],
+      collectionObj.collection,
+      `Collection ${collectionObj.collection.name}`,
+      options
+    );
     collectionObj.collection.items = items;
     collectionObj.collection.patterns = buildOrderedPatterns(
-      collectionObj.collection);
+      collectionObj.collection
+    );
     return collectionObj;
   });
 }
@@ -184,14 +208,16 @@ function buildCollection (collectionObj, options) {
  * @param {Array} collectionPromises Array of `{Promise}`s representing
  *                             reading collection metadata
  */
-function buildCollections (patternObj, options, collectionPromises = []) {
-  if (isPattern(patternObj)) { return collectionPromises; }
+function buildCollections(patternObj, options, collectionPromises = []) {
+  if (isPattern(patternObj)) {
+    return collectionPromises;
+  }
   if (isCollection(patternObj)) {
-    collectionPromises.push(buildCollection (patternObj, options));
+    collectionPromises.push(buildCollection(patternObj, options));
   }
   for (const patternKey in patternObj) {
     if (patternKey !== 'collection') {
-      buildCollections (patternObj[patternKey], options, collectionPromises);
+      buildCollections(patternObj[patternKey], options, collectionPromises);
     }
   }
   return collectionPromises;
@@ -204,12 +230,16 @@ function buildCollections (patternObj, options, collectionPromises = []) {
  * @param {Object} options
  * @return {Promise} resolving to pattern/collection data
  */
-function parsePatterns (options) {
-  return readFileTree(options.src.patterns, options.keys.patterns, options)
-  .then(patternObj => {
-    return Promise.all(buildCollections(patternObj, options))
-      .then(() => patternObj,
-            error => DrizzleError.error(error, options.debug));
+function parsePatterns(options) {
+  return readFileTree(
+    options.src.patterns,
+    options.keys.patterns,
+    options
+  ).then(patternObj => {
+    return Promise.all(buildCollections(patternObj, options)).then(
+      () => patternObj,
+      error => DrizzleError.error(error, options.debug)
+    );
   });
 }
 

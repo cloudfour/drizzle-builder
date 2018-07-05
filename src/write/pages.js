@@ -12,15 +12,19 @@ const isPage = page => page.hasOwnProperty('contents');
  * @param {Array} writePromises All write promises so far
  * @return {Array} of Promises
  */
-function walkPages (pages, drizzleData, writePromises = []) {
+function walkPages(pages, drizzleData, writePromises = []) {
   if (isPage(pages)) {
-    return writePage(pages.id, pages,
+    return writePage(
+      pages.id,
+      pages,
       drizzleData.options.dest.pages,
-      drizzleData.options.keys.pages.plural);
+      drizzleData.options.keys.pages.plural
+    );
   }
   for (var pageKey in pages) {
     writePromises = writePromises.concat(
-      walkPages(pages[pageKey], drizzleData, writePromises));
+      walkPages(pages[pageKey], drizzleData, writePromises)
+    );
   }
   return writePromises;
 }
@@ -31,10 +35,11 @@ function walkPages (pages, drizzleData, writePromises = []) {
  * @param {Object} drizzleData
  * @return {Promise} resolving to drizzleData
  */
-function writePages (drizzleData) {
-  return Promise.all(walkPages(drizzleData.pages, drizzleData))
-    .then(() => drizzleData,
-          error => DrizzleError.error(error, drizzleData.options.debug));
+function writePages(drizzleData) {
+  return Promise.all(walkPages(drizzleData.pages, drizzleData)).then(
+    () => drizzleData,
+    error => DrizzleError.error(error, drizzleData.options.debug)
+  );
 }
 
 export default writePages;

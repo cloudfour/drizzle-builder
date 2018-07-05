@@ -24,7 +24,7 @@ const sortObjects = natsort();
  * sortByProp(['data', 'title'], items);
  * // [{data: {title: 'a'}}, {data: {title: 'b'}}]
  */
-function sortByProp (prop, list) {
+function sortByProp(prop, list) {
   const get = R.is(Array, prop) ? R.path : R.prop;
   return R.sort((elA, elB) => {
     const a = get(prop, elA);
@@ -33,6 +33,4 @@ function sortByProp (prop, list) {
   }, list);
 }
 
-export {
-  sortByProp
-};
+export { sortByProp };

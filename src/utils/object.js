@@ -1,7 +1,7 @@
-import {idKeys, keyname, relativePathArray} from './shared';
+import { idKeys, keyname, relativePathArray } from './shared';
 import R from 'ramda';
 import DrizzleError from './error';
-import {join, relative} from 'path';
+import { join, relative } from 'path';
 
 /**
  * Return a reference to the deeply-nested object indicated by the items
@@ -13,15 +13,18 @@ import {join, relative} from 'path';
  *
  * @example deepRef(['foo', 'bar', 'baz'], { foo: {} }, true); // => foo.bar.baz
  */
-function deepObj (pathKeys, obj, createEntries = true) {
+function deepObj(pathKeys, obj, createEntries = true) {
   return pathKeys.reduce((prev, curr) => {
     if (typeof prev[curr] === 'undefined') {
       if (createEntries) {
         prev[curr] = {};
       } else {
-        DrizzleError.error(new DrizzleError(
-          `Property ${curr} not found on supplied object`,
-          DrizzleError.LEVELS.ERROR));
+        DrizzleError.error(
+          new DrizzleError(
+            `Property ${curr} not found on supplied object`,
+            DrizzleError.LEVELS.ERROR
+          )
+        );
       }
     }
     return prev[curr];
@@ -39,7 +42,7 @@ function deepObj (pathKeys, obj, createEntries = true) {
  * @param {Object} obj       Object with all Patterns
  * @return {Object}          Object reference to patterns
  */
-function deepPattern (patternId, obj) {
+function deepPattern(patternId, obj) {
   const pathBits = idKeys(patternId);
   pathBits.shift();
   pathBits.splice(-1, 0, 'collection', 'items');
@@ -51,7 +54,7 @@ function deepPattern (patternId, obj) {
  * in the object `obj`.
  * @see deepPattern
  */
-function deepCollection (collectionId, obj) {
+function deepCollection(collectionId, obj) {
   const pathBits = idKeys(collectionId);
   pathBits.pop();
   pathBits.push('collection');
@@ -60,13 +63,13 @@ function deepCollection (collectionId, obj) {
 }
 
 /**
- * isObject function opinionated against Arrays
+ * IsObject function opinionated against Arrays
  * @param {Obj}
  * @return {Boolean}
  */
-function isObject (obj) {
+function isObject(obj) {
   const objType = typeof obj;
-  return (objType === 'object' && !!obj && !Array.isArray(obj));
+  return objType === 'object' && Boolean(obj) && !Array.isArray(obj);
 }
 
 /**
@@ -77,7 +80,7 @@ function isObject (obj) {
  * @param {Obj} keyedObj   For recursion; not strictly necessary but...
  * @return {Obj} keyed by ids
  */
-function flattenById (obj, keyedObj = {}) {
+function flattenById(obj, keyedObj = {}) {
   if (obj.hasOwnProperty('id')) {
     keyedObj[obj.id] = obj;
   }
@@ -102,9 +105,10 @@ function flattenById (obj, keyedObj = {}) {
  *                                     if provided.
  * @return {String} ID for this resource
  */
-function resourceId (resourceFile, relativeTo, resourceCollection = '') {
-  const pathKeys = relativePathArray(resourceFile.path, relativeTo)
-    .map(keyname);
+function resourceId(resourceFile, relativeTo, resourceCollection = '') {
+  const pathKeys = relativePathArray(resourceFile.path, relativeTo).map(
+    keyname
+  );
   const resourceBits = [];
   if (resourceCollection && resourceCollection.length) {
     resourceBits.push(resourceCollection);
@@ -112,7 +116,7 @@ function resourceId (resourceFile, relativeTo, resourceCollection = '') {
   return resourceBits
     .concat(pathKeys)
     .concat([keyname(resourceFile.path)])
-    .join ('.');
+    .join('.');
 }
 
 /**
@@ -122,7 +126,7 @@ function resourceId (resourceFile, relativeTo, resourceCollection = '') {
  * @param {Object} resourceFile Object representing a file. Needs `path` prop
  * @return {String}
  */
-function resourceKey (resourceFile) {
+function resourceKey(resourceFile) {
   return keyname(resourceFile.path);
 }
 
@@ -139,9 +143,12 @@ function resourceKey (resourceFile) {
  * splitPath('a/b/c/1.2.3');
  * // ['a', 'b', 'c', '1', '2', '3']
  */
-function splitPath (path) {
+function splitPath(path) {
   const delim = /[\.\/]/;
-  const result = R.pipe(R.split(delim), R.without(''))(path);
+  const result = R.pipe(
+    R.split(delim),
+    R.without('')
+  )(path);
   return result;
 }
 
@@ -158,7 +165,7 @@ function splitPath (path) {
  * normalizePath('foo/bar//baz.bang.1./');
  * // 'foo/bar/baz/bang/1'
  */
-function normalizePath (path) {
+function normalizePath(path) {
   return join(...splitPath(path));
 }
 
@@ -173,22 +180,20 @@ function normalizePath (path) {
  * isPathChild('components/button', 'components');
  * // true
  */
-function isPathChild (pathA, pathB) {
-  const relPath = relative(
-    normalizePath(pathA),
-    normalizePath(pathB)
-  );
+function isPathChild(pathA, pathB) {
+  const relPath = relative(normalizePath(pathA), normalizePath(pathB));
   return relPath === '..';
 }
 
-export { deepCollection, // object
-         deepObj, // object
-         deepPattern, // object
-         flattenById,
-         keyname, // object
-         resourceId, //object
-         resourceKey, // object
-         splitPath,
-         normalizePath,
-         isPathChild
-       };
+export {
+  deepCollection, // Object
+  deepObj, // Object
+  deepPattern, // Object
+  flattenById,
+  keyname, // Object
+  resourceId, // Object
+  resourceKey, // Object
+  splitPath,
+  normalizePath,
+  isPathChild
+};

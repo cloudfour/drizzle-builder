@@ -31,7 +31,7 @@ var fractionMap = {
   87: 8542
 };
 
-module.exports = function toFraction (value) {
+module.exports = function toFraction(value) {
   var integer = Math.floor(value);
   var decimal = value - integer;
   var key = Math.floor(decimal * 100);
