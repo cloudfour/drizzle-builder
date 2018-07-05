@@ -10,7 +10,7 @@ describe('utils/parse', () => {
       var glob = config.fixturePath('helpers/**/*');
       return utils.getFiles(glob).then(fileList => {
         expect(Array.isArray(fileList)).to.be.true;
-        fileList.map(filePath => {
+        fileList.forEach(filePath => {
           // Ham-fisted test that everything is a file, not a directory
           expect(filePath).to.contain('.');
         });

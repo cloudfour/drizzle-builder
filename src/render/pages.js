@@ -22,7 +22,7 @@ function wrapWithLayout(page, drizzleData) {
   // TODO Add test to see if _any_ extends is extant. Multiple extends
   // for ANY reason will cause handlebars-layouts to asplode.
   const alreadyWrapped = new RegExp(
-    `{{\\s*#extend\\s*[\'\"]${layout}[\'\"].*}}`
+    `{{\\s*#extend\\s*['"]${layout}['"].*}}`
   ).test(page.contents);
   const wrapped = alreadyWrapped
     ? page.contents

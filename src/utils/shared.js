@@ -38,7 +38,7 @@ function relativePathArray(filePath, fromPath) {
     return [];
   }
   const keys = path.relative(fromPath, path.dirname(filePath));
-  if (keys && keys.length) {
+  if (keys && keys.length !== 0) {
     return keys.split(path.sep);
   }
   return [];
@@ -55,7 +55,7 @@ function resourcePath(resourceId, dest = '') {
   // Remove first item because it is the "resource type"
   // If there _is_ only one item in the ID, it will be left alone
   // To serve as the filename.
-  if (subPath.length && subPath.length > 1) {
+  if (subPath.length !== 0 && subPath.length > 1) {
     subPath.shift();
   }
   const filename = subPath.pop() + '.html';
@@ -73,7 +73,7 @@ function resourcePath(resourceId, dest = '') {
 function titleCase(str) {
   return str
     .toLowerCase()
-    .replace(/(\-|_)/g, ' ')
+    .replace(/(-|_)/g, ' ')
     .replace(/\w\S*/g, word => word.charAt(0).toUpperCase() + word.substr(1));
 }
 

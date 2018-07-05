@@ -110,7 +110,7 @@ function resourceId(resourceFile, relativeTo, resourceCollection = '') {
     keyname
   );
   const resourceBits = [];
-  if (resourceCollection && resourceCollection.length) {
+  if (resourceCollection && resourceCollection.length !== 0) {
     resourceBits.push(resourceCollection);
   }
   return resourceBits
@@ -144,7 +144,7 @@ function resourceKey(resourceFile) {
  * // ['a', 'b', 'c', '1', '2', '3']
  */
 function splitPath(path) {
-  const delim = /[\.\/]/;
+  const delim = /[./]/;
   const result = R.pipe(
     R.split(delim),
     R.without('')

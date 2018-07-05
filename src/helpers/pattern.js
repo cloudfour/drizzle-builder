@@ -18,15 +18,14 @@ function renderPatternPartial(patternId, drizzleData, Handlebars) {
     }
     // Render and return
     return template(localContext);
-  } 
-    DrizzleError.error(
-      new DrizzleError(
-        `Partial for pattern ${patternId} not found`,
-        DrizzleError.LEVELS.ERROR
-      ),
-      drizzleData.options.debug
-    );
-  
+  }
+  DrizzleError.error(
+    new DrizzleError(
+      `Partial for pattern ${patternId} not found`,
+      DrizzleError.LEVELS.ERROR
+    ),
+    drizzleData.options.debug
+  );
 }
 
 /**

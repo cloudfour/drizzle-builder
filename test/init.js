@@ -51,7 +51,7 @@ describe('init', () => {
       return opts.then(options => {
         expect(options).to.include.key('src');
         expect(options.src).to.include.keys(srces);
-        srces.map(srcKey => {
+        srces.forEach(srcKey => {
           expect(options.src[srcKey]).to.contain.keys('basedir', 'glob');
         });
       });
