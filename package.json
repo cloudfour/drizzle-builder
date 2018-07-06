@@ -12,7 +12,7 @@
   "scripts": {
     "build": "babel src --out-dir dist",
     "coverage": "istanbul cover _mocha -- --recursive",
-    "prepublish": "npm run test",
+    "prepublishOnly": "npm run test",
     "pretest": "npm run build",
     "test": "cross-env DRIZZLE_DEBUG=1 mocha --recursive",
     "check-lint": "prettier --list-different '**/*.js' && eslint '**/*.js'",
