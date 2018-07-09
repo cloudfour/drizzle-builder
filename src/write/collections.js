@@ -12,16 +12,20 @@ const isCollection = patterns => patterns.hasOwnProperty('items');
  * @param {Array} writePromises All write promises so far
  * @return {Array} of Promises
  */
-function walkCollections (patterns, drizzleData, writePromises = []) {
+function walkCollections(patterns, drizzleData, writePromises = []) {
   if (hasCollection(patterns)) {
-    writePromises.push(writePage(patterns.collection.id, patterns.collection,
-      drizzleData.options.dest.patterns,
-      drizzleData.options.keys.collections.plural));
+    writePromises.push(
+      writePage(
+        patterns.collection.id,
+        patterns.collection,
+        drizzleData.options.dest.patterns,
+        drizzleData.options.keys.collections.plural
+      )
+    );
   }
   for (const patternKey in patterns) {
     if (!isCollection(patterns[patternKey])) {
-      walkCollections(patterns[patternKey],
-        drizzleData, writePromises);
+      walkCollections(patterns[patternKey], drizzleData, writePromises);
     }
   }
   return writePromises;
@@ -33,12 +37,11 @@ function walkCollections (patterns, drizzleData, writePromises = []) {
  * @param {Object} drizzleData
  * @return {Promise} resolving to {Object} drizzleData
  */
-function writeCollections (drizzleData) {
-  return Promise.all(walkCollections(
-    drizzleData.patterns,
-    drizzleData)
-  ).then(writePromises => drizzleData,
-         error => DrizzleError.error(error, drizzleData.options.debug));
+function writeCollections(drizzleData) {
+  return Promise.all(walkCollections(drizzleData.patterns, drizzleData)).then(
+    writePromises => drizzleData,
+    error => DrizzleError.error(error, drizzleData.options.debug)
+  );
 }
 
 export default writeCollections;

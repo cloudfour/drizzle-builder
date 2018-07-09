@@ -14,11 +14,8 @@ import DrizzleError from '../utils/error';
  * @param {Object} options
  * @return {Promise} resolves to mutated {Object} options
  */
-function prepare (options) {
-  return Promise.all([
-    prepareHelpers(options),
-    preparePartials(options)
-  ]).then(
+function prepare(options) {
+  return Promise.all([prepareHelpers(options), preparePartials(options)]).then(
     () => options,
     error => DrizzleError.error(error, options.debug)
   );

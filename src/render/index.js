@@ -9,20 +9,23 @@ import DrizzleError from '../utils/error';
  * @param {Object} drizzleData  All data built so far
  * @return {Promise} resolving to drizzleData
  */
-function render (drizzleData) {
+function render(drizzleData) {
   return Promise.all([
     renderPages(drizzleData),
     renderCollections(drizzleData)
-  ]).then(allData => {
-    return {
-      data    : drizzleData.data,
-      pages   : allData[0],
-      patterns: allData[1],
-      templates : drizzleData.templates,
-      options : drizzleData.options,
-      tree: drizzleData.tree
-    };
-  }, error => DrizzleError.error(error, drizzleData.options.debug));
+  ]).then(
+    allData => {
+      return {
+        data: drizzleData.data,
+        pages: allData[0],
+        patterns: allData[1],
+        templates: drizzleData.templates,
+        options: drizzleData.options,
+        tree: drizzleData.tree
+      };
+    },
+    error => DrizzleError.error(error, drizzleData.options.debug)
+  );
 }
 
 export default render;

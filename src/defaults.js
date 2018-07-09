@@ -8,33 +8,32 @@ const defaults = {
     wrap_attributes: 'auto',
     wrap_attributes_indent_size: 1,
     wrap_line_length: 60,
-    unformatted:
-      `a abbr acronym address b bdo big cite code col del dfn dt em font
+    unformatted: `a abbr acronym address b bdo big cite code col del dfn dt em font
       h1 h2 h3 h4 h5 h6 i img ins kbd mark pre q s samp small span
       strike strong sub sup tt u var`.split(' ')
   },
   debug: {
     logFn: console.log
   },
-  dest          : {
+  dest: {
     root: './dist',
     collections: './dist/patterns',
-    pages   : './dist/pages',
+    pages: './dist/pages',
     patterns: './dist/patterns'
   },
-  fieldParsers  : { },
-  helpers       : {},
+  fieldParsers: {},
+  helpers: {},
   layouts: {
-    page      : 'default',
+    page: 'default',
     collection: 'collection'
   },
-  parsers       : parsers,
+  parsers: parsers,
   src: {
-    data    : {
+    data: {
       basedir: 'src/data',
       glob: 'src/data/**/*'
     },
-    pages   : {
+    pages: {
       basedir: 'src/pages',
       glob: 'src/pages/**/*'
     },
@@ -62,15 +61,15 @@ defaults.keys = {
     singular: 'data',
     plural: 'data'
   },
-  pages      : {
+  pages: {
     singular: 'page',
     plural: 'pages'
   },
-  patterns   : {
+  patterns: {
     singular: 'pattern',
     plural: 'patterns'
   },
-  templates  : {
+  templates: {
     singular: 'template',
     plural: 'templates'
   }

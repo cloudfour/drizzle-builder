@@ -12,9 +12,8 @@
  *   {{random beatles}} //=> "George"
  */
 
-module.exports = function random (arr) {
+module.exports = function random(arr) {
   var isArray = Array.isArray(arr);
-  if (!isArray)
-    throw new Error('The helper "random" must be passed an Array.');
+  if (!isArray) throw new Error('The helper "random" must be passed an Array.');
   return arr[Math.floor(Math.random() * arr.length)];
 };

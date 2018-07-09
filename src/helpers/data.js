@@ -8,7 +8,7 @@
  *    {{/each}}
  */
 
-export default function register (options) {
+export default function register(options) {
   const Handlebars = options.handlebars;
 
   Handlebars.registerHelper('data', (path, context) => {

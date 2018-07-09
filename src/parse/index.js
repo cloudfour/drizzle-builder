@@ -14,13 +14,14 @@ import DrizzleError from '../utils/error';
  * @param {Object} options
  * @return {Promise} resolving to Drizzle data object
  */
-function parseAll (options) {
+function parseAll(options) {
   return Promise.all([
     parseData(options),
     parsePages(options),
     parsePatterns(options),
     parseTemplates(options)
-  ]).then(allData => parseTree(allData, options),
+  ]).then(
+    allData => parseTree(allData, options),
     error => DrizzleError.error(error, options.debug)
   );
 }

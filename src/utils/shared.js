@@ -6,7 +6,7 @@ import R from 'ramda';
  * @param {String} idString
  * @return {Array}
  */
-function idKeys (idString) {
+function idKeys(idString) {
   return idString.split('.');
 }
 
@@ -15,7 +15,7 @@ function idKeys (idString) {
  * Previously this stripped prefixed numbers, etc., but for now it is
  * dead simple.
  */
-function keyname (str) {
+function keyname(str) {
   return path.basename(path.normalize(str), path.extname(str));
 }
 
@@ -30,15 +30,15 @@ function keyname (str) {
  * @param {String} fromPath
  * @return {Array}
  */
-function relativePathArray (filePath, fromPath) {
+function relativePathArray(filePath, fromPath) {
   filePath = path.normalize(filePath);
   fromPath = path.normalize(fromPath);
-  if (filePath.indexOf(fromPath) === -1 || filePath  === fromPath) {
+  if (filePath.indexOf(fromPath) === -1 || filePath === fromPath) {
     // TODO Error handling: this should cause a warn
     return [];
   }
   const keys = path.relative(fromPath, path.dirname(filePath));
-  if (keys && keys.length) {
+  if (keys && keys.length !== 0) {
     return keys.split(path.sep);
   }
   return [];
@@ -50,20 +50,18 @@ function relativePathArray (filePath, fromPath) {
  * @param {String} dest         This path will be prepended
  * @return {String} path
  */
-function resourcePath (resourceId, dest = '') {
+function resourcePath(resourceId, dest = '') {
   const subPath = idKeys(resourceId);
   // Remove first item because it is the "resource type"
   // If there _is_ only one item in the ID, it will be left alone
   // To serve as the filename.
-  if (subPath.length && subPath.length > 1) {
+  if (subPath.length !== 0 && subPath.length > 1) {
     subPath.shift();
   }
   const filename = subPath.pop() + '.html';
-  const outputPath = path.normalize(path.join(
-    dest,
-    subPath.join(path.sep),
-    filename
-  ));
+  const outputPath = path.normalize(
+    path.join(dest, subPath.join(path.sep), filename)
+  );
   return outputPath;
 }
 
@@ -72,10 +70,10 @@ function resourcePath (resourceId, dest = '') {
  * @param {String} str
  * @return {String}
  */
-function titleCase (str) {
+function titleCase(str) {
   return str
     .toLowerCase()
-    .replace(/(\-|_)/g, ' ')
+    .replace(/(-|_)/g, ' ')
     .replace(/\w\S*/g, word => word.charAt(0).toUpperCase() + word.substr(1));
 }
 
@@ -87,13 +85,14 @@ const isPage = isType('page');
 const isPattern = isType('pattern');
 const isCollection = isType('collection');
 
-export { idKeys,
-         keyname,
-         relativePathArray,
-         resourcePath,
-         titleCase,
-         isType,
-         isPage,
-         isPattern,
-         isCollection
-       };
+export {
+  idKeys,
+  keyname,
+  relativePathArray,
+  resourcePath,
+  titleCase,
+  isType,
+  isPage,
+  isPattern,
+  isCollection
+};

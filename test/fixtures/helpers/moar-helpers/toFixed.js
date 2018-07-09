@@ -11,10 +11,12 @@
  *   {{toFixed 1}} //=> 1.00
  */
 
-module.exports = function toFixed (num) {
+module.exports = function toFixed(num) {
   var int = parseFloat(num);
   if (isNaN(int)) {
-    throw new Error('The "toFixed" helper must be passed a number-like value.');
+    throw new TypeError(
+      'The "toFixed" helper must be passed a number-like value.'
+    );
   }
   return int.toFixed(2);
 };

@@ -1,4 +1,4 @@
-import {html as beautify} from 'js-beautify';
+import { html as beautify } from 'js-beautify';
 import DrizzleError from '../utils/error';
 import { deepPattern } from '../utils/object';
 import { patternContext } from '../utils/context';
@@ -8,7 +8,7 @@ import { patternContext } from '../utils/context';
  * compile with correct local context.
  * TODO: How do we test this?
  */
-function renderPatternPartial (patternId, drizzleData, Handlebars) {
+function renderPatternPartial(patternId, drizzleData, Handlebars) {
   const patternObj = deepPattern(patternId, drizzleData.patterns);
   const localContext = patternContext(patternObj, drizzleData);
   let template = Handlebars.partials[patternId];
@@ -18,21 +18,29 @@ function renderPatternPartial (patternId, drizzleData, Handlebars) {
     }
     // Render and return
     return template(localContext);
-  } else {
-    DrizzleError.error(new DrizzleError(
-      `Partial for pattern ${patternId} not found`, DrizzleError.LEVELS.ERROR),
-      drizzleData.options.debug);
   }
+  DrizzleError.error(
+    new DrizzleError(
+      `Partial for pattern ${patternId} not found`,
+      DrizzleError.LEVELS.ERROR
+    ),
+    drizzleData.options.debug
+  );
 }
 
 /**
  * Register some drizzle-specific pattern helpers
  */
-function registerPatternHelpers (options) {
+function registerPatternHelpers(options) {
   const Handlebars = options.handlebars;
   if (Handlebars.helpers.pattern) {
-    DrizzleError.error(new DrizzleError('`pattern` helper already registered',
-      DrizzleError.LEVELS.WARN), options.debug);
+    DrizzleError.error(
+      new DrizzleError(
+        '`pattern` helper already registered',
+        DrizzleError.LEVELS.WARN
+      ),
+      options.debug
+    );
   }
   /**
    * The `pattern` helper allows the embedding of patterns anywhere
@@ -40,14 +48,21 @@ function registerPatternHelpers (options) {
    */
   Handlebars.registerHelper('pattern', (id, rootContext, opts) => {
     const renderedTemplate = renderPatternPartial(
-      id, rootContext.drizzle, Handlebars);
+      id,
+      rootContext.drizzle,
+      Handlebars
+    );
     return renderedTemplate;
   });
 
   if (Handlebars.helpers.patternSource) {
-    DrizzleError.error(new DrizzleError(
-      '`patternSource` helper already registered',
-      DrizzleError.LEVELS.WARN), options.debug);
+    DrizzleError.error(
+      new DrizzleError(
+        '`patternSource` helper already registered',
+        DrizzleError.LEVELS.WARN
+      ),
+      options.debug
+    );
   }
   /**
    * Similar to `pattern` but the returned string is HTML-escaped.

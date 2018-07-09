@@ -1,10 +1,10 @@
 import path from 'path';
 import Promise from 'bluebird';
-import {writeFile as writeFileCB} from 'fs';
-import {mkdirp as mkdirpCB} from 'mkdirp';
+import { writeFile as writeFileCB } from 'fs';
+import { mkdirp as mkdirpCB } from 'mkdirp';
 import { resourcePath } from './shared';
 var writeFile = Promise.promisify(writeFileCB);
-var mkdirp    = Promise.promisify(mkdirpCB);
+var mkdirp = Promise.promisify(mkdirpCB);
 
 /**
  * Write `contents` to path at `filepath`
@@ -12,7 +12,7 @@ var mkdirp    = Promise.promisify(mkdirpCB);
  * @param {String} contents
  * @return {Promise}
  */
-function write (filepath, contents) {
+function write(filepath, contents) {
   return mkdirp(path.dirname(filepath)).then(() => {
     return writeFile(filepath, contents);
   });
@@ -29,7 +29,7 @@ function write (filepath, contents) {
  *                              options.dest—@see defaults).
  * @return {Promise}
  */
-function writePage (resourceId, resourceObj, pathPrefix) {
+function writePage(resourceId, resourceObj, pathPrefix) {
   const outputPath = resourcePath(resourceId, pathPrefix);
   resourceObj.outputPath = outputPath;
   return write(outputPath, resourceObj.contents);

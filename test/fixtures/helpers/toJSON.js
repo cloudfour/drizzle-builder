@@ -11,13 +11,11 @@
  *    {{#each (toJSON '[1,2,3]')}}{{this}}{{/each}} //=> '123'
  */
 
-module.exports = function toJSON (str) {
+module.exports = function toJSON(str) {
   str = str.toString();
   try {
     return JSON.parse(str);
   } catch (e) {
-    throw new Error(
-      'The "toJSON" helper must be passed a valid JSON string.'
-    );
+    throw new Error('The "toJSON" helper must be passed a valid JSON string.');
   }
 };

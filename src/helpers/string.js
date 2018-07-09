@@ -1,11 +1,4 @@
-import {
-  concat,
-  join,
-  map,
-  pipe,
-  split,
-  trim
-} from 'ramda';
+import { concat, join, map, pipe, split, trim } from 'ramda';
 
 /**
  * Prefix every word in string with a namespace.
@@ -26,15 +19,11 @@ import {
  *   <div class="foo-Component foo-u-util">
  * }}
  */
-export function ns (Handlebars, options) {
-  const defaults = {prefix: 'ns-'};
+export function ns(Handlebars, options) {
+  const defaults = { prefix: 'ns-' };
 
   return (str, context) => {
-    const {prefix} = Object.assign(
-      defaults,
-      options,
-      context.hash
-    );
+    const { prefix } = Object.assign(defaults, options, context.hash);
 
     const transform = pipe(
       trim,

@@ -1,19 +1,22 @@
 import globby from 'globby';
 import Promise from 'bluebird';
-import {readFile as readFileCB} from 'fs';
-var readFile = Promise.promisify(readFileCB);
+import { readFile as readFileCB } from 'fs';
 import { relativePathArray } from './shared';
 import { deepObj, resourceKey, resourceId } from './object'; // TODO NO NO NO NO
 import DrizzleError from './error';
+var readFile = Promise.promisify(readFileCB);
 
 /**
  * @param {glob} glob
  * @return {Promise} resolving to {Array} of filepaths matching glob
  */
-function getFiles (glob, globOpts = {}) {
-  const opts = Object.assign({
-    nodir: true
-  }, globOpts);
+function getFiles(glob, globOpts = {}) {
+  const opts = Object.assign(
+    {
+      nodir: true
+    },
+    globOpts
+  );
   return globby(glob, opts);
 }
 
@@ -25,8 +28,10 @@ function getFiles (glob, globOpts = {}) {
  * @param {String|Array} candidate
  * @return Boolean
  */
-function isGlob (candidate) {
-  if (typeof candidate === 'string' && candidate.length > 0) { return true; }
+function isGlob(candidate) {
+  if (typeof candidate === 'string' && candidate.length > 0) {
+    return true;
+  }
   if (Array.isArray(candidate) && candidate.length > 0) {
     return candidate.every(candidateEl => typeof candidateEl === 'string');
   }
@@ -47,7 +52,7 @@ function isGlob (candidate) {
  * @see options module
  * @return {Function} applicable parsing function for file contents
  */
-function matchParser (filepath, parsers = {}) {
+function matchParser(filepath, parsers = {}) {
   for (var parserKey in parsers) {
     if (parsers[parserKey].pattern) {
       if (new RegExp(parsers[parserKey].pattern).test(filepath)) {
@@ -55,8 +60,10 @@ function matchParser (filepath, parsers = {}) {
       }
     }
   }
-  return (parsers.default && parsers.default.parseFn) ||
-    ((contents, filepath) => ({ contents: contents }));
+  return (
+    (parsers.default && parsers.default.parseFn) ||
+    ((contents, filepath) => ({ contents: contents }))
+  );
 }
 
 /**
@@ -67,24 +74,27 @@ function matchParser (filepath, parsers = {}) {
  * @return {Object} parsed data; contains `contents` property.
  * @see parse/parsers
  */
-function parseField (fieldKey, fieldData, options) {
+function parseField(fieldKey, fieldData, options) {
   let parseFn = contents => ({ contents: contents });
   let contents = fieldData;
   // Check to see if options.fieldParsers contains this key
   if (options.fieldParsers.hasOwnProperty(fieldKey)) {
     const parserKey = options.fieldParsers[fieldKey];
     parseFn = options.parsers[parserKey].parseFn;
-    contents = (typeof fieldData === 'string') ? fieldData : fieldData.contents;
+    contents = typeof fieldData === 'string' ? fieldData : fieldData.contents;
   }
   // Check to see if there is a manually-added parser in the data
   if (typeof fieldData === 'object' && fieldData.hasOwnProperty('parser')) {
     if (options.parsers.hasOwnProperty(fieldData.parser)) {
       parseFn = options.parsers[fieldData.parser].parseFn;
-    }
-    else {
-      DrizzleError.error(new DrizzleError(
-        `parser '${fieldData.parser}' set on field '${fieldKey}' not defined`,
-        DrizzleError.LEVELS.WARN), options.debug);
+    } else {
+      DrizzleError.error(
+        new DrizzleError(
+          `parser '${fieldData.parser}' set on field '${fieldKey}' not defined`,
+          DrizzleError.LEVELS.WARN
+        ),
+        options.debug
+      );
     }
     contents = fieldData.contents;
     if (!fieldData.hasOwnProperty('contents')) {
@@ -101,7 +111,7 @@ function parseField (fieldKey, fieldData, options) {
  * any indicated parsers.
  * @TODO is `extendedData` used by any callers?
  */
-function parseLocalData (fileObj, options, extendedData = {}) {
+function parseLocalData(fileObj, options, extendedData = {}) {
   fileObj.data = fileObj.data || {};
   for (const dataKey in fileObj.data) {
     const parsedField = parseField(dataKey, fileObj.data[dataKey], options);
@@ -124,15 +134,14 @@ function parseLocalData (fileObj, options, extendedData = {}) {
  *  - {String} path
  *  - {String|Mixed} contents: contents of file after contentFn
  */
-function readFiles (glob, {
-  parsers = {},
-  encoding = 'utf-8',
-  globOpts = {}
-} = {}) {
+function readFiles(
+  glob,
+  { parsers = {}, encoding = 'utf-8', globOpts = {} } = {}
+) {
   return getFiles(glob, globOpts).then(paths => {
-    return Promise.all(paths.map(filepath => {
-      return readFile(filepath, encoding)
-        .then(fileData => {
+    return Promise.all(
+      paths.map(filepath => {
+        return readFile(filepath, encoding).then(fileData => {
           const parser = matchParser(filepath, parsers);
           fileData = parser(fileData, filepath);
           if (typeof fileData === 'string') {
@@ -140,7 +149,8 @@ function readFiles (glob, {
           }
           return Object.assign(fileData, { path: filepath });
         });
-    }));
+      })
+    );
   });
 }
 
@@ -170,7 +180,7 @@ function readFiles (glob, {
  * @param {Object} options
  * @return {Promise} resolving to {Object} of keyed file contents
  */
-function readFileTree (src, prefix, options) {
+function readFileTree(src, prefix, options) {
   const fileTree = {};
   return readFiles(src.glob, options).then(fileData => {
     fileData.forEach(itemFile => {
@@ -178,17 +188,20 @@ function readFileTree (src, prefix, options) {
       itemFile.id = resourceId(itemFile, src.basedir, prefix.plural);
       itemFile.resourceType = prefix.singular;
       deepObj(fileKeys, fileTree)[resourceKey(itemFile)] = parseLocalData(
-        itemFile, options);
+        itemFile,
+        options
+      );
     });
     return fileTree;
   });
 }
 
-export { getFiles,
-         isGlob,
-         matchParser,
-         parseField,
-         parseLocalData,
-         readFiles,
-         readFileTree
-       };
+export {
+  getFiles,
+  isGlob,
+  matchParser,
+  parseField,
+  parseLocalData,
+  readFiles,
+  readFileTree
+};

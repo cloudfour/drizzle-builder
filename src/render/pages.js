@@ -17,14 +17,16 @@ import { resourceContext } from '../utils/context';
  * @param {Object} drizzleData
  * @return {String} wrapped contents
  */
-function wrapWithLayout (page, drizzleData) {
+function wrapWithLayout(page, drizzleData) {
   const layout = page.data.layout || drizzleData.options.layouts.page;
   // TODO Add test to see if _any_ extends is extant. Multiple extends
   // for ANY reason will cause handlebars-layouts to asplode.
   const alreadyWrapped = new RegExp(
-    `{{\\s*#extend\\s*[\'\"]${layout}[\'\"].*}}`)
-    .test(page.contents);
-  const wrapped = (alreadyWrapped) ? page.contents : `  {{#extend '${layout}' }}
+    `{{\\s*#extend\\s*['"]${layout}['"].*}}`
+  ).test(page.contents);
+  const wrapped = alreadyWrapped
+    ? page.contents
+    : `  {{#extend '${layout}' }}
     {{#content 'main'}}${page.contents}{{/content}}
   {{/extend}}`;
   return wrapped;
@@ -38,11 +40,12 @@ function wrapWithLayout (page, drizzleData) {
  * @param {Object} drizzleData All parsed data
  * @return {String} compiled/rendered page contents.
  */
-function renderPage (page, drizzleData) {
+function renderPage(page, drizzleData) {
   page.contents = applyTemplate(
     wrapWithLayout(page, drizzleData),
     resourceContext(page, drizzleData),
-    drizzleData.options);
+    drizzleData.options
+  );
   return page.contents;
 }
 
@@ -55,7 +58,7 @@ function renderPage (page, drizzleData) {
  * @param {Object} drizzleData all data
  * @return {Object} drizzleData, mutated to include updated contents from render
  */
-function walkPages (pages, drizzleData) {
+function walkPages(pages, drizzleData) {
   if (typeof pages.contents !== 'undefined') {
     return renderPage(pages, drizzleData);
   }
@@ -71,7 +74,7 @@ function walkPages (pages, drizzleData) {
  * @param {Object} drizzleData
  * @return {Object} pageData
  */
-function renderPages (drizzleData) {
+function renderPages(drizzleData) {
   return walkPages(drizzleData.pages, drizzleData);
 }
 
