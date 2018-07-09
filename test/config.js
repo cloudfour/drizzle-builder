@@ -10,7 +10,7 @@ var Handlebars = require('handlebars');
 const fixtures = path.join(__dirname, 'fixtures/');
 const parsers = {
   content: {
-    pattern: '.(html|hbs|handlebars)$',
+    pattern: '\\.(html|hbs|handlebars)$',
     parseFn: (contents, path) => {
       var matter = frontMatter(contents);
       return {
@@ -20,7 +20,7 @@ const parsers = {
     }
   },
   markdown: {
-    pattern: '.(md|markdown)$',
+    pattern: '\\.(md|markdown)$',
     parseFn: (contents, path) => {
       var matter = frontMatter(contents);
       return {
@@ -30,11 +30,11 @@ const parsers = {
     }
   },
   yaml: {
-    pattern: '.(yaml|yml)$',
+    pattern: '\\.(yaml|yml)$',
     parseFn: (contents, path) => ({ contents: yaml.safeLoad(contents) })
   },
   json: {
-    pattern: '.json$',
+    pattern: '\\.json$',
     parseFn: (contents, path) => ({ contents: JSON.parse(contents) })
   },
   default: {
