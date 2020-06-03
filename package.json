@@ -29,7 +29,7 @@
   "dependencies": {
     "bluebird": "^3.3.1",
     "deep-extend": "^0.5.1",
-    "front-matter": "^2.0.6",
+    "front-matter": "^4.0.1",
     "globby": "^4.0.0",
     "handlebars": "^4.0.5",
     "handlebars-layouts": "^3.1.3",
